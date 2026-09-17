@@ -544,6 +544,8 @@ textarea.finput{min-height:70px;font-family:inherit}
     <h1 class="ptitle">Главная</h1>
     <div class="shead"><h2>Любимые исполнители</h2></div>
     <div class="hrow" id="home-artists"></div>
+    <div class="shead"><h2>Специально для вас</h2><div class="sub" id="daily-sub"></div></div>
+    <div class="hrow" id="home-daily"></div>
     <div class="shead"><h2>Миксы для тебя</h2><div class="sub" id="mix-sub"></div></div>
     <div class="hrow" id="home-mixes"></div>
     <div class="shead"><h2>Любимые треки</h2></div>
@@ -1163,8 +1165,8 @@ async function saveFavArtistsToFB(){
 function toggleFavArtist(name){
   if (!name) return;
   const i = favArtists.indexOf(name);
-  if (i >= 0){ favArtists.splice(i,1); toast('Убрано из любимых исполнителей'); }
-  else { favArtists.push(name); toast('В любимых исполнителях', 'ok'); }
+  if (i >= 0) favArtists.splice(i,1);
+  else favArtists.push(name);
   saveFavArtistsToFB(); renderAll();
 }
 function seededRandom(seed){
@@ -1188,12 +1190,167 @@ function getFavoritePool(){
   });
   return pool;
 }
+
+// ========== НОРМАЛИЗАЦИЯ ЖАНРОВ ==========
+const GENRE_ALIASES = {
+  rock: [
+    'rock','рок','рока','року','рок-музыка','рок музыка',
+    'рок-н-ролл','рок-н-роллы','рок-н-рол','rock and roll','rock n roll',
+    'гаражный рок','гаражный-рок','гараж-рок','гараж','garage','garage rock',
+    'альтернативный рок','альтернатива','альтернативный','альт-рок','alt rock','alt-rock','alternative','alternative rock',
+    'инди-рок','indie rock','инди','indie',
+    'хард-рок','hard rock','хард рок',
+    'прогрессивный рок','прог-рок','prog','prog rock','progressive rock',
+    'психоделический рок','психоделия','psychedelic rock','psychedelic',
+    'панк-рок','punk rock','панк','punk',
+    'фолк-рок','folk rock',
+    'кантри-рок','country rock',
+    'софт-рок','soft rock',
+    'пост-рок','post-rock','построк',
+    'блюз-рок','blues rock',
+    'классический рок','классик-рок','classic rock',
+    'южный рок','southern rock','саузерн рок',
+    'симфонический рок','симфо-рок','симфоник рок','symphonic rock',
+    'рок-баллада','рок-опера','rock opera',
+    'метал','metal','heavy metal','хэви-метал','металл',
+    'хэир-метал','hair metal','трэш-метал','thrash metal','дэт-метал','death metal','блэк-метал','black metal',
+    'ню-метал','nu metal','альт-метал','alt metal'
+  ],
+  pop: [
+    'pop','поп','попса','поп-музыка','поп музыка',
+    'поп-рок','pop rock','поп-панк','pop punk',
+    'synth-pop','синти-поп','синтипоп','synthpop',
+    'electropop','электропоп',
+    'dance pop','танцевальный поп','дэнс-поп',
+    'k-pop','kpop','к-поп','кпоп',
+    'j-pop','jpop','джей-поп',
+    'city pop','сити-поп',
+    'инди-поп','indie pop',
+    'power pop','пауэр-поп'
+  ],
+  'hip-hop': [
+    'hip-hop','hip hop','хип-хоп','хипхоп','хип хоп',
+    'рэп','rap','рап','рэп-музыка','рэп музыка','рэп-рок','rap rock',
+    'trap','трэп','трап',
+    'drill','дрилл',
+    'grime','грайм',
+    'phonk','фонк',
+    'old school hip hop','олдскул-хип-хоп','олдскул',
+    'gangsta rap','гангста-рэп','гэнгста-рэп'
+  ],
+  country: [
+    'country','кантри','кантри-музыка','кантри музыка','кантри-рок','country rock',
+    'вестерн','western','вестерн-музыка',
+    'американский фолк','americana','американа',
+    'блюграсс','bluegrass','блюграсс-музыка',
+    'outlaw country','аутлоу-кантри',
+    'country pop','кантри-поп',
+    'honky tonk','хонки-тонк'
+  ],
+  jazz: [
+    'jazz','джаз','джаз-музыка','джаз музыка',
+    'smooth jazz','смус-джаз','смуф-джаз',
+    'bebop','бибоп','swing','свинг',
+    'jazz fusion','джаз-фьюжн','фьюжн','fusion',
+    'acid jazz','эсид-джаз','acid-jazz',
+    'nu jazz','ню-джаз'
+  ],
+  electronic: [
+    'electronic','электроника','электронная','электронная музыка','электро',
+    'edm','эдм','electronic dance',
+    'electro','электро',
+    'house','хаус','deep house','дип-хаус','tech house','тек-хаус',
+    'techno','техно',
+    'trance','транс',
+    'dubstep','дабстеп',
+    'drum and bass','drum & bass','dnb','d&b','драм-н-бейс','драм н бейс',
+    'synthwave','синтвейв','synth wave','synthpop',
+    'vaporwave','вейпорвейв','vapor',
+    'ambient','эмбиент','эмбиэнт',
+    'idm','идм','glitch','глитч'
+  ],
+  'r&b': [
+    'r&b','rnb','рнб','r and b','ар-н-би','r&b music',
+    'contemporary r&b','современный r&b',
+    'neo soul','нео-соул','неосоул'
+  ],
+  classical: [
+    'classical','классика','классическая','классическая музыка','classic',
+    'оркестр','оркестровая','orchestral','симфония','symphony'
+  ],
+  blues: [
+    'blues','блюз','блюз-музыка','блюз музыка',
+    'delta blues','дельта-блюз','chicago blues','чикагский блюз',
+    'electric blues','электрик-блюз'
+  ],
+  reggae: ['reggae','регги','реггей','roots reggae','dub','даб','ska','ска'],
+  folk: [
+    'folk','фолк','фолк-музыка','фолк музыка','народная','народная музыка','акустика','acoustic',
+    'indie folk','инди-фолк','neofolk','неофолк',
+    'singer-songwriter','сингер-сонграйтер','авторская песня','бард'
+  ],
+  indie: ['indie','инди','инди-музыка','инди музыка','indie rock','indie pop'],
+  metal: ['metal','метал','металл','heavy metal','хэви-метал','металл-музыка'],
+  punk: ['punk','панк','punk rock','панк-рок','хардкор','hardcore','хардкор-панк','post-punk','пост-панк','постпанк'],
+  soul: ['soul','соул','soul music','соул-музыка'],
+  funk: ['funk','фанк','фанки','funk rock','фанк-рок'],
+  disco: ['disco','диско','дискотека'],
+  latin: ['latin','латина','латино','latina','латиноамериканская','salsa','сальса','bachata','бачата','reggaeton','реггетон'],
+  soundtrack: ['soundtrack','саундтрек','ost','score','саундтреки','музыка к фильму','музыка из фильма','original soundtrack'],
+  instrumental: ['instrumental','инструментал','инструментальная','instrumental music'],
+  chiptune: ['chiptune','чиптюн','8-bit','8bit','8 бит','retro game'],
+  'lo-fi': ['lo-fi','lofi','лоуфай','lo fi','лоу-фай'],
+  'video game': ['video game','видеоигры','game music','музыка из игр','gaming','гейминг'],
+  anime: ['anime','аниме','anime music','аниме-музыка','jpop','j-pop'],
+  gospel: ['gospel','госпел','евангелие','христианская'],
+  opera: ['opera','опера','operetta','оперетта'],
+  dubstep: ['dubstep','дабстеп'],
+  'drum & bass': ['drum and bass','drum & bass','dnb','d&b','драм-н-бейс'],
+  trance: ['trance','транс'],
+  synthwave: ['synthwave','синтвейв','synth-pop','синти-поп','synth pop'],
+  'k-pop': ['k-pop','kpop','к-поп','кпоп','корейская поп'],
+  trap: ['trap','трэп','трап','trap music']
+};
+
+const GENRE_INDEX = (() => {
+  const out = [];
+  for (const canon in GENRE_ALIASES) {
+    for (const a of GENRE_ALIASES[canon]) {
+      const key = a.toLowerCase().replace(/ё/g,'е').replace(/[_\-\s]+/g,' ').trim();
+      if (key) out.push([key, canon]);
+    }
+  }
+  out.sort((a, b) => b[0].length - a[0].length);
+  return out;
+})();
+
+function normalizeGenre(raw){
+  if (!raw) return '';
+  const s = String(raw).toLowerCase().trim().replace(/ё/g,'е').replace(/[_\-\s]+/g,' ').replace(/\s+/g,' ');
+  for (const [alias, canon] of GENRE_INDEX) if (s === alias) return canon;
+  for (const [alias, canon] of GENRE_INDEX) if (s.includes(alias)) return canon;
+  return s;
+}
+
+const GENRE_DISPLAY_RU = {
+  rock:'Рок', pop:'Поп', 'hip-hop':'Хип-хоп', country:'Кантри', jazz:'Джаз',
+  electronic:'Электроника', 'r&b':'R&B', classical:'Классика', blues:'Блюз',
+  reggae:'Регги', folk:'Фолк и акустика', indie:'Инди', metal:'Метал', punk:'Панк',
+  soul:'Соул', funk:'Фанк', disco:'Диско', latin:'Латина', soundtrack:'Саундтрек',
+  instrumental:'Инструментал', chiptune:'Чиптюн', 'lo-fi':'Lo-Fi',
+  'video game':'Игры', anime:'Аниме', gospel:'Госпел', opera:'Опера',
+  dubstep:'Дабестеп', 'drum & bass':'D&B', trance:'Транс', synthwave:'Синтвейв',
+  'k-pop':'K-Pop', trap:'Трэп'
+};
+function genreDisplay(g){ return GENRE_DISPLAY_RU[g] || (g.charAt(0).toUpperCase() + g.slice(1)); }
+
 const MIX_ICONS = {
   sun: '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
   calendar: '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
   music: '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
   star: '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>'
 };
+
 function generateMixes(){
   const pool = getFavoritePool();
   if (pool.length < 3) return [];
@@ -1206,21 +1363,77 @@ function generateMixes(){
   const weekKey = 'week_' + now.getFullYear() + '_' + weekNum;
   const weekShuffled = shuffleWithSeed(pool, weekKey);
   mixes.push({ id: '__mix_week__', name: 'Микс недели', tag: 'На эту неделю', sub: 'Обновляется по понедельникам', tracks: weekShuffled.slice(0, 50), icon: 'calendar', cls: 'mix-cover-week' });
+
+  // !!! Группируем по НОРМАЛИЗОВАННОМУ жанру
   const genreMap = {};
-  pool.forEach(t => { if (!t.genre) return; genreMap[t.genre] = genreMap[t.genre] || []; genreMap[t.genre].push(t); });
-  Object.entries(genreMap).filter(([g, ts]) => ts.length >= 3).sort((a,b) => b[1].length - a[1].length).slice(0, 3).forEach(([genre, gTracks]) => {
-    const shuf = shuffleWithSeed(gTracks, 'genre_' + genre);
-    mixes.push({ id: '__mix_genre_' + encodeURIComponent(genre), name: genre, tag: 'Жанр', sub: gTracks.length + ' треков', tracks: shuf, icon: 'music', cls: 'mix-cover-genre' });
+  pool.forEach(t => {
+    const g = normalizeGenre(t.genre);
+    if (!g) return;
+    genreMap[g] = genreMap[g] || [];
+    genreMap[g].push(t);
   });
+
+  Object.entries(genreMap)
+    .filter(([g, ts]) => ts.length >= 3)
+    .sort((a,b) => b[1].length - a[1].length)
+    .slice(0, 5)
+    .forEach(([genre, gTracks]) => {
+      const shuf = shuffleWithSeed(gTracks, 'genre_' + genre);
+      mixes.push({
+        id: '__mix_genre_' + encodeURIComponent(genre),
+        name: genreDisplay(genre),
+        tag: 'Жанр',
+        sub: gTracks.length + ' треков',
+        tracks: shuf,
+        icon: 'music',
+        cls: 'mix-cover-genre'
+      });
+    });
+
   const forYou = shuffleWithSeed(pool, 'foryou_' + Date.now());
   mixes.push({ id: '__mix_foryou__', name: 'Для тебя', tag: 'Свежая подборка', sub: [...new Set(forYou.slice(0,8).map(t=>t.artist))].slice(0,3).join(', '), tracks: forYou.slice(0, 40), icon: 'star', cls: 'mix-cover-foryou' });
   return mixes;
 }
+
+function generateDailyMixes(){
+  const pool = getFavoritePool();
+  if (pool.length < 3) return [];
+  const seed = 'daily_' + new Date().toISOString().slice(0,10);
+  const shuffled = shuffleWithSeed(pool, seed);
+  const mixes = [];
+  const chunks = 3;
+  const per = Math.max(6, Math.ceil(shuffled.length / chunks));
+  for (let i = 0; i < chunks; i++){
+    const slice = shuffled.slice(i*per, (i+1)*per);
+    if (slice.length < 3) break;
+    const artists = [...new Set(slice.map(t=>t.artist))].slice(0,3);
+    mixes.push({
+      id: '__daily_' + i + '__',
+      name: 'Daily Mix ' + (i+1),
+      tag: 'Daily',
+      sub: artists.join(', '),
+      tracks: slice,
+      icon: 'star',
+      cls: 'mix-cover-foryou'
+    });
+  }
+  return mixes;
+}
+
 function openMix(mixId){ currentPlaylistId = mixId; renderPlaylistPage(); switchView('playlist'); }
+
 function renderMixPage(mixId){
-  const mixes = generateMixes();
-  const mix = mixes.find(m => m.id === mixId);
-  if (!mix){ switchView('home'); return; }
+  let mix = null;
+  if (mixId.startsWith('__daily_')){
+    mix = generateDailyMixes().find(m => m.id === mixId);
+  } else {
+    mix = generateMixes().find(m => m.id === mixId);
+  }
+  if (!mix){
+    toast('Микс не найден — лайкни больше треков','err');
+    switchView('home');
+    return;
+  }
   const list = mix.tracks;
   const head = $('plPageHead');
   head.innerHTML = `
@@ -1235,9 +1448,10 @@ function renderMixPage(mixId){
   $('mixPlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Пусто'); return; } playTrackInList(list, 0); openFs(); });
   $('mixShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Пусто'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh, 0); openFs(); });
   const trEl = $('plPageTracks'); trEl.innerHTML = '';
-  if (!list.length){ trEl.innerHTML = emptyState('Пусто', 'Лайкай треки и исполнителей — миксы соберутся сами.'); return; }
+  if (!list.length){ trEl.innerHTML = emptyState('Пусто', 'Лайкай треки — микс соберётся сам.'); return; }
   list.forEach((t, i) => trEl.appendChild(trackRow(t, list, i)));
 }
+
 function openLikedArtistsPage(){ currentPlaylistId = LIKED_ARTISTS_ID; renderPlaylistPage(); switchView('playlist'); }
 function renderLikedArtistsPage(){
   const head = $('plPageHead');
@@ -1319,7 +1533,6 @@ async function loadAndPlay(t){
   currentId = t.id;
   let src = audioCache.get(t.id);
   if (!src){
-    toast('Загружаю аудио...');
     try {
       const snap = await get(ref(db, 'audio/'+t.id));
       const audioData = snap.val();
@@ -1385,8 +1598,8 @@ function closeMiniPlayer(stop){
 }
 function toggleFav(id){
   const i = favIds.indexOf(id);
-  if (i >= 0){ favIds.splice(i,1); toast('Убрано из избранного'); }
-  else { favIds.push(id); toast('В избранном','ok'); }
+  if (i >= 0) favIds.splice(i,1);
+  else favIds.push(id);
   saveFavoritesToFB(); renderAll(); updatePlayUI();
 }
 function shareTrack(t){
@@ -1490,6 +1703,17 @@ function renderArtistsRow(containerEl, artists){
   });
 }
 
+function buildMixCard(mix){
+  const card = document.createElement('div');
+  card.className = 'mix';
+  const picks = mix.tracks.slice(0, 4);
+  const cells = picks.map(t => `<div>${t.cover ? `<img src="${t.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div>`).join('');
+  const filled = cells + Array(Math.max(0, 4 - picks.length)).fill(`<div style="background:linear-gradient(135deg,rgba(139,92,246,.4),rgba(6,182,212,.4))"></div>`).join('');
+  card.innerHTML = `<div class="mix-cov">${filled}<div class="mix-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="mix-t">${esc(mix.name)}</div><div class="mix-d">${esc(mix.sub)}</div>`;
+  card.addEventListener('click', ()=>openMix(mix.id));
+  return card;
+}
+
 function renderHome(){
   const favTracks = tracks.filter(t=>favIds.includes(t.id));
   const artistsEl = $('home-artists');
@@ -1503,6 +1727,22 @@ function renderHome(){
     });
     renderArtistsRow(artistsEl, data);
   }
+
+  // === Специально для вас (Daily Mixes) ===
+  const dailyEl = $('home-daily');
+  if (dailyEl){
+    dailyEl.innerHTML = '';
+    const dailies = generateDailyMixes();
+    if (!dailies.length){
+      $('daily-sub').textContent = 'Нужно 3+ любимых';
+      dailyEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Лайкай треки — подборки появятся автоматически.</div>';
+    } else {
+      $('daily-sub').textContent = 'Обновляется каждый день';
+      dailies.forEach(mix => dailyEl.appendChild(buildMixCard(mix)));
+    }
+  }
+
+  // === Миксы для тебя ===
   const mixesEl = $('home-mixes');
   mixesEl.innerHTML = '';
   const mixes = generateMixes();
@@ -1511,17 +1751,9 @@ function renderHome(){
     mixesEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Лайкай треки и исполнителей — миксы соберутся автоматически.</div>';
   } else {
     $('mix-sub').textContent = 'Из любимых';
-    mixes.forEach(mix => {
-      const card = document.createElement('div');
-      card.className = 'mix';
-      const picks = mix.tracks.slice(0, 4);
-      const cells = picks.map(t => `<div>${t.cover ? `<img src="${t.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div>`).join('');
-      const filled = cells + Array(Math.max(0, 4 - picks.length)).fill(`<div style="background:linear-gradient(135deg,rgba(139,92,246,.4),rgba(6,182,212,.4))"></div>`).join('');
-      card.innerHTML = `<div class="mix-cov">${filled}<div class="mix-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="mix-t">${esc(mix.name)}</div><div class="mix-d">${esc(mix.sub)}</div>`;
-      card.addEventListener('click', ()=>openMix(mix.id));
-      mixesEl.appendChild(card);
-    });
+    mixes.forEach(mix => mixesEl.appendChild(buildMixCard(mix)));
   }
+
   const listEl = $('home-tracks');
   listEl.innerHTML = '';
   if (!favTracks.length){ listEl.innerHTML = emptyState('Пока тихо', 'Лайкай треки ♥ — они появятся здесь.'); return; }
@@ -1578,7 +1810,7 @@ function renderFav(){
   });
   const newCard = document.createElement('div');
   newCard.className = 'plc plc-new';
-  newCard.innerHTML = `<div class="plc-cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="plc-t">Новый</div><div class="plc-m">Создать плейлист</div>`;
+  newCard.innerHTML = `<div class="plc-cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="plc-t">Создать плейлист</div>`;
   newCard.addEventListener('click', openPlModal);
   plEl.appendChild(newCard);
   const upEl = $('fav-uploaded'); upEl.innerHTML = '';
@@ -1618,7 +1850,7 @@ function openPlaylistPage(plId){ currentPlaylistId = plId; renderPlaylistPage();
 function renderPlaylistPage(){
   if (currentPlaylistId === LIKED_ID){ renderLikedPageContent(); return; }
   if (currentPlaylistId === LIKED_ARTISTS_ID){ renderLikedArtistsPage(); return; }
-  if (currentPlaylistId && currentPlaylistId.startsWith('__mix_')){ renderMixPage(currentPlaylistId); return; }
+  if (currentPlaylistId && (currentPlaylistId.startsWith('__mix_') || currentPlaylistId.startsWith('__daily_'))){ renderMixPage(currentPlaylistId); return; }
   const pl = playlists.find(p=>p.id === currentPlaylistId);
   if (!pl){ switchView('fav'); return; }
   const list = pl.trackIds.map(getTrack).filter(Boolean);
@@ -1666,7 +1898,13 @@ function renderSearchBody(q){
   q = (q || '').trim().toLowerCase();
   box.innerHTML = '';
   if (!q){ box.innerHTML = `<div class="empty"><div class="empty-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><b>Начни вводить</b>Поиск по трекам, исполнителям и плейлистам.</div>`; return; }
-  const trFound = tracks.filter(t => t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q) || (t.album||'').toLowerCase().includes(q));
+  const qCanon = normalizeGenre(q);
+  const trFound = tracks.filter(t =>
+    t.title.toLowerCase().includes(q) ||
+    t.artist.toLowerCase().includes(q) ||
+    (t.album||'').toLowerCase().includes(q) ||
+    (qCanon && normalizeGenre(t.genre) === qCanon)
+  );
   const arFound = [...new Set(tracks.filter(t=>t.artist.toLowerCase().includes(q)).map(t=>t.artist))];
   const plFound = playlists.filter(p=>p.name.toLowerCase().includes(q));
   if (!trFound.length && !arFound.length && !plFound.length){ box.innerHTML = '<div class="empty"><b>Ничего не нашлось</b>Попробуй другой запрос.</div>'; return; }
@@ -2231,8 +2469,8 @@ $('tmModal').addEventListener('click', async e=>{
   if (a === 'lyrics'){ closeTrackMenu(); openFs(); openLyricsModal(); }
   else if (a === 'fav'){ toggleFav(t.id); closeTrackMenu(); }
   else if (a === 'artist'){ closeTrackMenu(); openArtist(t.artist); }
-  else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t.id)) pl.trackIds.push(t.id); await savePlaylistsToFB(); toast('Добавлено в «'+pl.name+'»','ok'); closeTrackMenu(); }
-  else if (a === 'rmFromPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; pl.trackIds = pl.trackIds.filter(id=>id !== t.id); await savePlaylistsToFB(); toast('Убрано из «'+pl.name+'»'); closeTrackMenu(); }
+  else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t.id)) pl.trackIds.push(t.id); await savePlaylistsToFB(); closeTrackMenu(); }
+  else if (a === 'rmFromPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; pl.trackIds = pl.trackIds.filter(id=>id !== t.id); await savePlaylistsToFB(); closeTrackMenu(); }
   else if (a === 'newPl'){ closeTrackMenu(); openPlModal(); }
   else if (a === 'edit'){ closeTrackMenu(); openEdit(t); }
   else if (a === 'share'){ shareTrack(t); closeTrackMenu(); }
