@@ -9,12 +9,32 @@
 <style>
 @font-face{font-family:'Widock';src:url('Widock TRIAL Bold.otf') format('opentype');font-weight:400 800;font-style:normal;font-display:swap}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;font-synthesis:weight style}
-:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#16161f;--card2:#1e1e2a;--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.14);--txt:#f5f5f8;--dim:#82829a;--accent:#8b5cf6;--accent2:#ec4899;--accent3:#06b6d4;--soft:rgba(139,92,246,.16);--danger:#f43f5e;--ok:#10b981}
-[data-theme="light"]{--bg:#f5f4fb;--bg2:#fff;--card:#fff;--card2:#f1eff9;--border:rgba(15,23,42,.07);--border-hi:rgba(15,23,42,.14);--txt:#0d0d1a;--dim:#6b6b82;--accent:#7c3aed;--accent2:#db2777;--soft:rgba(124,58,237,.12)}
+:root{
+  --bg:#0a0a12;--bg2:#0f0f1a;--card:#16161f;--card2:#1e1e2a;
+  --border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.14);
+  --txt:#f5f5f8;--dim:#82829a;
+  --accent:#8b5cf6;--accent2:#ec4899;--accent3:#06b6d4;
+  --soft:rgba(139,92,246,.16);
+  --danger:#f43f5e;--ok:#10b981;
+  --nav-h: 96px;
+}
+[data-theme="light"]{
+  --bg:#f5f4fb;--bg2:#fff;--card:#fff;--card2:#f1eff9;
+  --border:rgba(15,23,42,.07);--border-hi:rgba(15,23,42,.14);
+  --txt:#0d0d1a;--dim:#6b6b82;
+  --accent:#7c3aed;--accent2:#db2777;--soft:rgba(124,58,237,.12);
+}
 html,body{height:100%;overscroll-behavior:none}
-body{background:var(--bg);color:var(--txt);font-family:'Widock',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;padding-bottom:calc(82px + env(safe-area-inset-bottom));transition:padding-bottom .3s ease;letter-spacing:-.01em}
-body.mini-visible{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
-[data-theme="dark"] body{background:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(139,92,246,.14),transparent 55%),radial-gradient(ellipse 50% 40% at 100% 30%,rgba(6,182,212,.09),transparent 55%),var(--bg)}
+body{background:var(--bg);color:var(--txt);
+  font-family:'Widock',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:400;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom));
+  transition:padding-bottom .3s ease;letter-spacing:-.01em}
+body.mini-visible{padding-bottom:calc(var(--nav-h) + 80px + env(safe-area-inset-bottom))}
+[data-theme="dark"] body{background:
+  radial-gradient(ellipse 60% 40% at 10% 0%, rgba(139,92,246,.14), transparent 55%),
+  radial-gradient(ellipse 50% 40% at 100% 30%, rgba(6,182,212,.09), transparent 55%),
+  var(--bg)}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input,select,textarea{font-family:inherit}
 .ptitle,.plpage-name,.fs-title,.prof-name,.artist-head-name,.studio-intro h2,.lyrics-title,.brand,.tm-title{letter-spacing:-.02em;opacity:1}
@@ -39,7 +59,7 @@ input:focus,textarea:focus,select:focus{outline:none}
 .ibtn svg{width:18px;height:18px}
 .ibtn img{width:100%;height:100%;object-fit:cover;display:block}
 .ibtn.profile{border:2px solid var(--accent);background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff}
-main{padding:0 16px 30px}
+main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 .view{display:none;animation:vin .3s cubic-bezier(.22,1,.36,1)}
 .view.active{display:block}
 @keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -169,7 +189,7 @@ main{padding:0 16px 30px}
 .empty-i{width:64px;height:64px;border-radius:20px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--dim)}
 .empty-i svg{width:26px;height:26px}
 .empty b{display:block;color:var(--txt);font-size:15px;margin-bottom:5px}
-.mini{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom) + 6px);z-index:80;border-radius:14px;padding:7px 10px 7px 7px;display:grid;grid-template-columns:auto 1fr auto auto auto;gap:10px;align-items:center;box-shadow:0 18px 36px -18px rgba(0,0,0,.9);transform:translateY(140%);transition:transform .38s cubic-bezier(.32,.72,0,1);color:#fff;overflow:hidden;background:linear-gradient(135deg,#8b5cf6,#ec4899);cursor:pointer;touch-action:pan-x}
+.mini{position:fixed;left:10px;right:10px;bottom:calc(var(--nav-h) + 6px + env(safe-area-inset-bottom));z-index:80;border-radius:14px;padding:7px 10px 7px 7px;display:grid;grid-template-columns:auto 1fr auto auto auto;gap:10px;align-items:center;box-shadow:0 18px 36px -18px rgba(0,0,0,.9);transform:translateY(140%);transition:transform .38s cubic-bezier(.32,.72,0,1);color:#fff;overflow:hidden;background:linear-gradient(135deg,#8b5cf6,#ec4899);cursor:pointer;touch-action:pan-x}
 .mini.show{transform:translateY(0)}
 .mini-c{width:42px;height:42px;border-radius:9px;overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;position:relative}
 .mini-c img{width:100%;height:100%;object-fit:cover;display:block}
@@ -241,7 +261,6 @@ main{padding:0 16px 30px}
 .fs-ctrl.small svg{width:22px;height:22px}
 .fs-ctrl.active::after{content:'';position:absolute;bottom:2px;width:4px;height:4px;border-radius:50%;background:#fff}
 .fs-ctrl .repeat-one-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;color:currentColor;pointer-events:none;text-shadow:0 0 3px rgba(0,0,0,.5)}
-.fs-ctrl.active .repeat-one-badge{color:#fff}
 .fs-play{width:72px;height:72px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px -8px rgba(0,0,0,.5);transition:.15s}
 .fs-play:active{transform:scale(.94)}
 .fs-play svg{width:32px;height:32px;fill:#000}
@@ -485,14 +504,14 @@ textarea.finput{min-height:70px;font-family:inherit}
 .spinner{width:48px;height:48px;border-radius:50%;border:3px solid var(--border-hi);border-top-color:var(--accent);animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:13.5px;color:var(--dim);text-align:center;padding:0 40px}
-.toasts{position:fixed;bottom:calc(154px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:500;display:flex;flex-direction:column;gap:7px;pointer-events:none;align-items:center;width:calc(100% - 32px);max-width:360px}
+.toasts{position:fixed;bottom:calc(var(--nav-h) + 80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:500;display:flex;flex-direction:column;gap:7px;pointer-events:none;align-items:center;width:calc(100% - 32px);max-width:360px}
 .toast{padding:10px 16px;background:rgba(20,20,30,.94);border:1px solid var(--border-hi);border-radius:11px;color:#fff;font-size:12.5px;box-shadow:0 12px 30px -10px rgba(0,0,0,.6);animation:tin .3s cubic-bezier(.34,1.56,.64,1);text-align:center;backdrop-filter:blur(14px)}
 .toast.ok{border-color:rgba(16,185,129,.5);color:#5eead4}
 .toast.err{border-color:rgba(244,63,94,.5);color:#fda4af}
 @keyframes tin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .hidden{position:fixed;left:-9999px;opacity:0;pointer-events:none}
 @media (max-width:400px){
-  main{padding:0 13px 30px}
+  main{padding:0 13px calc(60px + env(safe-area-inset-bottom))}
   .hrow{margin:0 -13px;padding:6px 17px 10px}
   .ptitle{font-size:23px}
   .mix,.mix-cov{width:180px}
@@ -1047,22 +1066,13 @@ function parseName(name){
 }
 function trackFromFirebase(id, data){
   return {
-    id,
-    title: data.title || 'Без названия',
-    artist: data.artist || 'Неизвестен',
-    album: data.album || '',
-    genre: data.genre || '',
-    year: data.year || '',
-    duration: data.duration || 0,
-    cover: data.cover || null,
-    lyrics: data.lyrics || '',
-    addedAt: data.addedAt || 0,
-    verified: !!data.verified,
-    ownerId: data.ownerId || null,
-    ownerName: data.ownerName || ''
+    id, title: data.title || 'Без названия', artist: data.artist || 'Неизвестен',
+    album: data.album || '', genre: data.genre || '', year: data.year || '',
+    duration: data.duration || 0, cover: data.cover || null, lyrics: data.lyrics || '',
+    addedAt: data.addedAt || 0, verified: !!data.verified,
+    ownerId: data.ownerId || null, ownerName: data.ownerName || ''
   };
 }
-
 let _deepLinkDone = false;
 function tryOpenDeepLink(){
   if (_deepLinkDone) return;
@@ -1103,14 +1113,7 @@ function subscribeUserProfile(){
     const u = auth.currentUser;
     profile.isAnonymous = u ? u.isAnonymous : true;
     if (!data){
-      set(userRef, {
-        name: u && u.displayName ? u.displayName : 'Слушатель',
-        avatar: u && u.photoURL ? u.photoURL : null,
-        photoURL: u && u.photoURL ? u.photoURL : null,
-        email: u && u.email ? u.email : null,
-        musicianName:'', musicianGenre:'', musicianBio:'', country:'', link:'',
-        verified:false, isAnonymous: u ? u.isAnonymous : true, createdAt: Date.now()
-      }).catch(e=>console.error(e));
+      set(userRef, { name: u && u.displayName ? u.displayName : 'Слушатель', avatar: u && u.photoURL ? u.photoURL : null, photoURL: u && u.photoURL ? u.photoURL : null, email: u && u.email ? u.email : null, musicianName:'', musicianGenre:'', musicianBio:'', country:'', link:'', verified:false, isAnonymous: u ? u.isAnonymous : true, createdAt: Date.now() }).catch(e=>console.error(e));
       renderProfile(); return;
     }
     profile.name = data.name || 'Слушатель';
@@ -1164,8 +1167,6 @@ function toggleFavArtist(name){
   else { favArtists.push(name); toast('В любимых исполнителях', 'ok'); }
   saveFavArtistsToFB(); renderAll();
 }
-
-/* ============ МИКСЫ ============ */
 function seededRandom(seed){
   let h = 2166136261;
   const s = String(seed);
@@ -1251,11 +1252,7 @@ function renderLikedArtistsPage(){
   favArtists.forEach(name => {
     const ts = tracks.filter(t=>t.artist === name);
     const img = getArtistAvatar(name, ts);
-    trEl.appendChild(listRow({
-      title: name, meta: ts.length + ' ' + (ts.length === 1 ? 'трек' : 'треков'),
-      coverImg: img, round: true,
-      onClick: ()=>openArtist(name)
-    }));
+    trEl.appendChild(listRow({ title: name, meta: ts.length + ' ' + (ts.length === 1 ? 'трек' : 'треков'), coverImg: img, round: true, onClick: ()=>openArtist(name) }));
   });
 }
 
