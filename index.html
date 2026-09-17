@@ -107,6 +107,13 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 .tmenu{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--dim);transition:.15s}
 .tmenu:active{background:var(--card2);color:var(--txt)}
 .tmenu svg{width:16px;height:16px}
+body.compact .track{padding:3px 4px;grid-template-columns:36px 1fr auto;gap:8px}
+body.compact .track-c{width:36px;height:36px;border-radius:8px}
+body.compact .track-c svg{width:14px;height:14px}
+body.compact .track-t{font-size:12.5px;margin-bottom:1px}
+body.compact .track-a{font-size:10.5px}
+body.compact .tfav,body.compact .tmenu{width:28px;height:28px}
+body.compact .tfav svg,body.compact .tmenu svg{width:15px;height:15px}
 .badge-artist,.badge-lyrics,.artist-badge,.verified-pill{display:inline-flex!important;align-items:center!important;gap:3px!important;line-height:1!important;height:auto!important;padding:2px 7px!important;border-radius:9px!important;font-size:9.5px!important;letter-spacing:.02em!important;text-transform:uppercase!important;vertical-align:middle!important;flex-shrink:0!important;width:auto!important;max-width:fit-content!important}
 .badge-artist{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff!important}
 .badge-lyrics{background:rgba(6,182,212,.2);color:var(--accent3)!important}
@@ -331,6 +338,17 @@ textarea.finput{min-height:70px;font-family:inherit}
 .set-btn:active{background:var(--card2);border-color:var(--border-hi)}
 .set-btn svg{width:20px;height:20px;color:var(--dim);flex-shrink:0}
 .set-btn .arr{margin-left:auto;color:var(--dim);width:16px;height:16px}
+.set-btn .pref-val{margin-left:auto;color:var(--dim);font-size:12px;font-weight:500;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:8px}
+.set-btn .pref-val + .arr{margin-left:0}
+.pref-radio-row{display:flex;align-items:center;gap:11px;padding:12px 6px;cursor:pointer;border-radius:10px;transition:.15s;background:transparent;width:100%;text-align:left;color:var(--txt);font-size:13.5px}
+.pref-radio-row:active{background:var(--card)}
+.pref-radio-row input{position:absolute;opacity:0;pointer-events:none}
+.pref-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-hi);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;background:transparent}
+.pref-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.pref-radio-row input:checked + .pref-radio{border-color:var(--accent)}
+.pref-radio-row input:checked + .pref-radio::after{transform:scale(1)}
+.pref-radio-row .lbl{flex:1;font-size:13.5px}
+.pref-radio-row .sub{font-size:11px;color:var(--dim);margin-top:2px}
 .timer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
 .timer-opt{padding:16px 8px;border-radius:14px;background:var(--card);border:1px solid var(--border);text-align:center;font-size:15px;transition:.15s;cursor:pointer}
 .timer-opt:active{transform:scale(.95);background:var(--card2)}
@@ -619,6 +637,69 @@ textarea.finput{min-height:70px;font-family:inherit}
     <div class="prof-settings-title">Аккаунт</div>
     <button class="set-btn" id="profEditBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span id="profEditLabel">Изменить имя и аватар</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <button class="set-btn" id="profStudioBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span id="profStudioLabel">Студия артиста</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+
+    <!-- ====== ЯЗЫК ====== -->
+    <div class="prof-settings-title" id="langTitle">Язык / Language</div>
+    <button class="set-btn" id="langBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>Язык</span>
+      <span class="pref-val" id="langVal">Русский</span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <!-- ====== ПРЕДПОЧТЕНИЯ ====== -->
+    <div class="prof-settings-title">Предпочтения</div>
+    <button class="set-btn" data-pref="display">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Отображение</span>
+      <span class="pref-val" data-pref-val="display"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="audio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      <span>Аудио</span>
+      <span class="pref-val" data-pref-val="audio"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span>Уведомления</span>
+      <span class="pref-val" data-pref-val="notifications"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="storage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <span>Данные и хранение</span>
+      <span class="pref-val" data-pref-val="storage"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="offline">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zM12 6v6l4 2"/></svg>
+      <span>Режим офлайн</span>
+      <span class="pref-val" data-pref-val="offline"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <div class="prof-settings-title">Настройки контента</div>
+    <button class="set-btn" data-pref="country">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Выбор страны</span>
+      <span class="pref-val" data-pref-val="country"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="explicit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      <span>Контент с ненормативной лексикой</span>
+      <span class="pref-val" data-pref-val="explicit"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="set-btn" data-pref="import">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      <span>Импортируйте избранное</span>
+      <span class="pref-val" data-pref-val="import"></span>
+      <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
     <div class="prof-settings-title">Внешний вид</div>
     <div class="set-btn" style="cursor:default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Тема<div id="themeSwitch" style="margin-left:auto;display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px"><button data-t="dark" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)">Тёмная</button><button data-t="light" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)">Светлая</button></div></div>
     <div class="prof-settings-title">Импорт</div>
@@ -795,6 +876,29 @@ textarea.finput{min-height:70px;font-family:inherit}
   </div>
 </div>
 
+<!-- ====== МОДАЛКИ НАСТРОЕК ====== -->
+<div class="modal" id="prefModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3 class="ftitle" id="prefTitle">Настройки</h3>
+    <p class="fdesc" id="prefDesc">—</p>
+    <div id="prefBody"></div>
+    <div class="sheet-acts" style="margin-top:14px">
+      <button class="ghost" id="prefCancel">Отмена</button>
+      <button class="solid" id="prefOk">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="langModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3 class="ftitle">Язык / Language / Sprache / 语言</h3>
+    <p class="fdesc">Выбери язык интерфейса. / Choose interface language.</p>
+    <div id="langList"></div>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 <input type="file" id="coverInput" class="hidden" accept="image/*">
 <input type="file" id="replaceFileInput" class="hidden" accept="audio/*">
@@ -872,6 +976,207 @@ let captchaA = 0, captchaB = 0, captchaOp = '+', captchaAnswer = 0;
 let uplCoverEditIndex = -1;
 let lyrActiveLineIdx = -1;
 
+// ====== I18N / GENRE / PREFS ======
+const I18N = {
+  ru:{ home:'Главная', explore:'Исследовать', fav:'Избранное', search:'Поиск', profile:'Профиль', studio:'Студия',
+    greet_morning:'Доброе утро', greet_day:'Добрый день', greet_evening:'Добрый вечер', greet_night:'Доброй ночи',
+    liked_artists:'Любимые исполнители', mixes_for_you:'Миксы для тебя', fav_tracks:'Любимые треки',
+    all_artists:'Все исполнители', all_tracks:'Все треки', recent:'Недавние', long:'Долгие', short:'Короткие', random:'Случайно',
+    genres:'Жанры', playlists:'Плейлисты', uploaded:'Загруженная музыка',
+    genre_tag:'Жанр', tracks_lc:'треков', tracks_1:'трек',
+    display:'Отображение', audio:'Аудио', notifications:'Уведомления', storage:'Данные и хранение',
+    offline:'Режим офлайн', country:'Выбор страны', explicit:'Контент с ненормативной лексикой', import_fav:'Импортируйте избранное',
+    theme:'Тема', dark:'Тёмная', light:'Светлая',
+    display_hint:'Компактный список, размер обложек.', audio_hint:'Качество, кроссфейд, нормализация.',
+    notif_hint:'Рекомендации, релизы, ответы.', storage_hint:'Кэш, очистка, экспорт.',
+    offline_hint:'Экономит трафик — играет только загруженное.', country_hint:'Влияет на рекомендации.',
+    explicit_hint:'Скрывать треки с меткой E.', import_hint:'JSON-файл из другого сервиса.',
+    compact:'Компактный список', cover_size:'Размер обложек',
+    audio_quality:'Качество звука', crossfade:'Кроссфейд (сек)', normalize:'Нормализация громкости', gapless:'Без пауз',
+    notif_releases:'Новые релизы любимых', notif_recommend:'Рекомендации', notif_social:'Активность',
+    clear_cache:'Очистить кэш', export_data:'Экспорт данных', import_file:'Импорт из файла',
+    save:'Сохранить', cancel:'Отмена', close:'Закрыть' },
+  en:{ home:'Home', explore:'Explore', fav:'Favorites', search:'Search', profile:'Profile', studio:'Studio',
+    greet_morning:'Good morning', greet_day:'Good afternoon', greet_evening:'Good evening', greet_night:'Good night',
+    liked_artists:'Favorite artists', mixes_for_you:'Made for you', fav_tracks:'Favorite tracks',
+    all_artists:'All artists', all_tracks:'All tracks', recent:'Recent', long:'Long', short:'Short', random:'Random',
+    genres:'Genres', playlists:'Playlists', uploaded:'Uploaded music',
+    genre_tag:'Genre', tracks_lc:'tracks', tracks_1:'track',
+    display:'Display', audio:'Audio', notifications:'Notifications', storage:'Data & storage',
+    offline:'Offline mode', country:'Country', explicit:'Explicit content', import_fav:'Import favorites',
+    theme:'Theme', dark:'Dark', light:'Light',
+    display_hint:'Compact list, cover size.', audio_hint:'Quality, crossfade, normalize.',
+    notif_hint:'Recommendations, releases, replies.', storage_hint:'Cache, cleanup, export.',
+    offline_hint:'Saves data — plays only downloaded.', country_hint:'Affects recommendations.',
+    explicit_hint:'Hide tracks marked E.', import_hint:'JSON file from another service.',
+    compact:'Compact list', cover_size:'Cover size',
+    audio_quality:'Audio quality', crossfade:'Crossfade (s)', normalize:'Volume normalize', gapless:'Gapless',
+    notif_releases:'New releases', notif_recommend:'Recommendations', notif_social:'Activity',
+    clear_cache:'Clear cache', export_data:'Export data', import_file:'Import from file',
+    save:'Save', cancel:'Cancel', close:'Close' },
+  de:{ home:'Start', explore:'Entdecken', fav:'Favoriten', search:'Suche', profile:'Profil', studio:'Studio',
+    greet_morning:'Guten Morgen', greet_day:'Guten Tag', greet_evening:'Guten Abend', greet_night:'Gute Nacht',
+    liked_artists:'Lieblingskünstler', mixes_for_you:'Für dich', fav_tracks:'Lieblingstitel',
+    all_artists:'Alle Künstler', all_tracks:'Alle Titel', recent:'Kürzlich', long:'Lang', short:'Kurz', random:'Zufällig',
+    genres:'Genres', playlists:'Playlists', uploaded:'Hochgeladen',
+    genre_tag:'Genre', tracks_lc:'Titel', tracks_1:'Titel',
+    display:'Anzeige', audio:'Audio', notifications:'Benachrichtigungen', storage:'Daten & Speicher',
+    offline:'Offline-Modus', country:'Land', explicit:'Explizite Inhalte', import_fav:'Favoriten importieren',
+    theme:'Thema', dark:'Dunkel', light:'Hell',
+    display_hint:'Kompakte Liste, Covergröße.', audio_hint:'Qualität, Crossfade, Normalisierung.',
+    notif_hint:'Empfehlungen, Releases, Antworten.', storage_hint:'Cache, Bereinigung, Export.',
+    offline_hint:'Spart Daten — spielt nur Heruntergeladenes.', country_hint:'Beeinflusst Empfehlungen.',
+    explicit_hint:'Titel mit E ausblenden.', import_hint:'JSON-Datei aus anderem Dienst.',
+    compact:'Kompakte Liste', cover_size:'Covergröße',
+    audio_quality:'Audioqualität', crossfade:'Crossfade (s)', normalize:'Lautstärke normalisieren', gapless:'Ohne Pausen',
+    notif_releases:'Neue Releases', notif_recommend:'Empfehlungen', notif_social:'Aktivität',
+    clear_cache:'Cache leeren', export_data:'Daten exportieren', import_file:'Aus Datei importieren',
+    save:'Speichern', cancel:'Abbrechen', close:'Schließen' },
+  zh:{ home:'首页', explore:'探索', fav:'收藏', search:'搜索', profile:'我的', studio:'工作室',
+    greet_morning:'早上好', greet_day:'下午好', greet_evening:'晚上好', greet_night:'晚安',
+    liked_artists:'喜欢的艺人', mixes_for_you:'为你推荐', fav_tracks:'喜欢的歌曲',
+    all_artists:'所有艺人', all_tracks:'所有歌曲', recent:'最近', long:'长', short:'短', random:'随机',
+    genres:'曲风', playlists:'歌单', uploaded:'已上传',
+    genre_tag:'曲风', tracks_lc:'首', tracks_1:'首',
+    display:'显示', audio:'音频', notifications:'通知', storage:'数据与存储',
+    offline:'离线模式', country:'国家/地区', explicit:'露骨内容', import_fav:'导入收藏',
+    theme:'主题', dark:'深色', light:'浅色',
+    display_hint:'紧凑列表、封面尺寸。', audio_hint:'音质、淡入淡出、音量归一化。',
+    notif_hint:'推荐、新发布、动态。', storage_hint:'缓存、清理、导出。',
+    offline_hint:'节省流量——只播放已下载内容。', country_hint:'影响推荐结果。',
+    explicit_hint:'隐藏带有 E 标记的歌曲。', import_hint:'来自其他服务的 JSON 文件。',
+    compact:'紧凑列表', cover_size:'封面尺寸',
+    audio_quality:'音质', crossfade:'淡入淡出（秒）', normalize:'音量归一化', gapless:'无缝播放',
+    notif_releases:'新发布', notif_recommend:'推荐', notif_social:'动态',
+    clear_cache:'清除缓存', export_data:'导出数据', import_file:'从文件导入',
+    save:'保存', cancel:'取消', close:'关闭' },
+  es:{ home:'Inicio', explore:'Explorar', fav:'Favoritos', search:'Buscar', profile:'Perfil', studio:'Estudio',
+    greet_morning:'Buenos días', greet_day:'Buenas tardes', greet_evening:'Buenas noches', greet_night:'Buenas noches',
+    liked_artists:'Artistas favoritos', mixes_for_you:'Para ti', fav_tracks:'Canciones favoritas',
+    all_artists:'Todos los artistas', all_tracks:'Todas las canciones', recent:'Recientes', long:'Largas', short:'Cortas', random:'Aleatorio',
+    genres:'Géneros', playlists:'Listas', uploaded:'Subidas',
+    genre_tag:'Género', tracks_lc:'canciones', tracks_1:'canción',
+    display:'Visualización', audio:'Audio', notifications:'Notificaciones', storage:'Datos y almacenamiento',
+    offline:'Modo sin conexión', country:'País', explicit:'Contenido explícito', import_fav:'Importar favoritos',
+    theme:'Tema', dark:'Oscuro', light:'Claro',
+    display_hint:'Lista compacta, tamaño de portada.', audio_hint:'Calidad, fundido, normalización.',
+    notif_hint:'Recomendaciones, lanzamientos.', storage_hint:'Caché, limpieza, exportar.',
+    offline_hint:'Ahorra datos — solo lo descargado.', country_hint:'Afecta recomendaciones.',
+    explicit_hint:'Ocultar con etiqueta E.', import_hint:'Archivo JSON de otro servicio.',
+    compact:'Lista compacta', cover_size:'Tamaño de portada',
+    audio_quality:'Calidad de audio', crossfade:'Fundido (s)', normalize:'Normalizar volumen', gapless:'Sin pausas',
+    notif_releases:'Nuevos lanzamientos', notif_recommend:'Recomendaciones', notif_social:'Actividad',
+    clear_cache:'Limpiar caché', export_data:'Exportar datos', import_file:'Importar de archivo',
+    save:'Guardar', cancel:'Cancelar', close:'Cerrar' },
+  fr:{ home:'Accueil', explore:'Explorer', fav:'Favoris', search:'Recherche', profile:'Profil', studio:'Studio',
+    greet_morning:'Bonjour', greet_day:'Bon après-midi', greet_evening:'Bonsoir', greet_night:'Bonne nuit',
+    liked_artists:'Artistes favoris', mixes_for_you:'Pour vous', fav_tracks:'Titres favoris',
+    all_artists:'Tous les artistes', all_tracks:'Tous les titres', recent:'Récents', long:'Longues', short:'Courtes', random:'Aléatoire',
+    genres:'Genres', playlists:'Playlists', uploaded:'Téléchargées',
+    genre_tag:'Genre', tracks_lc:'titres', tracks_1:'titre',
+    display:'Affichage', audio:'Audio', notifications:'Notifications', storage:'Données et stockage',
+    offline:'Mode hors ligne', country:'Pays', explicit:'Contenu explicite', import_fav:'Importer les favoris',
+    theme:'Thème', dark:'Sombre', light:'Clair',
+    display_hint:'Liste compacte, taille de pochette.', audio_hint:'Qualité, fondu, normalisation.',
+    notif_hint:'Recommandations, sorties.', storage_hint:'Cache, nettoyage, export.',
+    offline_hint:'Économise — seulement le téléchargé.', country_hint:'Influe sur les recommandations.',
+    explicit_hint:'Masquer les titres avec E.', import_hint:"Fichier JSON d'un autre service.",
+    compact:'Liste compacte', cover_size:'Taille de pochette',
+    audio_quality:'Qualité audio', crossfade:'Fondu (s)', normalize:'Normaliser le volume', gapless:'Sans coupures',
+    notif_releases:'Nouvelles sorties', notif_recommend:'Recommandations', notif_social:'Activité',
+    clear_cache:'Vider le cache', export_data:'Exporter les données', import_file:"Importer d'un fichier",
+    save:'Enregistrer', cancel:'Annuler', close:'Fermer' }
+};
+const GENRE_ALIASES = {
+  'rock':['rock','рок','рока','рок-музыка','rock music','рокъ'],
+  'pop':['pop','поп','попса','поп-музыка','pop music'],
+  'hip-hop':['hip-hop','hip hop','хип-хоп','хипхоп','рэп','rap','рап','рэп-музыка'],
+  'country':['country','кантри','кантри-музыка','country music'],
+  'jazz':['jazz','джаз'],
+  'electronic':['electronic','электроника','электронная','электронная музыка','edm','электро','electro'],
+  'r&b':['r&b','rnb','рнб','r and b','ар-н-би','r’n’b'],
+  'classical':['classical','классика','классическая','классическая музыка','classic'],
+  'metal':['metal','метал','металл','heavy metal','хэви-метал'],
+  'punk':['punk','панк','панк-рок','punk rock'],
+  'blues':['blues','блюз'],
+  'reggae':['reggae','регги','реггей'],
+  'folk':['folk','фолк','народная','народная музыка'],
+  'indie':['indie','инди','инди-музыка'],
+  'k-pop':['k-pop','kpop','к-поп','кпоп'],
+  'latin':['latin','латина','латино','latina'],
+  'soul':['soul','соул'],
+  'funk':['funk','фанк'],
+  'disco':['disco','диско'],
+  'house':['house','хаус'],
+  'techno':['techno','техно'],
+  'trap':['trap','трэп','трап'],
+  'ambient':['ambient','эмбиент','эмбиэнт'],
+  'soundtrack':['soundtrack','саундтрек','ost','саундтреки'],
+  'instrumental':['instrumental','инструментал','инструментальная'],
+  'chiptune':['chiptune','чиптюн','8-bit','8bit'],
+  'lo-fi':['lo-fi','lofi','лоу-фай','лоуфай'],
+  'video game':['video game','видеоигры','game music','музыка из игр'],
+  'anime':['anime','аниме','anime music'],
+  'gospel':['gospel','госпел','евангелие'],
+  'opera':['opera','опера'],
+  'ska':['ska','ска'],
+  'dubstep':['dubstep','дабстеп'],
+  'drum & bass':['drum and bass','drum & bass','dnb','d&b','драм-н-бейс'],
+  'trance':['trance','транс'],
+  'synthwave':['synthwave','синтвейв','synth-pop','синти-поп']
+};
+function normalizeGenre(raw){
+  if (!raw) return '';
+  const s = String(raw).toLowerCase().trim().replace(/ё/g,'е').replace(/\s+/g,' ');
+  for (const canon in GENRE_ALIASES){
+    if (GENRE_ALIASES[canon].some(a => a.toLowerCase().replace(/ё/g,'е') === s)) return canon;
+  }
+  for (const canon in GENRE_ALIASES){
+    if (GENRE_ALIASES[canon].some(a => { const al = a.toLowerCase().replace(/ё/g,'е'); return s.includes(al) || al.includes(s); })) return canon;
+  }
+  return s;
+}
+const GENRE_NAMES = {
+  ru:{ 'rock':'Рок','pop':'Поп','hip-hop':'Хип-хоп','country':'Кантри','jazz':'Джаз','electronic':'Электроника','r&b':'R&B','classical':'Классика','metal':'Метал','punk':'Панк','blues':'Блюз','reggae':'Регги','folk':'Фолк','indie':'Инди','k-pop':'K-pop','latin':'Латина','soul':'Соул','funk':'Фанк','disco':'Диско','house':'Хаус','techno':'Техно','trap':'Трэп','ambient':'Эмбиент','soundtrack':'Саундтрек','instrumental':'Инструментал','chiptune':'Чиптюн','lo-fi':'Lo-fi','video game':'Игры','anime':'Аниме','gospel':'Госпел','opera':'Опера','ska':'Ска','dubstep':'Дабстеп','drum & bass':'D&B','trance':'Транс','synthwave':'Синтвейв' },
+  en:{ 'rock':'Rock','pop':'Pop','hip-hop':'Hip-Hop','country':'Country','jazz':'Jazz','electronic':'Electronic','r&b':'R&B','classical':'Classical','metal':'Metal','punk':'Punk','blues':'Blues','reggae':'Reggae','folk':'Folk','indie':'Indie','k-pop':'K-Pop','latin':'Latin','soul':'Soul','funk':'Funk','disco':'Disco','house':'House','techno':'Techno','trap':'Trap','ambient':'Ambient','soundtrack':'Soundtrack','instrumental':'Instrumental','chiptune':'Chiptune','lo-fi':'Lo-Fi','video game':'Game Music','anime':'Anime','gospel':'Gospel','opera':'Opera','ska':'Ska','dubstep':'Dubstep','drum & bass':'D&B','trance':'Trance','synthwave':'Synthwave' },
+  de:{ 'rock':'Rock','pop':'Pop','hip-hop':'Hip-Hop','country':'Country','jazz':'Jazz','electronic':'Elektronisch','r&b':'R&B','classical':'Klassik','metal':'Metal','punk':'Punk','blues':'Blues','reggae':'Reggae','folk':'Folk','indie':'Indie','k-pop':'K-Pop','latin':'Latin','soul':'Soul','funk':'Funk','disco':'Disco','house':'House','techno':'Techno','trap':'Trap','ambient':'Ambient','soundtrack':'Soundtrack','instrumental':'Instrumental','chiptune':'Chiptune','lo-fi':'Lo-Fi','video game':'Spielmusik','anime':'Anime','gospel':'Gospel','opera':'Oper','ska':'Ska','dubstep':'Dubstep','drum & bass':'D&B','trance':'Trance','synthwave':'Synthwave' },
+  zh:{ 'rock':'摇滚','pop':'流行','hip-hop':'嘻哈','country':'乡村','jazz':'爵士','electronic':'电子','r&b':'R&B','classical':'古典','metal':'金属','punk':'朋克','blues':'蓝调','reggae':'雷鬼','folk':'民谣','indie':'独立','k-pop':'K-Pop','latin':'拉丁','soul':'灵魂','funk':'放克','disco':'迪斯科','house':'House','techno':'Techno','trap':'Trap','ambient':'氛围','soundtrack':'原声','instrumental':'器乐','chiptune':'芯片音乐','lo-fi':'Lo-Fi','video game':'游戏音乐','anime':'动漫','gospel':'福音','opera':'歌剧','ska':'Ska','dubstep':'Dubstep','drum & bass':'D&B','trance':'Trance','synthwave':'Synthwave' },
+  es:{ 'rock':'Rock','pop':'Pop','hip-hop':'Hip-Hop','country':'Country','jazz':'Jazz','electronic':'Electrónica','r&b':'R&B','classical':'Clásica','metal':'Metal','punk':'Punk','blues':'Blues','reggae':'Reggae','folk':'Folk','indie':'Indie','k-pop':'K-Pop','latin':'Latina','soul':'Soul','funk':'Funk','disco':'Disco','house':'House','techno':'Techno','trap':'Trap','ambient':'Ambient','soundtrack':'Banda sonora','instrumental':'Instrumental','chiptune':'Chiptune','lo-fi':'Lo-Fi','video game':'Videojuegos','anime':'Anime','gospel':'Gospel','opera':'Ópera','ska':'Ska','dubstep':'Dubstep','drum & bass':'D&B','trance':'Trance','synthwave':'Synthwave' },
+  fr:{ 'rock':'Rock','pop':'Pop','hip-hop':'Hip-Hop','country':'Country','jazz':'Jazz','electronic':'Électronique','r&b':'R&B','classical':'Classique','metal':'Metal','punk':'Punk','blues':'Blues','reggae':'Reggae','folk':'Folk','indie':'Indie','k-pop':'K-Pop','latin':'Latine','soul':'Soul','funk':'Funk','disco':'Disco','house':'House','techno':'Techno','trap':'Trap','ambient':'Ambient','soundtrack':'Bande originale','instrumental':'Instrumental','chiptune':'Chiptune','lo-fi':'Lo-Fi','video game':'Jeux vidéo','anime':'Anime','gospel':'Gospel','opera':'Opéra','ska':'Ska','dubstep':'Dubstep','drum & bass':'D&B','trance':'Trance','synthwave':'Synthwave' }
+};
+function genreDisplayName(canon, l){
+  const dict = GENRE_NAMES[l] || GENRE_NAMES.en;
+  return dict[canon] || (canon.charAt(0).toUpperCase() + canon.slice(1));
+}
+let lang = 'ru';
+function t(k, fb){
+  return (I18N[lang] && I18N[lang][k]) || (I18N.en && I18N.en[k]) || (I18N.ru && I18N.ru[k]) || fb || k;
+}
+function detectLang(){
+  try { const saved = localStorage.getItem('sonic_lang'); if (saved && I18N[saved]) return saved; } catch(e){}
+  const nav = (navigator.language || 'ru').slice(0,2).toLowerCase();
+  return I18N[nav] ? nav : 'ru';
+}
+const PREF_LS = 'sonic_prefs_v1';
+let prefs = {
+  display: { compact:false, coverSize:300 },
+  audio: { quality:'high', crossfade:0, normalize:false, gapless:true },
+  notifications: { releases:true, recommend:true, social:false },
+  storage: { cacheMB:0 },
+  offline: false,
+  country: 'RU',
+  explicit: false
+};
+try { const p = JSON.parse(localStorage.getItem(PREF_LS)||'{}'); prefs = { ...prefs, ...p }; } catch(e){}
+function savePrefsAll(){ try { localStorage.setItem(PREF_LS, JSON.stringify(prefs)); } catch(e){} }
+const COUNTRIES = [
+  ['RU','🇷🇺 Россия'],['US','🇺🇸 United States'],['GB','🇬🇧 United Kingdom'],['DE','🇩🇪 Deutschland'],
+  ['FR','🇫🇷 France'],['IT','🇮🇹 Italia'],['ES','🇪🇸 España'],['CN','🇨🇳 中国'],['JP','🇯🇵 日本'],
+  ['KR','🇰🇷 한국'],['UA','🇺🇦 Україна'],['KZ','🇰🇿 Қазақстан'],['BY','🇧🇾 Беларусь'],['PL','🇵🇱 Polska'],
+  ['TR','🇹🇷 Türkiye'],['BR','🇧🇷 Brasil'],['CA','🇨🇦 Canada'],['AU','🇦🇺 Australia'],['NL','🇳🇱 Nederland'],
+  ['SE','🇸🇪 Sverige'],['IN','🇮🇳 India'],['MX','🇲🇽 México'],['AR','🇦🇷 Argentina']
+];
+
 const $ = id => document.getElementById(id);
 const uid = () => Math.random().toString(36).slice(2, 10);
 const fmt = s => { if (!isFinite(s) || s < 0) s = 0; return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); };
@@ -903,6 +1208,77 @@ function applyTheme(){
 function showLoading(text){ $('loadingText').textContent = text||'Подключаюсь...'; $('loadingScreen').classList.remove('hide'); }
 function hideLoading(){ $('loadingScreen').classList.add('hide'); }
 
+function renderPrefsValues(){
+  document.querySelectorAll('[data-pref-val]').forEach(el=>{
+    const k = el.dataset.prefVal;
+    if (k === 'display')   el.textContent = prefs.display.compact ? t('compact') : (prefs.display.coverSize+'px');
+    if (k === 'audio')     el.textContent = ({low:'Low',normal:'Normal',high:'High',lossless:'Lossless'})[prefs.audio.quality] || prefs.audio.quality;
+    if (k === 'notifications') el.textContent = [prefs.notifications.releases, prefs.notifications.recommend, prefs.notifications.social].filter(Boolean).length + '/3';
+    if (k === 'storage')   el.textContent = prefs.storage.cacheMB ? (prefs.storage.cacheMB+' MB') : 'Auto';
+    if (k === 'offline')   el.textContent = prefs.offline ? 'On' : 'Off';
+    if (k === 'country')   el.textContent = (COUNTRIES.find(c=>c[0]===prefs.country)||['','—'])[1];
+    if (k === 'explicit')  el.textContent = prefs.explicit ? 'Show' : 'Hide';
+    if (k === 'import')    el.textContent = '';
+  });
+  const lv = document.getElementById('langVal');
+  if (lv){
+    const langNames = { ru:'Русский', en:'English', de:'Deutsch', zh:'中文', es:'Español', fr:'Français' };
+    lv.textContent = langNames[lang] || 'Русский';
+  }
+}
+
+function applyLanguage(){
+  document.documentElement.setAttribute('lang', lang);
+  try { localStorage.setItem('sonic_lang', lang); } catch(e){}
+  // Навигация
+  const navMap = { home:'home', explore:'explore', fav:'fav', search:'search' };
+  document.querySelectorAll('.nbtn').forEach(b=>{
+    const k = navMap[b.dataset.v]; if (!k) return;
+    const nl = b.querySelector('.nl'); if (nl) nl.textContent = t(k);
+  });
+  // Заголовки
+  const h1map = [
+    ['#v-home .ptitle','home'],['#v-explore .ptitle','explore'],['#v-fav .ptitle','fav'],
+    ['#v-search .ptitle','search'],['#v-profile .ptitle','profile'],['#v-studio .ptitle','studio']
+  ];
+  h1map.forEach(([sel,k])=>{ const el = document.querySelector(sel); if (el) el.textContent = t(k); });
+  // Секции
+  const sec1 = document.querySelectorAll('#v-home .shead h2');
+  const keys1 = ['liked_artists','mixes_for_you','fav_tracks'];
+  sec1.forEach((el,i)=>{ if (keys1[i]) el.textContent = t(keys1[i]); });
+  const sec2 = document.querySelectorAll('#v-explore .shead h2');
+  const keys2 = ['all_artists','all_tracks'];
+  sec2.forEach((el,i)=>{ if (keys2[i]) el.textContent = t(keys2[i]); });
+  const sec3 = document.querySelectorAll('#v-fav .shead h2');
+  const keys3 = ['playlists','uploaded'];
+  sec3.forEach((el,i)=>{ if (keys3[i]) el.textContent = t(keys3[i]); });
+  // Фильтры explore
+  const fmap = { all:'all_tracks', recent:'recent', long:'long', short:'short', random:'random' };
+  document.querySelectorAll('#explore-filters .filter').forEach(f=>{ if (fmap[f.dataset.f]) f.textContent = t(fmap[f.dataset.f]); });
+  // Заголовки настроек
+  const profTitles = document.querySelectorAll('#v-profile .prof-settings-title');
+  // [0] Аккаунт остаётся как есть, [1] Язык — фиксировано
+  // Кнопки предпочтений
+  const prefLabels = {
+    display:['display'], audio:['audio'], notifications:['notifications'], storage:['storage'],
+    offline:['offline'], country:['country'], explicit:['explicit'], import:['import_fav']
+  };
+  document.querySelectorAll('[data-pref]').forEach(btn=>{
+    const k = btn.dataset.pref;
+    if (!prefLabels[k]) return;
+    const span = btn.querySelector('span:not(.pref-val)');
+    if (span) span.textContent = t(prefLabels[k][0]);
+  });
+  // Тема
+  document.querySelectorAll('#themeSwitch button').forEach(b=>{
+    if (b.dataset.t === 'dark') b.textContent = t('dark');
+    if (b.dataset.t === 'light') b.textContent = t('light');
+  });
+  renderPrefsValues();
+  renderAll();
+}
+
+// ====== ХЕЛПЕРЫ ФАЙЛОВ ======
 function fileToBase64AndMime(file){
   return new Promise((resolve, reject) => {
     if (file.size > 6*1024*1024){ reject(new Error('Файл больше 6 МБ')); return; }
@@ -1200,19 +1576,35 @@ function generateMixes(){
   const now = new Date();
   const dayKey = 'day_' + now.toISOString().slice(0,10);
   const dayShuffled = shuffleWithSeed(pool, dayKey);
-  mixes.push({ id: '__mix_day__', name: 'Микс дня', tag: 'Сегодня', sub: [...new Set(dayShuffled.slice(0,8).map(t=>t.artist))].slice(0,3).join(', '), tracks: dayShuffled.slice(0, 30), icon: 'sun', cls: 'mix-cover-day' });
+  mixes.push({ id: '__mix_day__', name: t('mixes_for_you') + ' · ' + (lang==='ru'?'День':'Day'), tag: lang==='ru'?'Сегодня':'Today', sub: [...new Set(dayShuffled.slice(0,8).map(t=>t.artist))].slice(0,3).join(', '), tracks: dayShuffled.slice(0, 30), icon: 'sun', cls: 'mix-cover-day' });
   const weekNum = Math.floor((now - new Date(now.getFullYear(),0,1)) / 604800000);
   const weekKey = 'week_' + now.getFullYear() + '_' + weekNum;
   const weekShuffled = shuffleWithSeed(pool, weekKey);
-  mixes.push({ id: '__mix_week__', name: 'Микс недели', tag: 'На эту неделю', sub: 'Обновляется по понедельникам', tracks: weekShuffled.slice(0, 50), icon: 'calendar', cls: 'mix-cover-week' });
+  mixes.push({ id: '__mix_week__', name: lang==='ru'?'Микс недели':lang==='de'?'Wochenmix':'Weekly mix', tag: lang==='ru'?'На эту неделю':'This week', sub: lang==='ru'?'Обновляется по понедельникам':'Updates on Mondays', tracks: weekShuffled.slice(0, 50), icon: 'calendar', cls: 'mix-cover-week' });
+  // === ЖАНРЫ С НОРМАЛИЗАЦИЕЙ ===
   const genreMap = {};
-  pool.forEach(t => { if (!t.genre) return; genreMap[t.genre] = genreMap[t.genre] || []; genreMap[t.genre].push(t); });
-  Object.entries(genreMap).filter(([g, ts]) => ts.length >= 3).sort((a,b) => b[1].length - a[1].length).slice(0, 3).forEach(([genre, gTracks]) => {
-    const shuf = shuffleWithSeed(gTracks, 'genre_' + genre);
-    mixes.push({ id: '__mix_genre_' + encodeURIComponent(genre), name: genre, tag: 'Жанр', sub: gTracks.length + ' треков', tracks: shuf, icon: 'music', cls: 'mix-cover-genre' });
+  pool.forEach(t => {
+    const g = normalizeGenre(t.genre);
+    if (!g) return;
+    genreMap[g] = genreMap[g] || [];
+    genreMap[g].push(t);
   });
+  Object.entries(genreMap)
+    .filter(([g, ts]) => ts.length >= 3)
+    .sort((a,b) => b[1].length - a[1].length)
+    .slice(0, 3)
+    .forEach(([genre, gTracks]) => {
+      const shuf = shuffleWithSeed(gTracks, 'genre_' + genre);
+      mixes.push({
+        id: '__mix_genre_' + encodeURIComponent(genre),
+        name: genreDisplayName(genre, lang),
+        tag: t('genre_tag'),
+        sub: gTracks.length + ' ' + t('tracks_lc'),
+        tracks: shuf, icon: 'music', cls: 'mix-cover-genre'
+      });
+    });
   const forYou = shuffleWithSeed(pool, 'foryou_' + Date.now());
-  mixes.push({ id: '__mix_foryou__', name: 'Для тебя', tag: 'Свежая подборка', sub: [...new Set(forYou.slice(0,8).map(t=>t.artist))].slice(0,3).join(', '), tracks: forYou.slice(0, 40), icon: 'star', cls: 'mix-cover-foryou' });
+  mixes.push({ id: '__mix_foryou__', name: lang==='ru'?'Для тебя':lang==='de'?'Für dich':'For you', tag: lang==='ru'?'Свежая подборка':'Fresh mix', sub: [...new Set(forYou.slice(0,8).map(t=>t.artist))].slice(0,3).join(', '), tracks: forYou.slice(0, 40), icon: 'star', cls: 'mix-cover-foryou' });
   return mixes;
 }
 function openMix(mixId){ currentPlaylistId = mixId; renderPlaylistPage(); switchView('playlist'); }
@@ -1226,15 +1618,15 @@ function renderMixPage(mixId){
     <div class="plpage-cover mix-cover ${mix.cls}"><div class="mix-cover-icon">${MIX_ICONS[mix.icon] || MIX_ICONS.star}</div></div>
     <div style="text-align:center"><span class="mix-cover-tag">${esc(mix.tag)}</span></div>
     <div class="plpage-name">${esc(mix.name)}</div>
-    <div class="plpage-meta">${esc(mix.sub)} · ${list.length} треков</div>
+    <div class="plpage-meta">${esc(mix.sub)} · ${list.length} ${t('tracks_lc')}</div>
     <div class="plpage-actions">
-      <button class="plpage-play" id="mixPlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Слушать</button>
-      <button class="plpage-icon-btn" id="mixShuffleBtn" title="Перемешать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+      <button class="plpage-play" id="mixPlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>${lang==='ru'?'Слушать':'Play'}</button>
+      <button class="plpage-icon-btn" id="mixShuffleBtn" title="Shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
     </div>`;
   $('mixPlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Пусто'); return; } playTrackInList(list, 0); openFs(); });
   $('mixShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Пусто'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh, 0); openFs(); });
   const trEl = $('plPageTracks'); trEl.innerHTML = '';
-  if (!list.length){ trEl.innerHTML = emptyState('Пусто', 'Лайкай треки и исполнителей — миксы соберутся сами.'); return; }
+  if (!list.length){ trEl.innerHTML = emptyState('Пусто', ''); return; }
   list.forEach((t, i) => trEl.appendChild(trackRow(t, list, i)));
 }
 function openLikedArtistsPage(){ currentPlaylistId = LIKED_ARTISTS_ID; renderPlaylistPage(); switchView('playlist'); }
@@ -1244,14 +1636,14 @@ function renderLikedArtistsPage(){
     <div class="plpage-cover" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4)">
       <svg viewBox="0 0 24 24" width="110" height="110" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;filter:drop-shadow(0 10px 24px rgba(0,0,0,.45))"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </div>
-    <div class="plpage-name">Любимые исполнители</div>
-    <div class="plpage-meta">${favArtists.length} ${favArtists.length === 1 ? 'исполнитель' : 'исполнителей'}</div>`;
+    <div class="plpage-name">${t('liked_artists')}</div>
+    <div class="plpage-meta">${favArtists.length}</div>`;
   const trEl = $('plPageTracks'); trEl.innerHTML = '';
-  if (!favArtists.length){ trEl.innerHTML = emptyState('Пусто', 'Открой любого исполнителя и нажми ♥ «В любимые».'); return; }
+  if (!favArtists.length){ trEl.innerHTML = emptyState('Пусто', ''); return; }
   favArtists.forEach(name => {
     const ts = tracks.filter(t=>t.artist === name);
     const img = getArtistAvatar(name, ts);
-    trEl.appendChild(listRow({ title: name, meta: ts.length + ' ' + (ts.length === 1 ? 'трек' : 'треков'), coverImg: img, round: true, onClick: ()=>openArtist(name) }));
+    trEl.appendChild(listRow({ title: name, meta: ts.length + ' ' + t('tracks_lc'), coverImg: img, round: true, onClick: ()=>openArtist(name) }));
   });
 }
 
@@ -1333,7 +1725,7 @@ async function loadAndPlay(t){
   updateMiniCover();
   $('mini').style.visibility = 'visible';
   $('mini').classList.add('show'); document.body.classList.add('mini-visible');
-  $('fsHeadSub').textContent = 'Играет'; $('fsHeadTitle').textContent = t.album || t.artist || 'Трек';
+  $('fsHeadSub').textContent = 'Playing'; $('fsHeadTitle').textContent = t.album || t.artist || 'Track';
   $('fsTitle').textContent = t.title;
   $('fsArtist').textContent = t.album ? t.artist + ' — ' + t.album : t.artist;
   updateFsCover(); updateFsNeighbors();
@@ -1414,11 +1806,11 @@ function verifiedBadgeHtml(artist){
 }
 function verifiedBadgeBigHtml(artist){
   if (!profile.verified || artist !== profile.musicianName) return '';
-  return `<span class="verified-pill big"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Верифицирован</span>`;
+  return `<span class="verified-pill big"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Verified</span>`;
 }
 function lyricsBadgeHtml(t){
   if (!t || !t.lyrics) return '';
-  return `<span class="badge-lyrics"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;flex-shrink:0"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Текст</span>`;
+  return `<span class="badge-lyrics"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;flex-shrink:0"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Text</span>`;
 }
 function getArtistAvatar(artistName, tracksByArtist){
   if (artistName === profile.musicianName && profile.avatar) return profile.avatar;
@@ -1497,7 +1889,7 @@ function renderHome(){
   const favTracks = tracks.filter(t=>favIds.includes(t.id));
   const artistsEl = $('home-artists');
   if (!favArtists.length){
-    artistsEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Лайкай исполнителей ♥ — они появятся здесь.</div>';
+    artistsEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">♥ — artists you like will appear here.</div>';
   } else {
     const data = favArtists.map(name => {
       const ts = tracks.filter(t=>t.artist === name);
@@ -1510,10 +1902,10 @@ function renderHome(){
   mixesEl.innerHTML = '';
   const mixes = generateMixes();
   if (!mixes.length){
-    $('mix-sub').textContent = 'Нужно 3+ любимых';
-    mixesEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Лайкай треки и исполнителей — миксы соберутся автоматически.</div>';
+    $('mix-sub').textContent = '3+ liked';
+    mixesEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Like tracks and artists — mixes will be generated automatically.</div>';
   } else {
-    $('mix-sub').textContent = 'Из любимых';
+    $('mix-sub').textContent = 'From favorites';
     mixes.forEach(mix => {
       const card = document.createElement('div');
       card.className = 'mix';
@@ -1527,7 +1919,7 @@ function renderHome(){
   }
   const listEl = $('home-tracks');
   listEl.innerHTML = '';
-  if (!favTracks.length){ listEl.innerHTML = emptyState('Пока тихо', 'Лайкай треки ♥ — они появятся здесь.'); return; }
+  if (!favTracks.length){ listEl.innerHTML = emptyState('No favorites', '♥ — tracks you like will appear here.'); return; }
   favTracks.forEach((t, i) => listEl.appendChild(trackRow(t, favTracks, i)));
 }
 
@@ -1535,26 +1927,26 @@ function renderExplore(){
   const allArtists = getArtistMap(tracks);
   const artistsEl = $('explore-artists');
   $('explore-artists-sub').textContent = allArtists.length ? allArtists.length + '' : '';
-  if (!allArtists.length){ artistsEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Пока пусто</div>'; }
+  if (!allArtists.length){ artistsEl.innerHTML = '<div style="padding:14px 0;color:var(--dim);font-size:12.5px">Empty</div>'; }
   else renderArtistsRow(artistsEl, allArtists);
 
-  let list = [...tracks]; let title = 'Все треки';
-  if (exploreFilter === 'recent'){ list.sort((a,b)=>(b.addedAt||0)-(a.addedAt||0)); title = 'Недавние'; }
-  else if (exploreFilter === 'long'){ list.sort((a,b)=>b.duration-a.duration); title = 'Долгие'; }
-  else if (exploreFilter === 'short'){ list.sort((a,b)=>a.duration-b.duration); title = 'Короткие'; }
-  else if (exploreFilter === 'random'){ list.sort(()=>Math.random()-.5); title = 'Случайно'; }
+  let list = [...tracks]; let title = t('all_tracks');
+  if (exploreFilter === 'recent'){ list.sort((a,b)=>(b.addedAt||0)-(a.addedAt||0)); title = t('recent'); }
+  else if (exploreFilter === 'long'){ list.sort((a,b)=>b.duration-a.duration); title = t('long'); }
+  else if (exploreFilter === 'short'){ list.sort((a,b)=>a.duration-b.duration); title = t('short'); }
+  else if (exploreFilter === 'random'){ list.sort(()=>Math.random()-.5); title = t('random'); }
   $('explore-title').textContent = title;
-  $('explore-sub').textContent = list.length + ' треков';
+  $('explore-sub').textContent = list.length + ' ' + t('tracks_lc');
   const el = $('explore-list'); el.innerHTML = '';
-  if (!list.length){ el.innerHTML = emptyState('Пусто','Загрузи треки.'); return; }
+  if (!list.length){ el.innerHTML = emptyState('Empty',''); return; }
   list.forEach((t,i)=>el.appendChild(trackRow(t, list, i)));
 }
 
 function renderFav(){
   const favs = tracks.filter(t=>favIds.includes(t.id));
-  $('liked-cnt').textContent = favs.length + ' ' + (favs.length === 1 ? 'трек' : 'треков');
+  $('liked-cnt').textContent = favs.length + ' ' + (favs.length === 1 ? t('tracks_1') : t('tracks_lc'));
   const favTracksEl = $('fav-tracks'); favTracksEl.innerHTML = '';
-  if (!favs.length){ favTracksEl.innerHTML = '<div style="padding:10px 0;color:var(--dim);font-size:12.5px">Нажми ♥ у трека — он появится здесь.</div>'; }
+  if (!favs.length){ favTracksEl.innerHTML = '<div style="padding:10px 0;color:var(--dim);font-size:12.5px">♥ — tracks you like will appear here.</div>'; }
   else favs.slice(0,5).forEach((t,i)=>favTracksEl.appendChild(trackRow(t, favs, i)));
 
   const lac = $('liked-artists-cnt');
@@ -1572,7 +1964,7 @@ function renderFav(){
       if (first){ coverContent = `<img src="${first}" alt="">`; }
       else { coverBg = `background:linear-gradient(135deg,${pl.color},${shade(pl.color,-30)})`; coverContent = `<svg class="plc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; }
     }
-    card.innerHTML = `<div class="plc-cov" style="${coverBg}">${coverContent}<button class="plc-del" data-del="${pl.id}" title="Удалить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div><div class="plc-t">${esc(pl.name)}</div><div class="plc-m">${pl.trackIds.length} ${pl.trackIds.length === 1 ? 'трек' : 'треков'}</div>`;
+    card.innerHTML = `<div class="plc-cov" style="${coverBg}">${coverContent}<button class="plc-del" data-del="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div><div class="plc-t">${esc(pl.name)}</div><div class="plc-m">${pl.trackIds.length} ${pl.trackIds.length === 1 ? t('tracks_1') : t('tracks_lc')}</div>`;
     card.addEventListener('click', e=>{ if (e.target.closest('.plc-del')) return; openPlaylistPage(pl.id); });
     plEl.appendChild(card);
   });
@@ -1581,12 +1973,12 @@ function renderFav(){
   });
   const newCard = document.createElement('div');
   newCard.className = 'plc plc-new';
-  newCard.innerHTML = `<div class="plc-cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="plc-t">Новый</div><div class="plc-m">Создать плейлист</div>`;
+  newCard.innerHTML = `<div class="plc-cov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="plc-t">New</div><div class="plc-m">Create playlist</div>`;
   newCard.addEventListener('click', openPlModal);
   plEl.appendChild(newCard);
   const upEl = $('fav-uploaded'); upEl.innerHTML = '';
   const myTracks = tracks.filter(t=>t.ownerId === firebaseUid);
-  if (!myTracks.length){ upEl.innerHTML = '<div style="padding:10px 0;color:var(--dim);font-size:12.5px">Ты ещё ничего не загрузил.</div>'; }
+  if (!myTracks.length){ upEl.innerHTML = '<div style="padding:10px 0;color:var(--dim);font-size:12.5px">Nothing uploaded yet.</div>'; }
   else myTracks.slice(0,5).forEach((t,i)=>upEl.appendChild(trackRow(t, myTracks, i)));
 }
 
@@ -1596,25 +1988,25 @@ function renderLikedPageContent(){
   const head = $('plPageHead');
   head.innerHTML = `
     <div class="plpage-cover liked"><svg class="liked-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
-    <div class="plpage-name">Любимые треки</div>
-    <div class="plpage-meta">${list.length} ${list.length === 1 ? 'трек' : 'треков'}</div>
+    <div class="plpage-name">${t('fav_tracks')}</div>
+    <div class="plpage-meta">${list.length} ${list.length === 1 ? t('tracks_1') : t('tracks_lc')}</div>
     <div class="plpage-actions">
-      <button class="plpage-play" id="likedPlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Слушать</button>
-      <button class="plpage-icon-btn" id="likedShuffleBtn" title="Перемешать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+      <button class="plpage-play" id="likedPlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play</button>
+      <button class="plpage-icon-btn" id="likedShuffleBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
     </div>`;
-  $('likedPlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('В избранном пусто'); return; } playTrackInList(list, 0); openFs(); });
-  $('likedShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('В избранном пусто'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh, 0); openFs(); });
+  $('likedPlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Empty'); return; } playTrackInList(list, 0); openFs(); });
+  $('likedShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Empty'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh, 0); openFs(); });
   const trEl = $('plPageTracks'); trEl.innerHTML = '';
-  if (!list.length){ trEl.innerHTML = emptyState('Пусто', 'Нажми ♥ у любого трека — он появится здесь.'); return; }
+  if (!list.length){ trEl.innerHTML = emptyState('Empty', ''); return; }
   list.forEach((t, i) => trEl.appendChild(trackRow(t, list, i)));
 }
 async function deletePlaylist(plId){
   const pl = playlists.find(p=>p.id === plId);
   if (!pl) return;
   let ok = true;
-  try { ok = confirm('Удалить плейлист «'+pl.name+'»?'); } catch(e){ ok = true; }
+  try { ok = confirm('Delete playlist «'+pl.name+'»?'); } catch(e){ ok = true; }
   if (!ok) return;
-  try { await remove(ref(db, 'playlists/'+firebaseUid+'/'+plId)); toast('Плейлист удалён','ok'); } catch(e){ console.error(e); toast('Не удалось удалить','err'); }
+  try { await remove(ref(db, 'playlists/'+firebaseUid+'/'+plId)); toast('Playlist deleted','ok'); } catch(e){ console.error(e); toast('Delete failed','err'); }
   if (currentPlaylistId === plId){ currentPlaylistId = null; switchView('fav'); }
 }
 function openPlaylistPage(plId){ currentPlaylistId = plId; renderPlaylistPage(); switchView('playlist'); }
@@ -1638,19 +2030,19 @@ function renderPlaylistPage(){
   head.innerHTML = `
     <div class="plpage-cover" style="${bg}">${coverHtmlStr}</div>
     <div class="plpage-name">${esc(pl.name)}</div>
-    <div class="plpage-meta">${list.length} ${list.length === 1 ? 'трек' : 'треков'}</div>
+    <div class="plpage-meta">${list.length} ${list.length === 1 ? t('tracks_1') : t('tracks_lc')}</div>
     <div class="plpage-actions">
-      <button class="plpage-play" id="plPagePlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Слушать</button>
-      <button class="plpage-icon-btn" id="plPageShuffleBtn" title="Перемешать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
-      <button class="plpage-icon-btn" id="plPageSetBtn" title="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-      <button class="plpage-del" id="plPageDelBtn" title="Удалить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+      <button class="plpage-play" id="plPagePlayBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play</button>
+      <button class="plpage-icon-btn" id="plPageShuffleBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+      <button class="plpage-icon-btn" id="plPageSetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="plpage-del" id="plPageDelBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
     </div>`;
-  $('plPagePlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Плейлист пуст'); return; } playTrackInList(list,0); openFs(); });
-  $('plPageShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Плейлист пуст'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh,0); openFs(); });
+  $('plPagePlayBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Empty'); return; } playTrackInList(list,0); openFs(); });
+  $('plPageShuffleBtn').addEventListener('click', ()=>{ if (!list.length){ toast('Empty'); return; } const sh = [...list].sort(()=>Math.random()-.5); playTrackInList(sh,0); openFs(); });
   $('plPageSetBtn').addEventListener('click', ()=>openPlSettings(pl.id));
   $('plPageDelBtn').addEventListener('click', ()=>deletePlaylist(pl.id));
   const trEl = $('plPageTracks'); trEl.innerHTML = '';
-  if (!list.length){ trEl.innerHTML = emptyState('Плейлист пуст','Добавляй треки через меню троеточия.'); return; }
+  if (!list.length){ trEl.innerHTML = emptyState('Empty',''); return; }
   list.forEach((t,i)=>trEl.appendChild(trackRow(t, list, i)));
 }
 function openPlSettings(plId){
@@ -1668,22 +2060,23 @@ function renderSearchBody(q){
   const box = $('searchBody');
   q = (q || '').trim().toLowerCase();
   box.innerHTML = '';
-  if (!q){ box.innerHTML = `<div class="empty"><div class="empty-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><b>Начни вводить</b>Поиск по трекам, исполнителям и плейлистам.</div>`; return; }
-  const trFound = tracks.filter(t => t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q) || (t.album||'').toLowerCase().includes(q));
+  if (!q){ box.innerHTML = `<div class="empty"><div class="empty-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><b>Search</b>Search by tracks, artists, playlists.</div>`; return; }
+  const qNorm = normalizeGenre(q);
+  const trFound = tracks.filter(t => t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q) || (t.album||'').toLowerCase().includes(q) || (qNorm && normalizeGenre(t.genre).includes(qNorm)));
   const arFound = [...new Set(tracks.filter(t=>t.artist.toLowerCase().includes(q)).map(t=>t.artist))];
   const plFound = playlists.filter(p=>p.name.toLowerCase().includes(q));
-  if (!trFound.length && !arFound.length && !plFound.length){ box.innerHTML = '<div class="empty"><b>Ничего не нашлось</b>Попробуй другой запрос.</div>'; return; }
+  if (!trFound.length && !arFound.length && !plFound.length){ box.innerHTML = '<div class="empty"><b>Nothing found</b>Try another query.</div>'; return; }
   if (arFound.length){
-    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '6px'; h.innerHTML = `<h3>Исполнители</h3>`; box.appendChild(h);
-    arFound.slice(0,5).forEach(a=>{ const av = getArtistAvatar(a); box.appendChild(listRow({ title:a, meta:'Исполнитель', coverImg:av, round:true, onClick:()=>openArtist(a) })); });
+    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '6px'; h.innerHTML = `<h3>Artists</h3>`; box.appendChild(h);
+    arFound.slice(0,5).forEach(a=>{ const av = getArtistAvatar(a); box.appendChild(listRow({ title:a, meta:'Artist', coverImg:av, round:true, onClick:()=>openArtist(a) })); });
   }
   if (trFound.length){
-    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '14px'; h.innerHTML = `<h3>Треки</h3>`; box.appendChild(h);
+    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '14px'; h.innerHTML = `<h3>Tracks</h3>`; box.appendChild(h);
     trFound.forEach((t,i)=>box.appendChild(trackRow(t, trFound, i)));
   }
   if (plFound.length){
-    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '14px'; h.innerHTML = `<h3>Плейлисты</h3>`; box.appendChild(h);
-    plFound.forEach(pl=>{ box.appendChild(listRow({ title: pl.name, meta: 'Плейлист · ' + pl.trackIds.length + ' треков', coverStyle: pl.cover ? '' : `linear-gradient(135deg, ${pl.color}, ${shade(pl.color, -30)})`, coverImg: pl.cover, icon: pl.cover ? '' : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`, onClick: ()=>openPlaylistPage(pl.id) })); });
+    const h = document.createElement('div'); h.className = 'hist-head'; h.style.marginTop = '14px'; h.innerHTML = `<h3>Playlists</h3>`; box.appendChild(h);
+    plFound.forEach(pl=>{ box.appendChild(listRow({ title: pl.name, meta: 'Playlist · ' + pl.trackIds.length, coverStyle: pl.cover ? '' : `linear-gradient(135deg, ${pl.color}, ${shade(pl.color, -30)})`, coverImg: pl.cover, icon: pl.cover ? '' : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`, onClick: ()=>openPlaylistPage(pl.id) })); });
   }
 }
 function openArtist(name){
@@ -1701,12 +2094,12 @@ function renderArtist(){
   $('artistHead').innerHTML = `
     <div class="artist-head-img">${avatar ? `<img src="${avatar}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}</div>
     <div class="artist-head-name">${esc(name)}${artistBadgeBigHtml(name)}${verifiedBadgeBigHtml(name)}</div>
-    <div class="artist-head-meta">${tracksBy.length} ${tracksBy.length === 1 ? 'трек' : 'треков'} · ${albumsSet.size} ${albumsSet.size === 1 ? 'альбом' : 'альбомов'}</div>
+    <div class="artist-head-meta">${tracksBy.length} ${tracksBy.length === 1 ? t('tracks_1') : t('tracks_lc')} · ${albumsSet.size} albums</div>
     <div class="artist-head-actions">
-      <button class="artist-play-btn" id="artistPlayAll"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Слушать всё</button>
+      <button class="artist-play-btn" id="artistPlayAll"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play all</button>
       <button class="artist-like-btn ${isFav ? 'on' : ''}" id="artistLikeBtn">
         <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        ${isFav ? 'В любимых' : 'В любимые'}
+        ${isFav ? '♥' : '♡'}
       </button>
     </div>`;
   $('artistPlayAll').addEventListener('click', ()=>{ playTrackInList(tracksBy,0); openFs(); });
@@ -1714,11 +2107,11 @@ function renderArtist(){
   const content = $('artistContent'); content.innerHTML = '';
   if (artistTab === 'tracks'){ tracksBy.forEach((t,i)=>content.appendChild(trackRow(t, tracksBy, i))); }
   else {
-    if (!albumsSet.size){ content.innerHTML = '<div class="empty"><b>Нет альбомов</b>У этих треков не указан альбом.</div>'; return; }
+    if (!albumsSet.size){ content.innerHTML = '<div class="empty"><b>No albums</b>.</div>'; return; }
     [...albumsSet].forEach(album=>{
       const albumTracks = tracksBy.filter(t=>t.album === album);
       const first = albumTracks.find(t=>t.cover) || albumTracks[0];
-      content.appendChild(listRow({ title: album, meta: name + ' · ' + albumTracks.length + ' ' + (albumTracks.length === 1 ? 'трек' : 'треков'), coverImg: first.cover, onClick: ()=>{ playTrackInList(albumTracks,0); openFs(); } }));
+      content.appendChild(listRow({ title: album, meta: name + ' · ' + albumTracks.length, coverImg: first.cover, onClick: ()=>{ playTrackInList(albumTracks,0); openFs(); } }));
     });
   }
 }
@@ -1731,26 +2124,27 @@ function renderProfile(){
   $('profHead').innerHTML = `
     <div class="prof-avatar" id="profAvatarClick">${avatarHtml}<div class="edit-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div>
     <div class="prof-name">${esc(profile.name)}${verifiedBadgeBigHtml(profile.musicianName)}</div>
-    ${isMusician ? `<div class="prof-meta">${esc(profile.musicianName)}${profile.musicianGenre ? ' · ' + esc(profile.musicianGenre) : ''}</div>` : '<div class="prof-meta">Твой профиль</div>'}
+    ${isMusician ? `<div class="prof-meta">${esc(profile.musicianName)}${profile.musicianGenre ? ' · ' + esc(profile.musicianGenre) : ''}</div>` : '<div class="prof-meta">Profile</div>'}
     ${isMusician && profile.musicianBio ? `<div class="prof-bio">${esc(profile.musicianBio)}</div>` : ''}`;
   $('profAvatarClick').addEventListener('click', openProfileEdit);
   $('profStats').innerHTML = `
-    <div class="prof-stat"><div class="n">${tracks.length}</div><div class="l">всего</div></div>
-    <div class="prof-stat"><div class="n">${tracks.filter(t=>t.ownerId === firebaseUid).length}</div><div class="l">моих</div></div>
-    <div class="prof-stat"><div class="n">${favIds.length}</div><div class="l">избранных</div></div>`;
-  $('profStudioLabel').textContent = isMusician ? 'Открыть студию' : 'Студия артиста';
+    <div class="prof-stat"><div class="n">${tracks.length}</div><div class="l">total</div></div>
+    <div class="prof-stat"><div class="n">${tracks.filter(t=>t.ownerId === firebaseUid).length}</div><div class="l">mine</div></div>
+    <div class="prof-stat"><div class="n">${favIds.length}</div><div class="l">favs</div></div>`;
+  $('profStudioLabel').textContent = isMusician ? 'Open studio' : 'Artist studio';
   const pb = $('profileBtn');
   if (profile.avatar){ pb.innerHTML = `<img src="${profile.avatar}" alt="">`; pb.classList.remove('profile'); pb.style.border='2px solid var(--accent)'; }
   else { pb.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`; pb.classList.add('profile'); pb.style.border=''; }
   const accBlock = $('accountBlock');
   if (isAnon){
-    accBlock.innerHTML = `<div class="verify-item" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);margin-bottom:12px"><div class="verify-check" style="background:#f59e0b;color:#fff"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div><div class="verify-text"><div class="t">Ты анонимный</div><div class="d">Треки хранятся только в этом браузере.</div></div></div><button class="set-btn" id="profLoginBtn" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Войти или создать аккаунт<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
+    accBlock.innerHTML = `<div class="verify-item" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);margin-bottom:12px"><div class="verify-check" style="background:#f59e0b;color:#fff"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></div><div class="verify-text"><div class="t">Anonymous</div><div class="d">Data stored locally only.</div></div></div><button class="set-btn" id="profLoginBtn" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Sign in / Register<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
     $('profLoginBtn').addEventListener('click', ()=>openAuthModal('login'));
   } else {
-    const emailLine = (u && u.email) || profile.email || 'Аккаунт активен';
-    accBlock.innerHTML = `<div class="verify-item" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06);margin-bottom:12px"><div class="verify-check" style="background:#10b981;color:#fff"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><div class="verify-text"><div class="t">${esc(emailLine)}</div><div class="d">Треки синхронизированы с облаком</div></div></div><button class="set-btn" id="profLogoutBtn" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Выйти из аккаунта<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
+    const emailLine = (u && u.email) || profile.email || 'Account active';
+    accBlock.innerHTML = `<div class="verify-item" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06);margin-bottom:12px"><div class="verify-check" style="background:#10b981;color:#fff"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><div class="verify-text"><div class="t">${esc(emailLine)}</div><div class="d">Synced to cloud</div></div></div><button class="set-btn" id="profLogoutBtn" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Sign out<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
     $('profLogoutBtn').addEventListener('click', logoutUser);
   }
+  renderPrefsValues();
 }
 function openProfileEdit(){
   editProfAvatarNew = undefined;
@@ -1762,54 +2156,54 @@ function openProfileEdit(){
 function renderStudio(){
   const content = $('studioContent'); content.innerHTML = '';
   if (!profile.musicianName){
-    content.innerHTML = `<div class="studio-intro"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h2>Стань артистом</h2><p>Публикуй треки, собирай релизы, получай верификацию.</p><button class="btn-start" id="studioStartBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Начать</button></div>`;
-    $('studioStartBtn').addEventListener('click', ()=>{ $('musicianName').value = profile.musicianName || profile.name || ''; $('musicianGenre').value = profile.musicianGenre || ''; $('musicianBio').value = profile.musicianBio || ''; $('musicianTitle').textContent = 'Профиль артиста'; $('musicianModal').classList.add('show'); });
+    content.innerHTML = `<div class="studio-intro"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h2>Become an artist</h2><p>Publish tracks, build releases, get verified.</p><button class="btn-start" id="studioStartBtn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Start</button></div>`;
+    $('studioStartBtn').addEventListener('click', ()=>{ $('musicianName').value = profile.musicianName || profile.name || ''; $('musicianGenre').value = profile.musicianGenre || ''; $('musicianBio').value = profile.musicianBio || ''; $('musicianTitle').textContent = 'Artist profile'; $('musicianModal').classList.add('show'); });
     return;
   }
   const avatarHtml = profile.avatar ? `<img src="${profile.avatar}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
   const myTracks = tracks.filter(t=>t.artist === profile.musicianName);
   let verifyBtnHtml;
-  if (profile.verified){ verifyBtnHtml = `<button class="studio-verify-btn verified" disabled><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Верифицирован</button>`; }
-  else { verifyBtnHtml = `<button class="studio-verify-btn" id="studioVerifyBtn">Верификация</button>`; }
+  if (profile.verified){ verifyBtnHtml = `<button class="studio-verify-btn verified" disabled><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Verified</button>`; }
+  else { verifyBtnHtml = `<button class="studio-verify-btn" id="studioVerifyBtn">Verify</button>`; }
   const head = document.createElement('div');
   head.className = 'studio-head';
-  head.innerHTML = `<div class="studio-head-avatar">${avatarHtml}</div><div class="studio-head-info"><div class="studio-head-name">${esc(profile.musicianName)}${verifiedBadgeHtml(profile.musicianName)}</div><div class="studio-head-meta">${myTracks.length} ${myTracks.length === 1 ? 'трек' : 'треков'} · ${esc(profile.musicianGenre || 'Без жанра')}</div></div>${verifyBtnHtml}`;
+  head.innerHTML = `<div class="studio-head-avatar">${avatarHtml}</div><div class="studio-head-info"><div class="studio-head-name">${esc(profile.musicianName)}${verifiedBadgeHtml(profile.musicianName)}</div><div class="studio-head-meta">${myTracks.length} ${t('tracks_lc')} · ${esc(profile.musicianGenre || 'No genre')}</div></div>${verifyBtnHtml}`;
   content.appendChild(head);
   const vb = $('studioVerifyBtn'); if (vb) vb.addEventListener('click', openVerification);
   const tabs = document.createElement('div');
   tabs.className = 'studio-tabs';
-  tabs.innerHTML = `<button data-t="upload" class="${studioTab === 'upload' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>Загрузка</button><button data-t="releases" class="${studioTab === 'releases' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/></svg>Релизы</button><button data-t="profile" class="${studioTab === 'profile' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Профиль</button>`;
+  tabs.innerHTML = `<button data-t="upload" class="${studioTab === 'upload' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>Upload</button><button data-t="releases" class="${studioTab === 'releases' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/></svg>Releases</button><button data-t="profile" class="${studioTab === 'profile' ? 'active' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>`;
   content.appendChild(tabs);
   tabs.addEventListener('click', e=>{ const b = e.target.closest('button'); if (!b) return; studioTab = b.dataset.t; renderStudio(); });
   const pane = document.createElement('div');
   content.appendChild(pane);
   if (studioTab === 'upload'){
-    pane.innerHTML = `<div class="upload-zone" id="studioUploadZone"><div class="u-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div><h3>Нажми или перетащи файлы</h3><p>MP3, WAV, OGG — до 6 МБ каждый.</p></div><p style="text-align:center;font-size:12px;color:var(--dim);line-height:1.5;padding:0 20px">Все загруженные треки автоматически привяжутся к <b style="color:var(--accent3)">${esc(profile.musicianName)}</b>.</p>`;
+    pane.innerHTML = `<div class="upload-zone" id="studioUploadZone"><div class="u-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div><h3>Click or drag files</h3><p>MP3, WAV, OGG — up to 6 MB each.</p></div>`;
     pane.querySelector('#studioUploadZone').addEventListener('click', openUploadRelease);
   } else if (studioTab === 'releases'){
-    if (!myTracks.length){ pane.innerHTML = `<div class="empty" style="padding:30px 20px"><b>Релизов нет</b>Загрузи первый трек во вкладке «Загрузка».</div>`; return; }
+    if (!myTracks.length){ pane.innerHTML = `<div class="empty"><b>No releases</b>Upload your first track.</div>`; return; }
     const albumsMap = {};
-    myTracks.forEach(t=>{ const key = t.album || 'Без альбома'; albumsMap[key] = albumsMap[key] || { name: key, tracks: [] }; albumsMap[key].tracks.push(t); });
+    myTracks.forEach(t=>{ const key = t.album || 'No album'; albumsMap[key] = albumsMap[key] || { name: key, tracks: [] }; albumsMap[key].tracks.push(t); });
     Object.values(albumsMap).forEach(al=>{
       const first = al.tracks[0];
       const row = document.createElement('div');
       row.className = 'studio-release';
-      row.innerHTML = `<div class="studio-release-cover">${first.cover ? `<img src="${first.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div><div class="studio-release-info"><div class="studio-release-title">${esc(al.name)}</div><div class="studio-release-meta">${al.tracks.length} ${al.tracks.length === 1 ? 'трек' : 'треков'}</div></div><div class="studio-release-actions"><button data-act="play" title="Играть"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><button data-act="del" class="danger" title="Удалить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
+      row.innerHTML = `<div class="studio-release-cover">${first.cover ? `<img src="${first.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div><div class="studio-release-info"><div class="studio-release-title">${esc(al.name)}</div><div class="studio-release-meta">${al.tracks.length} ${t('tracks_lc')}</div></div><div class="studio-release-actions"><button data-act="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><button data-act="del" class="danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
       row.addEventListener('click', async e=>{
         const btn = e.target.closest('[data-act]'); if (!btn) return;
         e.stopPropagation();
         const act = btn.dataset.act;
         if (act === 'play'){ playTrackInList(al.tracks,0); openFs(); }
-        else if (act === 'del'){ if (!confirm('Удалить релиз «'+al.name+'»?')) return;
+        else if (act === 'del'){ if (!confirm('Delete release «'+al.name+'»?')) return;
           for (const tr of al.tracks){ try { await remove(ref(db,'tracks/'+tr.id)); await remove(ref(db,'audio/'+tr.id)); audioCache.delete(tr.id); } catch(e){} }
           if (al.tracks.some(t=>t.id === currentId)){ closeMiniPlayer(true); closeFs(); }
-          toast('Релиз удалён');
+          toast('Deleted');
         }
       });
       pane.appendChild(row);
     });
   } else if (studioTab === 'profile'){
-    pane.innerHTML = `<div class="verify-item done" style="margin-bottom:8px"><div class="verify-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><div class="verify-text"><div class="t">Имя: ${esc(profile.musicianName)}</div><div class="d">${profile.musicianGenre ? esc(profile.musicianGenre) : 'Жанр не указан'}${profile.country ? ' · ' + esc(profile.country) : ''}</div></div></div>${profile.musicianBio ? `<div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">О себе</div><div style="font-size:13px;line-height:1.5">${esc(profile.musicianBio)}</div></div>` : ''}${profile.link ? `<div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Ссылки</div><div style="font-size:13px;word-break:break-all">${esc(profile.link)}</div></div>` : ''}<button class="set-btn" id="studioEditArtist" style="margin-top:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Редактировать профиль артиста<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
+    pane.innerHTML = `<div class="verify-item done" style="margin-bottom:8px"><div class="verify-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div><div class="verify-text"><div class="t">${esc(profile.musicianName)}</div><div class="d">${profile.musicianGenre ? esc(profile.musicianGenre) : 'No genre'}${profile.country ? ' · ' + esc(profile.country) : ''}</div></div></div>${profile.musicianBio ? `<div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Bio</div><div style="font-size:13px;line-height:1.5">${esc(profile.musicianBio)}</div></div>` : ''}${profile.link ? `<div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px"><div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Links</div><div style="font-size:13px;word-break:break-all">${esc(profile.link)}</div></div>` : ''}<button class="set-btn" id="studioEditArtist" style="margin-top:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Edit artist profile<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>`;
     pane.querySelector('#studioEditArtist').addEventListener('click', ()=>{ $('apName').value = profile.musicianName || ''; $('apGenre').value = profile.musicianGenre || ''; $('apCountry').value = profile.country || ''; $('apBio').value = profile.musicianBio || ''; $('apLink').value = profile.link || ''; $('artistProfileModal').classList.add('show'); });
   }
 }
@@ -1824,24 +2218,24 @@ function refreshReleaseFiles(){
   const list = $('releaseFileList');
   list.innerHTML = '';
   if (!pendingReleaseFiles.length) return;
-  list.innerHTML = `<div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Файлы (${pendingReleaseFiles.length})</div>`;
+  list.innerHTML = `<div style="font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Files (${pendingReleaseFiles.length})</div>`;
   pendingReleaseFiles.forEach((item, i)=>{
     const el = document.createElement('div');
     el.className = 'upl-card';
-    const coverInner = item.cover ? `<img src="${item.cover}" alt=""><div class="upl-cover-hint">Заменить</div>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><div class="upl-cover-hint">Обложка</div>`;
+    const coverInner = item.cover ? `<img src="${item.cover}" alt=""><div class="upl-cover-hint">Change</div>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><div class="upl-cover-hint">Cover</div>`;
     const xBtn = item.cover ? `<div class="upl-cover-x" data-x="1">×</div>` : '';
-    const lyricsBtn = item.lyrics ? `<button class="upl-lyrics-badge" data-lyr-toggle="1"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Текст вшит</button>` : `<button class="upl-lyrics-badge" data-lyr-toggle="1" style="background:rgba(255,255,255,.06);color:var(--dim)"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Добавить текст</button>`;
-    const loadingBlock = item.loadingTags ? `<div class="upl-loading">Читаю теги…</div>` : lyricsBtn;
+    const lyricsBtn = item.lyrics ? `<button class="upl-lyrics-badge" data-lyr-toggle="1"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Lyrics ✓</button>` : `<button class="upl-lyrics-badge" data-lyr-toggle="1" style="background:rgba(255,255,255,.06);color:var(--dim)"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Add lyrics</button>`;
+    const loadingBlock = item.loadingTags ? `<div class="upl-loading">Reading tags…</div>` : lyricsBtn;
     el.innerHTML = `
       <div class="upl-cover" data-cover-pick="1">${coverInner}${xBtn}</div>
       <div class="upl-fields">
-        <input type="text" data-f="title"  placeholder="Название"     maxlength="100" value="${esc(item.title || '')}">
-        <input type="text" data-f="artist" placeholder="Исполнитель"  maxlength="100" value="${esc(item.artist || '')}">
-        <input type="text" data-f="album"  placeholder="Альбом"       maxlength="100" value="${esc(item.album || '')}">
+        <input type="text" data-f="title"  placeholder="Title"     maxlength="100" value="${esc(item.title || '')}">
+        <input type="text" data-f="artist" placeholder="Artist"  maxlength="100" value="${esc(item.artist || '')}">
+        <input type="text" data-f="album"  placeholder="Album"       maxlength="100" value="${esc(item.album || '')}">
         ${loadingBlock}
       </div>
-      <button class="upl-remove" data-remove="1" title="Убрать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-      <div class="upl-lyrics-area ${item._lyrOpen ? 'open' : ''}"><textarea data-lyr-input="1" maxlength="8000" placeholder="Вставь текст или LRC-формат&#10;[00:12.34]Строка 1&#10;[00:15.20]Строка 2">${esc(item.lyrics || '')}</textarea><div class="hint">Если используешь LRC (время в квадратных скобках), текст будет подсвечиваться в плеере.</div></div>`;
+      <button class="upl-remove" data-remove="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <div class="upl-lyrics-area ${item._lyrOpen ? 'open' : ''}"><textarea data-lyr-input="1" maxlength="8000" placeholder="Paste lyrics or LRC format&#10;[00:12.34]Line 1&#10;[00:15.20]Line 2">${esc(item.lyrics || '')}</textarea><div class="hint">If using LRC (time in brackets), lyrics will be highlighted in player.</div></div>`;
     el.querySelector('[data-cover-pick]').addEventListener('click', e=>{ if (e.target.closest('.upl-cover-x')) return; uplCoverEditIndex = i; $('uplCoverInput').click(); });
     const xEl = el.querySelector('.upl-cover-x');
     if (xEl) xEl.addEventListener('click', e=>{ e.stopPropagation(); item.cover = null; refreshReleaseFiles(); });
@@ -1877,17 +2271,17 @@ async function addFilesToPending(files){
   refreshReleaseFiles();
 }
 async function publishRelease(){
-  if (!firebaseUid){ toast('Нет соединения','err'); return; }
-  if (!pendingReleaseFiles.length){ toast('Добавь хотя бы один файл','err'); return; }
+  if (!firebaseUid){ toast('No connection','err'); return; }
+  if (!pendingReleaseFiles.length){ toast('Add at least one file','err'); return; }
   const genre = $('releaseGenre').value.trim();
   const year = $('releaseYear').value.trim();
   const btn = $('releasePublish');
-  btn.disabled = true; const oldText = btn.textContent; btn.textContent = 'Загрузка...';
+  btn.disabled = true; const oldText = btn.textContent; btn.textContent = 'Uploading...';
   let added = 0, failed = 0;
   for (const item of pendingReleaseFiles){
     try {
       const f = item.file;
-      if (f.size > 6*1024*1024){ toast(`${f.name} больше 6 МБ`,'err'); failed++; continue; }
+      if (f.size > 6*1024*1024){ toast(`${f.name} > 6 MB`,'err'); failed++; continue; }
       const title = (item.title||'').trim() || parseName(f.name).title;
       const artist = (item.artist||'').trim() || profile.musicianName || profile.name;
       const album = (item.album||'').trim();
@@ -1900,19 +2294,19 @@ async function publishRelease(){
       await set(newTrackRef, { title, artist, ownerId: firebaseUid, ownerName: profile.name, album, genre, year, duration: dur, cover, lyrics, addedAt: Date.now(), verified: !!profile.verified });
       await set(ref(db, 'audio/'+trackId), { data: base64, mime });
       added++;
-    } catch(e){ console.error(e); toast(e.message || 'Ошибка загрузки','err'); failed++; }
+    } catch(e){ console.error(e); toast(e.message || 'Upload error','err'); failed++; }
   }
   btn.disabled = false; btn.textContent = oldText;
   $('uploadReleaseModal').classList.remove('show');
-  if (added) toast('Опубликовано ' + added + (failed ? ', ошибок: ' + failed : ''), 'ok'); else toast('Не удалось загрузить','err');
+  if (added) toast('Published ' + added + (failed ? ', errors: ' + failed : ''), 'ok'); else toast('Upload failed','err');
   studioTab = 'releases'; renderStudio();
 }
 function renderLyricsModal(){
   const t = currentTrack();
   const head = $('lyrTitle'), art = $('lyrArtist'), body = $('lyrBody');
-  if (!t){ head.textContent = '—'; art.textContent = ''; body.classList.remove('plain'); body.textContent = 'Ничего не играет'; return; }
+  if (!t){ head.textContent = '—'; art.textContent = ''; body.classList.remove('plain'); body.textContent = 'Nothing playing'; return; }
   head.textContent = t.title; art.textContent = t.album ? t.artist + ' — ' + t.album : t.artist;
-  if (!t.lyrics){ body.classList.remove('plain'); body.innerHTML = `<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px 0">Для этого трека нет текста.<br><br>Открой «Настройки трека» и вставь текст вручную.</div>`; lyrActiveLineIdx = -1; return; }
+  if (!t.lyrics){ body.classList.remove('plain'); body.innerHTML = `<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px 0">No lyrics for this track.<br><br>Open "Track settings" to add them.</div>`; lyrActiveLineIdx = -1; return; }
   const parsed = parseLyrics(t.lyrics);
   if (parsed.synced){ body.classList.remove('plain'); body.innerHTML = parsed.lines.map((ln,i)=>`<div class="lyr-line" data-i="${i}">${esc(ln.text) || '&nbsp;'}</div>`).join(''); lyrActiveLineIdx = -1; updateKaraoke(audio.currentTime || 0); }
   else { body.classList.add('plain'); body.innerHTML = parsed.lines.map(ln=>`<div class="lyr-line">${esc(ln.text) || '&nbsp;'}</div>`).join(''); lyrActiveLineIdx = -1; }
@@ -1933,7 +2327,7 @@ function updateKaraoke(t){
 }
 function openLyricsModal(){
   const t = currentTrack();
-  if (!t){ toast('Ничего не играет'); return; }
+  if (!t){ toast('Nothing playing'); return; }
   _karaokeCache = null; _karaokeCacheFor = null;
   renderLyricsModal();
   $('lyricsModal').classList.add('show');
@@ -1948,45 +2342,45 @@ function openVerification(){
   const body = $('verifyBody');
   body.innerHTML = `
     <div class="verify-list">
-      <div class="verify-item ${req.tracks ? 'done' : 'fail'}"><div class="verify-check">${req.tracks ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Минимум 2 трека</div><div class="d">У тебя: ${req.tracksCount}</div></div></div>
-      <div class="verify-item ${req.profile ? 'done' : 'fail'}"><div class="verify-check">${req.profile ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Заполненный профиль</div><div class="d">Био: ${req.bioLen}/40</div></div></div>
-      <div class="verify-item ${req.avatar ? 'done' : 'fail'}"><div class="verify-check">${req.avatar ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Аватар</div><div class="d">Загрузи фото</div></div></div>
-      <div class="verify-item ${req.country ? 'done' : 'fail'}"><div class="verify-check">${req.country ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Страна</div><div class="d">Укажи в профиле</div></div></div>
+      <div class="verify-item ${req.tracks ? 'done' : 'fail'}"><div class="verify-check">${req.tracks ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Min 2 tracks</div><div class="d">You have: ${req.tracksCount}</div></div></div>
+      <div class="verify-item ${req.profile ? 'done' : 'fail'}"><div class="verify-check">${req.profile ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Filled profile</div><div class="d">Bio: ${req.bioLen}/40</div></div></div>
+      <div class="verify-item ${req.avatar ? 'done' : 'fail'}"><div class="verify-check">${req.avatar ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Avatar</div><div class="d">Upload photo</div></div></div>
+      <div class="verify-item ${req.country ? 'done' : 'fail'}"><div class="verify-check">${req.country ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div><div class="verify-text"><div class="t">Country</div><div class="d">Specify in profile</div></div></div>
     </div>
-    <label class="verify-agree"><input type="checkbox" id="vAgree1" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">Я <b>владею правами</b></div></label>
-    <label class="verify-agree"><input type="checkbox" id="vAgree2" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">Не публикую чужое</div></label>
-    <label class="verify-agree"><input type="checkbox" id="vAgree3" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">Согласен с правилами</div></label>
-    <div class="sheet-acts" style="margin-top:16px"><button class="ghost" id="vCancel">Закрыть</button><button class="solid" id="vStart" ${allOk ? '' : 'disabled'}>Получить код</button></div>`;
+    <label class="verify-agree"><input type="checkbox" id="vAgree1" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">I own the <b>rights</b></div></label>
+    <label class="verify-agree"><input type="checkbox" id="vAgree2" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">I don't post others' content</div></label>
+    <label class="verify-agree"><input type="checkbox" id="vAgree3" ${allOk ? '' : 'disabled'}><div class="vcb"></div><div class="lbl">I agree to the rules</div></label>
+    <div class="sheet-acts" style="margin-top:16px"><button class="ghost" id="vCancel">Close</button><button class="solid" id="vStart" ${allOk ? '' : 'disabled'}>Get code</button></div>`;
   $('vCancel').addEventListener('click', ()=>{ if (verifyCountdownId) clearInterval(verifyCountdownId); $('verifyModal').classList.remove('show'); });
   if (allOk) $('vStart').addEventListener('click', startVerifyCode);
   $('verifyModal').classList.add('show');
 }
 function startVerifyCode(){
   const a1 = $('vAgree1').checked, a2 = $('vAgree2').checked, a3 = $('vAgree3').checked;
-  if (!a1 || !a2 || !a3){ toast('Подтверди все','err'); return; }
+  if (!a1 || !a2 || !a3){ toast('Confirm all','err'); return; }
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = ''; for (let i=0;i<6;i++) code += chars[Math.floor(Math.random()*chars.length)];
   let secondsLeft = 20;
-  $('verifyBody').innerHTML = `<div class="verify-code-box"><div class="verify-code-label">Запомни код</div><div class="verify-code">${code}</div><div class="verify-code-timer">Исчезнет через <b id="vTimer">${secondsLeft}</b> сек</div></div><div class="sheet-acts"><button class="solid" id="vToInput" style="flex:1">Я запомнил</button></div>`;
+  $('verifyBody').innerHTML = `<div class="verify-code-box"><div class="verify-code-label">Remember the code</div><div class="verify-code">${code}</div><div class="verify-code-timer">Disappears in <b id="vTimer">${secondsLeft}</b> sec</div></div><div class="sheet-acts"><button class="solid" id="vToInput" style="flex:1">I remember</button></div>`;
   $('vToInput').addEventListener('click', ()=>{ if (verifyCountdownId) clearInterval(verifyCountdownId); showVerifyInput(code); });
   verifyCountdownId = setInterval(()=>{ secondsLeft--; const el = $('vTimer'); if (el) el.textContent = secondsLeft; if (secondsLeft <= 0){ clearInterval(verifyCountdownId); showVerifyInput(code); } }, 1000);
 }
 function showVerifyInput(correctCode){
-  $('verifyBody').innerHTML = `<p style="font-size:13px;color:var(--dim);line-height:1.55;margin-bottom:14px;text-align:center">Введи код.</p><input class="verify-code-input" id="vInput" maxlength="6" placeholder="XXXXXX" autocomplete="off"><div class="sheet-acts"><button class="ghost" id="vAgain">Заново</button><button class="solid" id="vCheck">Проверить</button></div>`;
+  $('verifyBody').innerHTML = `<p style="font-size:13px;color:var(--dim);line-height:1.55;margin-bottom:14px;text-align:center">Enter the code.</p><input class="verify-code-input" id="vInput" maxlength="6" placeholder="XXXXXX" autocomplete="off"><div class="sheet-acts"><button class="ghost" id="vAgain">Again</button><button class="solid" id="vCheck">Check</button></div>`;
   const input = $('vInput'); setTimeout(()=>input.focus(), 100);
   input.addEventListener('input', ()=>{ input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
   input.addEventListener('keydown', e=>{ if (e.key === 'Enter') $('vCheck').click(); });
   $('vAgain').addEventListener('click', startVerifyCode);
   $('vCheck').addEventListener('click', ()=>{
     const val = input.value.trim().toUpperCase();
-    if (!val){ toast('Введи код','err'); return; }
-    if (val === correctCode.toUpperCase()){ profile.verified = true; saveUserProfile(); $('verifyModal').classList.remove('show'); toast('Верификация пройдена','ok'); renderAll(); }
-    else { input.value = ''; input.style.borderColor = 'var(--danger)'; input.placeholder = 'Неверно'; setTimeout(()=>{ input.style.borderColor=''; input.placeholder='XXXXXX'; }, 1200); toast('Неверный код','err'); }
+    if (!val){ toast('Enter code','err'); return; }
+    if (val === correctCode.toUpperCase()){ profile.verified = true; saveUserProfile(); $('verifyModal').classList.remove('show'); toast('Verified','ok'); renderAll(); }
+    else { input.value = ''; input.style.borderColor = 'var(--danger)'; input.placeholder = 'Wrong'; setTimeout(()=>{ input.style.borderColor=''; input.placeholder='XXXXXX'; }, 1200); toast('Invalid code','err'); }
   });
 }
 function renderAll(){
   const h = new Date().getHours();
-  $('greet').textContent = h<5?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер';
+  $('greet').textContent = h<5 ? t('greet_night') : h<12 ? t('greet_morning') : h<18 ? t('greet_day') : t('greet_evening');
   renderHome(); renderExplore(); renderFav();
   renderSearchBody($('searchInput').value);
   renderProfile();
@@ -2004,36 +2398,36 @@ function switchView(v){
 let menuTrackId = null;
 function openTrackMenu(t){
   menuTrackId = t.id;
-  $('tmTitle').textContent = t.title || 'Без названия';
+  $('tmTitle').textContent = t.title || 'Untitled';
   $('tmAlbum').textContent = t.album || t.artist || '';
   $('tmCircle').innerHTML = t.cover ? `<img src="${t.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
-  $('tmArtist').textContent = t.artist || 'Неизвестен';
+  $('tmArtist').textContent = t.artist || 'Unknown';
   const isFav = favIds.includes(t.id);
   const notIn = playlists.filter(p=>!p.trackIds.includes(t.id));
   const inPls = playlists.filter(p=>p.trackIds.includes(t.id));
   const isMine = t.ownerId === firebaseUid;
   const hasLyrics = !!t.lyrics;
   let html = '';
-  if (hasLyrics){ html += `<button class="tm-item" data-a="lyrics"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg><span class="tm-lbl">Текст песни</span></button>`; }
-  html += `<button class="tm-item" data-a="fav"><svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="tm-lbl">${isFav ? 'Убрать из любимых' : 'В любимые треки'}</span></button>`;
-  if (t.artist && tracks.filter(x=>x.artist === t.artist).length > 1){ html += `<button class="tm-item" data-a="artist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="tm-lbl">Перейти к исполнителю</span></button>`; }
-  notIn.forEach(pl=>{ html += `<button class="tm-item" data-a="addToPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="tm-lbl">В плейлист «<em>${esc(pl.name)}</em>»</span></button>`; });
-  if (notIn.length || !playlists.length){ html += `<button class="tm-item" data-a="newPl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span class="tm-lbl">Новый плейлист</span></button>`; }
-  inPls.forEach(pl=>{ html += `<button class="tm-item" data-a="rmFromPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="tm-lbl">Убрать из «<em>${esc(pl.name)}</em>»</span></button>`; });
-  if (isMine){ html += `<button class="tm-item" data-a="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="tm-lbl">Настройки трека</span></button>`; }
-  html += `<button class="tm-item" data-a="share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="tm-lbl">Поделиться</span></button>`;
-  if (isMine){ html += `<button class="tm-item danger" data-a="del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span class="tm-lbl">Удалить трек</span></button>`; }
+  if (hasLyrics){ html += `<button class="tm-item" data-a="lyrics"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg><span class="tm-lbl">Lyrics</span></button>`; }
+  html += `<button class="tm-item" data-a="fav"><svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="tm-lbl">${isFav ? 'Remove from favorites' : 'Add to favorites'}</span></button>`;
+  if (t.artist && tracks.filter(x=>x.artist === t.artist).length > 1){ html += `<button class="tm-item" data-a="artist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="tm-lbl">Open artist</span></button>`; }
+  notIn.forEach(pl=>{ html += `<button class="tm-item" data-a="addToPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="tm-lbl">Add to «<em>${esc(pl.name)}</em>»</span></button>`; });
+  if (notIn.length || !playlists.length){ html += `<button class="tm-item" data-a="newPl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span class="tm-lbl">New playlist</span></button>`; }
+  inPls.forEach(pl=>{ html += `<button class="tm-item" data-a="rmFromPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="tm-lbl">Remove from «<em>${esc(pl.name)}</em>»</span></button>`; });
+  if (isMine){ html += `<button class="tm-item" data-a="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="tm-lbl">Track settings</span></button>`; }
+  html += `<button class="tm-item" data-a="share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="tm-lbl">Share</span></button>`;
+  if (isMine){ html += `<button class="tm-item danger" data-a="del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span class="tm-lbl">Delete track</span></button>`; }
   $('tmMenu').innerHTML = html;
   $('tmModal').classList.add('show');
 }
 function closeTrackMenu(){ $('tmModal').classList.remove('show'); menuTrackId = null; }
 let editId = null, editCoverNew = undefined, editReplaceFileObj = undefined;
 function openEdit(t){
-  if (t.ownerId !== firebaseUid){ toast('Редактировать может только автор загрузки','err'); return; }
+  if (t.ownerId !== firebaseUid){ toast('Only uploader can edit','err'); return; }
   editId = t.id; editCoverNew = undefined; editReplaceFileObj = undefined;
   $('editTitle').value = t.title || ''; $('editArtist').value = t.artist || ''; $('editAlbum').value = t.album || ''; $('editLyrics').value = t.lyrics || '';
   $('editCoverPrev').innerHTML = t.cover ? `<img src="${t.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
-  $('editFileInfo').textContent = 'Текущий файл';
+  $('editFileInfo').textContent = 'Current file';
   $('editModal').classList.add('show');
 }
 function closeEdit(){ $('editModal').classList.remove('show'); editId = null; editCoverNew = undefined; editReplaceFileObj = undefined; }
@@ -2050,11 +2444,11 @@ function openFs(){ $('fs').classList.add('show'); document.body.style.overflow =
 function closeFs(){ $('fs').classList.remove('show'); document.body.style.overflow = ''; $('lyricsModal').classList.remove('show'); }
 function setSleepTimer(minutes){
   if (sleepTimerId){ clearInterval(sleepTimerId); sleepTimerId = null; }
-  if (!minutes || minutes <= 0){ sleepAt = 0; $('fsTimer').classList.remove('active'); $('fsTimerInfo').classList.remove('show'); toast('Таймер выключен'); return; }
+  if (!minutes || minutes <= 0){ sleepAt = 0; $('fsTimer').classList.remove('active'); $('fsTimerInfo').classList.remove('show'); toast('Timer off'); return; }
   sleepAt = Date.now() + minutes * 60 * 1000;
   $('fsTimer').classList.add('active'); $('fsTimerInfo').classList.add('show'); updateTimerDisplay();
-  sleepTimerId = setInterval(()=>{ const left = sleepAt - Date.now(); if (left <= 0){ clearInterval(sleepTimerId); sleepTimerId = null; sleepAt = 0; audio.pause(); $('fsTimer').classList.remove('active'); $('fsTimerInfo').classList.remove('show'); toast('Таймер сработал','ok'); return; } updateTimerDisplay(); }, 1000);
-  toast('Таймер на ' + minutes + ' мин','ok');
+  sleepTimerId = setInterval(()=>{ const left = sleepAt - Date.now(); if (left <= 0){ clearInterval(sleepTimerId); sleepTimerId = null; sleepAt = 0; audio.pause(); $('fsTimer').classList.remove('active'); $('fsTimerInfo').classList.remove('show'); toast('Timer triggered','ok'); return; } updateTimerDisplay(); }, 1000);
+  toast('Timer: ' + minutes + ' min','ok');
 }
 function updateTimerDisplay(){
   if (!sleepAt){ $('fsTimerInfo').classList.remove('show'); return; }
@@ -2067,9 +2461,9 @@ function openTimerModal(){
   $('timerModal').classList.add('show');
 }
 function renderQueue(){
-  $('queueSub').textContent = queue.length + ' треков в очереди';
+  $('queueSub').textContent = queue.length + ' tracks in queue';
   const listEl = $('queueList'); listEl.innerHTML = '';
-  if (!queue.length){ listEl.innerHTML = '<div style="padding:20px 0;color:var(--dim);font-size:13px;text-align:center">Очередь пуста</div>'; return; }
+  if (!queue.length){ listEl.innerHTML = '<div style="padding:20px 0;color:var(--dim);font-size:13px;text-align:center">Queue is empty</div>'; return; }
   queue.forEach((t, idx)=>{
     const row = document.createElement('div');
     row.className = 'q-item' + (idx === qi ? ' current' : '');
@@ -2090,24 +2484,24 @@ function newCaptcha(){
 }
 function openAuthModal(mode){
   authEmailMode = mode || 'login';
-  $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
-  $('authDesc').textContent = authEmailMode === 'register' ? 'Заведи аккаунт, чтобы треки сохранились навсегда.' : 'Войди, чтобы сохранить треки.';
-  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
-  $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
+  $('authTitle').textContent = authEmailMode === 'register' ? 'Create account' : 'Sign in';
+  $('authDesc').textContent = authEmailMode === 'register' ? 'Create account to save your music.' : 'Sign in to save your music.';
+  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Sign in' : 'Register';
+  $('authSubmit').textContent = authEmailMode === 'register' ? 'Create' : 'Sign in';
   $('authEmailForm').style.display = 'none'; $('authEmail').value = ''; $('authPassword').value = ''; $('captchaWrap').style.display = 'none';
   newCaptcha(); $('authModal').classList.add('show');
 }
 async function migrateAnonymousData(oldUid, newUid){
   if (!oldUid || !newUid || oldUid === newUid) return;
   try { await set(ref(db,'linkedAccounts/'+newUid), { from: oldUid, at: Date.now() }); } catch(e){}
-  try { const oldP = (await get(ref(db,'users/'+oldUid))).val() || {}; const newP = (await get(ref(db,'users/'+newUid))).val() || {}; await update(ref(db,'users/'+newUid), { name: newP.name || oldP.name || 'Слушатель', musicianName: newP.musicianName || oldP.musicianName || '', musicianGenre: newP.musicianGenre || oldP.musicianGenre || '', musicianBio: newP.musicianBio || oldP.musicianBio || '', country: newP.country || oldP.country || '', link: newP.link || oldP.link || '', avatar: newP.avatar || oldP.avatar || null, verified: !!(newP.verified || oldP.verified), isAnonymous: false, createdAt: newP.createdAt || oldP.createdAt || Date.now() }); } catch(e){}
+  try { const oldP = (await get(ref(db,'users/'+oldUid))).val() || {}; const newP = (await get(ref(db,'users/'+newUid))).val() || {}; await update(ref(db,'users/'+newUid), { name: newP.name || oldP.name || 'Listener', musicianName: newP.musicianName || oldP.musicianName || '', musicianGenre: newP.musicianGenre || oldP.musicianGenre || '', musicianBio: newP.musicianBio || oldP.musicianBio || '', country: newP.country || oldP.country || '', link: newP.link || oldP.link || '', avatar: newP.avatar || oldP.avatar || null, verified: !!(newP.verified || oldP.verified), isAnonymous: false, createdAt: newP.createdAt || oldP.createdAt || Date.now() }); } catch(e){}
   try { const oldPl = (await get(ref(db,'playlists/'+oldUid))).val() || {}; if (Object.keys(oldPl).length){ const newPl = (await get(ref(db,'playlists/'+newUid))).val() || {}; await set(ref(db,'playlists/'+newUid), { ...oldPl, ...newPl }); } } catch(e){}
   try { const oldF = (await get(ref(db,'favorites/'+oldUid))).val() || {}; const newF = (await get(ref(db,'favorites/'+newUid))).val() || {}; await set(ref(db,'favorites/'+newUid), { ...oldF, ...newF }); } catch(e){}
   try { const oldFA = (await get(ref(db,'fav_artists/'+oldUid))).val() || {}; const newFA = (await get(ref(db,'fav_artists/'+newUid))).val() || {}; await set(ref(db,'fav_artists/'+newUid), { ...oldFA, ...newFA }); } catch(e){}
   try { const all = (await get(ref(db,'tracks'))).val() || {}; for (const [id, t] of Object.entries(all)){ if (t.ownerId === oldUid){ try { await update(ref(db,'tracks/'+id), { ownerId: newUid }); } catch(e){} } } } catch(e){}
 }
 async function loginWithGoogle(){
-  if (!firebaseUid){ toast('Сначала дождись загрузки','err'); return; }
+  if (!firebaseUid){ toast('Wait for load','err'); return; }
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
   const btn = $('authGoogle'); btn.disabled = true;
@@ -2119,17 +2513,17 @@ async function loginWithGoogle(){
     try { await update(ref(db,'users/'+newUid), { email: result.user.email || null, photoURL: result.user.photoURL || null, isAnonymous: false }); } catch(e){}
     profile.isAnonymous = false; profile.email = result.user.email || profile.email;
     $('authModal').classList.remove('show');
-    toast('Вошёл как ' + (result.user.displayName || result.user.email),'ok');
+    toast('Signed in as ' + (result.user.displayName || result.user.email),'ok');
     renderProfile(); renderAll();
-  } catch(e){ console.error(e); if (e.code === 'auth/popup-blocked') toast('Разреши всплывающие окна','err'); else if (e.code === 'auth/unauthorized-domain') toast('Домен не разрешён','err'); else toast('Ошибка: ' + (e.code || e.message),'err'); }
+  } catch(e){ console.error(e); if (e.code === 'auth/popup-blocked') toast('Allow popups','err'); else if (e.code === 'auth/unauthorized-domain') toast('Domain not allowed','err'); else toast('Error: ' + (e.code || e.message),'err'); }
   finally { btn.disabled = false; }
 }
 async function loginWithEmail(){
   const email = $('authEmail').value.trim();
   const password = $('authPassword').value;
-  if (!email || !email.includes('@')){ toast('Введи корректный email','err'); return; }
-  if (!password || password.length < 6){ toast('Пароль минимум 6 символов','err'); return; }
-  if (authEmailMode === 'register'){ const ans = parseInt($('captchaA').value.trim(), 10); if (ans !== captchaAnswer){ const inp = $('captchaA'); inp.classList.add('err'); newCaptcha(); toast('Неверный ответ','err'); return; } }
+  if (!email || !email.includes('@')){ toast('Enter valid email','err'); return; }
+  if (!password || password.length < 6){ toast('Password min 6 chars','err'); return; }
+  if (authEmailMode === 'register'){ const ans = parseInt($('captchaA').value.trim(), 10); if (ans !== captchaAnswer){ const inp = $('captchaA'); inp.classList.add('err'); newCaptcha(); toast('Wrong answer','err'); return; } }
   const btn = $('authSubmit'); btn.disabled = true; const oldText = btn.textContent; btn.textContent = '...';
   try {
     const oldUid = firebaseUid;
@@ -2141,48 +2535,211 @@ async function loginWithEmail(){
     try { await update(ref(db,'users/'+newUid), { email: cred.user.email || null, isAnonymous: false }); } catch(e){}
     profile.isAnonymous = false; profile.email = cred.user.email || profile.email;
     $('authModal').classList.remove('show');
-    toast(authEmailMode === 'register' ? 'Аккаунт создан' : 'Вошёл','ok');
+    toast(authEmailMode === 'register' ? 'Account created' : 'Signed in','ok');
     renderProfile(); renderAll();
   } catch(e){
     console.error(e);
-    const map = { 'auth/email-already-in-use':'Email уже используется', 'auth/invalid-email':'Некорректный email', 'auth/weak-password':'Пароль слишком простой', 'auth/wrong-password':'Неверный пароль', 'auth/user-not-found':'Пользователь не найден', 'auth/invalid-credential':'Неверный email или пароль', 'auth/operation-not-allowed':'Email-вход выключен' };
-    toast(map[e.code] || ('Ошибка: ' + (e.code || e.message)),'err');
+    const map = { 'auth/email-already-in-use':'Email in use', 'auth/invalid-email':'Invalid email', 'auth/weak-password':'Weak password', 'auth/wrong-password':'Wrong password', 'auth/user-not-found':'User not found', 'auth/invalid-credential':'Wrong email or password', 'auth/operation-not-allowed':'Email sign-in disabled' };
+    toast(map[e.code] || ('Error: ' + (e.code || e.message)),'err');
   } finally { btn.disabled = false; btn.textContent = oldText; }
 }
-async function logoutUser(){ if (!confirm('Выйти из аккаунта?')) return; try { await signOut(auth); toast('Вышел'); } catch(e){} }
+async function logoutUser(){ if (!confirm('Sign out?')) return; try { await signOut(auth); toast('Signed out'); } catch(e){} }
+
+// ====== PREF MODAL ======
+function openPrefModal(kind){
+  const titles = { display:'display', audio:'audio', notifications:'notifications', storage:'storage', offline:'offline', country:'country', explicit:'explicit', import:'import_fav' };
+  const descs  = { display:'display_hint', audio:'audio_hint', notifications:'notif_hint', storage:'storage_hint', offline:'offline_hint', country:'country_hint', explicit:'explicit_hint', import:'import_hint' };
+  document.getElementById('prefTitle').textContent = t(titles[kind]||kind);
+  document.getElementById('prefDesc').textContent  = t(descs[kind]||'');
+  const body = document.getElementById('prefBody');
+  body.innerHTML = '';
+  const okBtn = document.getElementById('prefOk');
+  const cxlBtn = document.getElementById('prefCancel');
+  okBtn.textContent = t('save');
+  cxlBtn.textContent = t('cancel');
+
+  if (kind === 'display'){
+    body.innerHTML = `
+      <label class="set-sw"><input type="checkbox" id="pfCompact" ${prefs.display.compact?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('compact')}</div></div></label>
+      <label class="flabel" style="margin-top:10px">${t('cover_size')}</label>
+      <div class="filter-row" id="pfCoverSize">
+        ${[200,300,400,500].map(s=>`<button class="filter ${prefs.display.coverSize==s?'active':''}" data-s="${s}">${s}px</button>`).join('')}
+      </div>`;
+    body.querySelector('#pfCoverSize').addEventListener('click', e=>{
+      const b = e.target.closest('.filter'); if (!b) return;
+      prefs.display.coverSize = parseInt(b.dataset.s,10);
+      body.querySelectorAll('#pfCoverSize .filter').forEach(x=>x.classList.toggle('active', x===b));
+    });
+    okBtn.onclick = () => {
+      prefs.display.compact = body.querySelector('#pfCompact').checked;
+      document.body.classList.toggle('compact', prefs.display.compact);
+      settings.coverSize = prefs.display.coverSize;
+      savePrefsAll(); savePrefs(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      toast(t('save'),'ok');
+    };
+  }
+  else if (kind === 'audio'){
+    body.innerHTML = `
+      <label class="flabel">${t('audio_quality')}</label>
+      <div class="filter-row" id="pfQ">
+        ${['low','normal','high','lossless'].map(q=>`<button class="filter ${prefs.audio.quality===q?'active':''}" data-q="${q}">${q}</button>`).join('')}
+      </div>
+      <label class="flabel" style="margin-top:14px">${t('crossfade')}</label>
+      <input class="finput" type="number" id="pfCF" min="0" max="12" value="${prefs.audio.crossfade}">
+      <label class="set-sw"><input type="checkbox" id="pfNorm" ${prefs.audio.normalize?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('normalize')}</div></div></label>
+      <label class="set-sw"><input type="checkbox" id="pfGap" ${prefs.audio.gapless?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('gapless')}</div></div></label>`;
+    body.querySelector('#pfQ').addEventListener('click', e=>{
+      const b = e.target.closest('.filter'); if (!b) return;
+      prefs.audio.quality = b.dataset.q;
+      body.querySelectorAll('#pfQ .filter').forEach(x=>x.classList.toggle('active', x===b));
+    });
+    okBtn.onclick = () => {
+      prefs.audio.crossfade = Math.max(0, Math.min(12, parseInt(body.querySelector('#pfCF').value,10)||0));
+      prefs.audio.normalize = body.querySelector('#pfNorm').checked;
+      prefs.audio.gapless = body.querySelector('#pfGap').checked;
+      savePrefsAll(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      toast(t('save'),'ok');
+    };
+  }
+  else if (kind === 'notifications'){
+    body.innerHTML = `
+      <label class="set-sw"><input type="checkbox" id="pfR" ${prefs.notifications.releases?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('notif_releases')}</div></div></label>
+      <label class="set-sw"><input type="checkbox" id="pfRec" ${prefs.notifications.recommend?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('notif_recommend')}</div></div></label>
+      <label class="set-sw"><input type="checkbox" id="pfSoc" ${prefs.notifications.social?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('notif_social')}</div></div></label>`;
+    okBtn.onclick = () => {
+      prefs.notifications.releases = body.querySelector('#pfR').checked;
+      prefs.notifications.recommend = body.querySelector('#pfRec').checked;
+      prefs.notifications.social = body.querySelector('#pfSoc').checked;
+      savePrefsAll(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      if (prefs.notifications.releases && 'Notification' in window && Notification.permission === 'default'){
+        Notification.requestPermission().catch(()=>{});
+      }
+    };
+  }
+  else if (kind === 'storage'){
+    body.innerHTML = `
+      <div style="padding:12px;background:var(--card);border-radius:12px;border:1px solid var(--border);margin-bottom:12px">
+        <div style="font-size:12px;color:var(--dim);margin-bottom:6px">Cache</div>
+        <div style="font-size:18px" id="pfCacheSize">—</div>
+      </div>
+      <button class="set-btn" id="pfClearCache">${t('clear_cache')}</button>
+      <button class="set-btn" id="pfExport">${t('export_data')}</button>`;
+    try { const s = JSON.stringify([...audioCache.keys()]).length; body.querySelector('#pfCacheSize').textContent = (s/1024).toFixed(1) + ' KB'; } catch(e){}
+    body.querySelector('#pfClearCache').onclick = () => {
+      audioCache.clear();
+      body.querySelector('#pfCacheSize').textContent = '0 KB';
+      toast(t('clear_cache'),'ok');
+    };
+    body.querySelector('#pfExport').onclick = () => {
+      const dump = { profile, playlists, favIds, favArtists, prefs, exportedAt: Date.now() };
+      const blob = new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sonic-backup-'+Date.now()+'.json';
+      a.click();
+      toast(t('export_data'),'ok');
+    };
+    okBtn.textContent = t('close');
+    okBtn.onclick = () => document.getElementById('prefModal').classList.remove('show');
+  }
+  else if (kind === 'offline'){
+    body.innerHTML = `
+      <label class="set-sw"><input type="checkbox" id="pfOff" ${prefs.offline?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('offline')}</div><div class="sw-d">${t('offline_hint')}</div></div></label>`;
+    okBtn.onclick = () => {
+      prefs.offline = body.querySelector('#pfOff').checked;
+      savePrefsAll(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      toast(prefs.offline ? 'Offline ON' : 'Offline OFF','ok');
+    };
+  }
+  else if (kind === 'country'){
+    body.innerHTML = `<div style="max-height:50vh;overflow-y:auto" id="pfCountryList"></div>`;
+    const list = body.querySelector('#pfCountryList');
+    COUNTRIES.forEach(([code, name])=>{
+      const b = document.createElement('button');
+      b.className = 'pref-radio-row';
+      b.innerHTML = `<input type="radio" name="pfC" ${prefs.country===code?'checked':''} value="${code}"><div class="pref-radio"></div><div class="lbl">${name}</div>`;
+      b.addEventListener('click', ()=>{ prefs.country = code; list.querySelectorAll('input').forEach(x=>x.checked = x.value===code); });
+      list.appendChild(b);
+    });
+    okBtn.onclick = () => {
+      savePrefsAll(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      toast(t('save'),'ok');
+    };
+  }
+  else if (kind === 'explicit'){
+    body.innerHTML = `
+      <label class="set-sw"><input type="checkbox" id="pfExp" ${prefs.explicit?'checked':''}><div class="sw-track"></div><div class="sw-text"><div class="sw-l">${t('explicit')}</div><div class="sw-d">${t('explicit_hint')}</div></div></label>`;
+    okBtn.onclick = () => {
+      prefs.explicit = body.querySelector('#pfExp').checked;
+      savePrefsAll(); renderPrefsValues();
+      document.getElementById('prefModal').classList.remove('show');
+      renderAll();
+    };
+  }
+  else if (kind === 'import'){
+    body.innerHTML = `
+      <label class="flabel">${t('import_file')}</label>
+      <input class="finput" type="file" id="pfImpFile" accept=".json,.csv,.txt">
+      <p style="font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.5">JSON: {"favorites":["id1"],"playlists":[{"name":"...","trackIds":[...]}]}</p>`;
+    okBtn.textContent = t('import_file');
+    okBtn.onclick = async () => {
+      const f = body.querySelector('#pfImpFile').files[0];
+      if (!f){ toast('Choose file','err'); return; }
+      try {
+        const text = await f.text();
+        const data = JSON.parse(text);
+        if (Array.isArray(data.favorites)) data.favorites.forEach(id=>{ if (!favIds.includes(id)) favIds.push(id); });
+        if (Array.isArray(data.playlists)) data.playlists.forEach(pl=>{
+          playlists.push({ id: uid(), name: pl.name||'Imported', color: PALETTE[0], cover: null, trackIds: pl.trackIds||[], createdAt: Date.now() });
+        });
+        await saveFavoritesToFB(); await savePlaylistsToFB();
+        renderAll();
+        document.getElementById('prefModal').classList.remove('show');
+        toast('Imported','ok');
+      } catch(e){ toast('Error: '+e.message,'err'); }
+    };
+  }
+
+  document.getElementById('prefModal').classList.add('show');
+}
 
 document.querySelectorAll('.nbtn').forEach(b=>b.addEventListener('click', ()=>switchView(b.dataset.v)));
 $('profileBtn').addEventListener('click', ()=>switchView('profile'));
 $('profEditBtn').addEventListener('click', openProfileEdit);
 $('profAvatarPick').addEventListener('click', ()=>$('profAvatarInput').click());
-$('profAvatarInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processAvatar(f); if (!d){ toast('Не удалось','err'); return; } editProfAvatarNew = d; $('profAvatarPrev').innerHTML = `<img src="${d}" alt="">`; });
+$('profAvatarInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processAvatar(f); if (!d){ toast('Error','err'); return; } editProfAvatarNew = d; $('profAvatarPrev').innerHTML = `<img src="${d}" alt="">`; });
 $('profAvatarClear').addEventListener('click', ()=>{ editProfAvatarNew = null; $('profAvatarPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`; });
 $('profEditCancel').addEventListener('click', ()=>$('profEditModal').classList.remove('show'));
 $('profEditModal').addEventListener('click', e=>{ if (e.target === $('profEditModal')) $('profEditModal').classList.remove('show'); });
-$('profEditSave').addEventListener('click', ()=>{ const btn = $('profEditSave'); if (btn.disabled) return; profile.name = $('profName').value.trim() || 'Слушатель'; if (editProfAvatarNew !== undefined) profile.avatar = editProfAvatarNew; $('profEditModal').classList.remove('show'); renderProfile(); renderAll(); saveUserProfile(); toast('Профиль сохранён','ok'); });
+$('profEditSave').addEventListener('click', ()=>{ const btn = $('profEditSave'); if (btn.disabled) return; profile.name = $('profName').value.trim() || 'Listener'; if (editProfAvatarNew !== undefined) profile.avatar = editProfAvatarNew; $('profEditModal').classList.remove('show'); renderProfile(); renderAll(); saveUserProfile(); toast('Saved','ok'); });
 $('profStudioBtn').addEventListener('click', ()=>{ renderStudio(); switchView('studio'); });
 $('studioBack').addEventListener('click', ()=>{ switchView('profile'); renderProfile(); });
 $('apCancel').addEventListener('click', ()=>$('artistProfileModal').classList.remove('show'));
 $('artistProfileModal').addEventListener('click', e=>{ if (e.target === $('artistProfileModal')) $('artistProfileModal').classList.remove('show'); });
-$('apSave').addEventListener('click', ()=>{ const btn = $('apSave'); if (btn.disabled) return; const name = $('apName').value.trim(); if (!name){ toast('Введи сценическое имя','err'); return; } profile.musicianName = name; profile.musicianGenre = $('apGenre').value.trim(); profile.country = $('apCountry').value.trim(); profile.musicianBio = $('apBio').value.trim(); profile.link = $('apLink').value.trim(); $('artistProfileModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); toast('Профиль артиста сохранён','ok'); });
+$('apSave').addEventListener('click', ()=>{ const btn = $('apSave'); if (btn.disabled) return; const name = $('apName').value.trim(); if (!name){ toast('Enter stage name','err'); return; } profile.musicianName = name; profile.musicianGenre = $('apGenre').value.trim(); profile.country = $('apCountry').value.trim(); profile.musicianBio = $('apBio').value.trim(); profile.link = $('apLink').value.trim(); $('artistProfileModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); toast('Saved','ok'); });
 $('musicianCancel').addEventListener('click', ()=>$('musicianModal').classList.remove('show'));
 $('musicianModal').addEventListener('click', e=>{ if (e.target === $('musicianModal')) $('musicianModal').classList.remove('show'); });
-$('musicianSave').addEventListener('click', ()=>{ const btn = $('musicianSave'); if (btn.disabled) return; const name = $('musicianName').value.trim(); if (!name){ profile.musicianName=''; profile.musicianGenre=''; profile.musicianBio=''; } else { profile.musicianName = name; profile.musicianGenre = $('musicianGenre').value.trim(); profile.musicianBio = $('musicianBio').value.trim(); } $('musicianModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); toast(name ? ('Ты теперь ' + name) : 'Статус снят','ok'); });
+$('musicianSave').addEventListener('click', ()=>{ const btn = $('musicianSave'); if (btn.disabled) return; const name = $('musicianName').value.trim(); if (!name){ profile.musicianName=''; profile.musicianGenre=''; profile.musicianBio=''; } else { profile.musicianName = name; profile.musicianGenre = $('musicianGenre').value.trim(); profile.musicianBio = $('musicianBio').value.trim(); } $('musicianModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); toast(name ? ('You are ' + name) : 'Removed','ok'); });
 $('setId3').addEventListener('change', ()=>{ settings.id3 = $('setId3').checked; savePrefs(); });
 $('setCover').addEventListener('change', ()=>{ settings.cover = $('setCover').checked; savePrefs(); });
 $('setFallback').addEventListener('change', ()=>{ settings.fallback = $('setFallback').checked; savePrefs(); });
 $('themeSwitch').addEventListener('click', e=>{ const b = e.target.closest('button'); if (!b) return; theme = b.dataset.t; applyTheme(); savePrefs(); });
 $('profReset').addEventListener('click', async ()=>{
-  if (!confirm('Удалить все твои загруженные треки?')) return;
+  if (!confirm('Delete all your uploads?')) return;
   const myTracks = tracks.filter(t=>t.ownerId === firebaseUid);
   for (const t of myTracks){ try { await remove(ref(db,'tracks/'+t.id)); await remove(ref(db,'audio/'+t.id)); audioCache.delete(t.id); } catch(e){} }
   if (myTracks.some(t=>t.id === currentId)){ closeMiniPlayer(true); closeFs(); }
-  toast('Все треки удалены','ok');
+  toast('Deleted','ok');
 });
-$('miniPlay').addEventListener('click', e=>{ e.stopPropagation(); if (!currentTrack()){ if (!tracks.length){ toast('Нет треков','err'); return; } playTrackInList(tracks, 0); return; } if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); });
+$('miniPlay').addEventListener('click', e=>{ e.stopPropagation(); if (!currentTrack()){ if (!tracks.length){ toast('No tracks','err'); return; } playTrackInList(tracks, 0); return; } if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); });
 $('miniFav').addEventListener('click', e=>{ e.stopPropagation(); const t = currentTrack(); if (t) toggleFav(t.id); });
 $('mini').addEventListener('click', e=>{ if (e.target.closest('.mini-play') || e.target.closest('.mini-fav') || e.target.closest('.mini-close')) return; if (currentTrack()) openFs(); });
-$('miniClose').addEventListener('click', e=>{ e.stopPropagation(); e.preventDefault(); closeMiniPlayer(true); toast('Плеер закрыт'); });
+$('miniClose').addEventListener('click', e=>{ e.stopPropagation(); e.preventDefault(); closeMiniPlayer(true); toast('Player closed'); });
 (function(){
   const mini = $('mini'); let startY = 0, startX = 0, curY = 0, curX = 0, active = false;
   mini.addEventListener('touchstart', e=>{ if (e.target.closest('button')) return; const t = e.touches[0]; startY = t.clientY; curY = startY; startX = t.clientX; curX = startX; active = true; mini.style.transition = 'none'; }, { passive: true });
@@ -2194,15 +2751,15 @@ $('fs').addEventListener('click', e=>{ if (e.target === $('fs')) closeFs(); });
 $('fsPlay').addEventListener('click', ()=>{ if (!currentTrack()) return; if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); });
 $('fsPrevBtn').addEventListener('click', ()=>{ if (audio.currentTime > 3){ audio.currentTime = 0; return; } playAt(qi-1); });
 $('fsNextBtn').addEventListener('click', ()=>playAt(qi+1));
-$('fsShuffle').addEventListener('click', ()=>{ shuffle = !shuffle; updatePlayUI(); toast(shuffle ? 'Перемешать: вкл' : 'Перемешать: выкл'); });
-$('fsRepeat').addEventListener('click', ()=>{ repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'; updatePlayUI(); toast(repeatMode === 'off' ? 'Повтор выкл' : repeatMode === 'all' ? 'Повтор всех' : 'Повтор одного'); });
+$('fsShuffle').addEventListener('click', ()=>{ shuffle = !shuffle; updatePlayUI(); toast(shuffle ? 'Shuffle: on' : 'Shuffle: off'); });
+$('fsRepeat').addEventListener('click', ()=>{ repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'; updatePlayUI(); toast(repeatMode === 'off' ? 'Repeat off' : repeatMode === 'all' ? 'Repeat all' : 'Repeat one'); });
 $('fsFav').addEventListener('click', ()=>{ const t = currentTrack(); if (t) toggleFav(t.id); });
 $('fsMenuMid').addEventListener('click', ()=>{ const t = currentTrack(); if (t) openTrackMenu(t); });
 $('fsShare').addEventListener('click', ()=>{ const t = currentTrack(); if (t) shareTrack(t); });
 $('fsArtist').addEventListener('click', ()=>{ const t = currentTrack(); if (t && t.artist) openArtist(t.artist); });
 $('fsTimer').addEventListener('click', openTimerModal);
-$('fsLyrics').addEventListener('click', ()=>{ const t = currentTrack(); if (!t){ toast('Ничего не играет'); return; } if (!t.lyrics){ toast('У этого трека нет текста'); return; } openLyricsModal(); });
-$('fsQueue').addEventListener('click', ()=>{ if (!queue.length){ toast('Очередь пуста'); return; } renderQueue(); $('queueModal').classList.add('show'); });
+$('fsLyrics').addEventListener('click', ()=>{ const t = currentTrack(); if (!t){ toast('Nothing playing'); return; } if (!t.lyrics){ toast('No lyrics'); return; } openLyricsModal(); });
+$('fsQueue').addEventListener('click', ()=>{ if (!queue.length){ toast('Queue empty'); return; } renderQueue(); $('queueModal').classList.add('show'); });
 $('lyricsModal').addEventListener('click', e=>{ if (e.target === $('lyricsModal')) $('lyricsModal').classList.remove('show'); });
 $('timerGrid').addEventListener('click', e=>{ const opt = e.target.closest('.timer-opt'); if (!opt) return; document.querySelectorAll('.timer-opt').forEach(o=>o.classList.toggle('active', o === opt)); setSleepTimer(parseInt(opt.dataset.min, 10) || 0); setTimeout(()=>$('timerModal').classList.remove('show'), 400); });
 $('timerClose').addEventListener('click', ()=>$('timerModal').classList.remove('show'));
@@ -2234,24 +2791,24 @@ $('tmModal').addEventListener('click', async e=>{
   if (a === 'lyrics'){ closeTrackMenu(); openFs(); openLyricsModal(); }
   else if (a === 'fav'){ toggleFav(t.id); closeTrackMenu(); }
   else if (a === 'artist'){ closeTrackMenu(); openArtist(t.artist); }
-  else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t.id)) pl.trackIds.push(t.id); await savePlaylistsToFB(); toast('Добавлено в «'+pl.name+'»','ok'); closeTrackMenu(); }
-  else if (a === 'rmFromPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; pl.trackIds = pl.trackIds.filter(id=>id !== t.id); await savePlaylistsToFB(); toast('Убрано из «'+pl.name+'»'); closeTrackMenu(); }
+  else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t.id)) pl.trackIds.push(t.id); await savePlaylistsToFB(); toast('Added to «'+pl.name+'»','ok'); closeTrackMenu(); }
+  else if (a === 'rmFromPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; pl.trackIds = pl.trackIds.filter(id=>id !== t.id); await savePlaylistsToFB(); toast('Removed'); closeTrackMenu(); }
   else if (a === 'newPl'){ closeTrackMenu(); openPlModal(); }
   else if (a === 'edit'){ closeTrackMenu(); openEdit(t); }
   else if (a === 'share'){ shareTrack(t); closeTrackMenu(); }
-  else if (a === 'del'){ if (t.ownerId !== firebaseUid){ toast('Это не твой трек','err'); closeTrackMenu(); return; } if (!confirm('Удалить «'+t.title+'»?')) return; try { await remove(ref(db,'tracks/'+t.id)); await remove(ref(db,'audio/'+t.id)); audioCache.delete(t.id); } catch(e){} if (currentId === t.id){ closeMiniPlayer(true); closeFs(); } closeTrackMenu(); toast('Удалено'); }
+  else if (a === 'del'){ if (t.ownerId !== firebaseUid){ toast('Not yours','err'); closeTrackMenu(); return; } if (!confirm('Delete «'+t.title+'»?')) return; try { await remove(ref(db,'tracks/'+t.id)); await remove(ref(db,'audio/'+t.id)); audioCache.delete(t.id); } catch(e){} if (currentId === t.id){ closeMiniPlayer(true); closeFs(); } closeTrackMenu(); toast('Deleted'); }
 });
 $('editCancel').addEventListener('click', closeEdit);
 $('editModal').addEventListener('click', e=>{ if (e.target === $('editModal')) closeEdit(); });
 $('editCoverClear').addEventListener('click', ()=>{ editCoverNew = null; $('editCoverPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; });
 $('editCoverPick').addEventListener('click', ()=>$('coverInput').click());
-$('coverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f); if (!d){ toast('Не удалось','err'); return; } editCoverNew = d; $('editCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
+$('coverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f); if (!d){ toast('Error','err'); return; } editCoverNew = d; $('editCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
 $('editReplaceFile').addEventListener('click', ()=>$('replaceFileInput').click());
 $('replaceFileInput').addEventListener('change', async e=>{
   const f = e.target.files[0]; e.target.value = '';
   if (!f) return;
-  if (!f.type.startsWith('audio/') && !/\.(mp3|wav|ogg|flac|m4a|aac|opus)$/i.test(f.name)){ toast('Это не аудиофайл','err'); return; }
-  editReplaceFileObj = f; $('editFileInfo').textContent = f.name + ' (новый)';
+  if (!f.type.startsWith('audio/') && !/\.(mp3|wav|ogg|flac|m4a|aac|opus)$/i.test(f.name)){ toast('Not audio','err'); return; }
+  editReplaceFileObj = f; $('editFileInfo').textContent = f.name + ' (new)';
   const tags = await readTags(f);
   if (tags.title && !$('editTitle').value) $('editTitle').value = tags.title;
   if (tags.artist && !$('editArtist').value) $('editArtist').value = tags.artist;
@@ -2263,8 +2820,8 @@ $('editSave').addEventListener('click', async ()=>{
   if (!editId) return;
   const t = getTrack(editId);
   if (!t) return;
-  if (t.ownerId !== firebaseUid){ toast('Это не твой трек','err'); closeEdit(); return; }
-  const upd = { title: $('editTitle').value.trim() || t.title, artist: $('editArtist').value.trim() || 'Неизвестен', album: $('editAlbum').value.trim(), lyrics: $('editLyrics').value.trim() };
+  if (t.ownerId !== firebaseUid){ toast('Not yours','err'); closeEdit(); return; }
+  const upd = { title: $('editTitle').value.trim() || t.title, artist: $('editArtist').value.trim() || 'Unknown', album: $('editAlbum').value.trim(), lyrics: $('editLyrics').value.trim() };
   if (editCoverNew !== undefined) upd.cover = editCoverNew;
   try {
     if (editReplaceFileObj){
@@ -2275,22 +2832,22 @@ $('editSave').addEventListener('click', async ()=>{
       if (currentId === t.id){ audio.src = `data:${mime};base64,${base64}`; audioCache.set(t.id, audio.src); audio.play().catch(()=>{}); }
     }
     await update(ref(db,'tracks/'+t.id), upd);
-  } catch(e){ console.error(e); toast(e.message || 'Ошибка сохранения','err'); return; }
-  closeEdit(); toast('Сохранено','ok');
+  } catch(e){ console.error(e); toast(e.message || 'Save error','err'); return; }
+  closeEdit(); toast('Saved','ok');
   if ($('lyricsModal').classList.contains('show')) renderLyricsModal();
 });
 $('plCancel').addEventListener('click', ()=>$('plModal').classList.remove('show'));
 $('plModal').addEventListener('click', e=>{ if (e.target === $('plModal')) $('plModal').classList.remove('show'); });
 $('newPlCoverPick').addEventListener('click', ()=>$('plCoverInput').click());
 $('newPlCoverClear').addEventListener('click', ()=>{ newPlCoverNew = null; $('newPlCoverPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; });
-$('plCoverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f, 300); if (!d){ toast('Не удалось','err'); return; } newPlCoverNew = d; $('newPlCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
-$('plOk').addEventListener('click', async ()=>{ const name = $('plName').value.trim(); if (!name){ toast('Введи название','err'); return; } const id = uid(); playlists.unshift({ id, name: name.slice(0,40), color: plColor, trackIds: [], cover: newPlCoverNew || null, createdAt: Date.now() }); await savePlaylistsToFB(); $('plModal').classList.remove('show'); toast('Плейлист создан','ok'); });
+$('plCoverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f, 300); if (!d){ toast('Error','err'); return; } newPlCoverNew = d; $('newPlCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
+$('plOk').addEventListener('click', async ()=>{ const name = $('plName').value.trim(); if (!name){ toast('Enter name','err'); return; } const id = uid(); playlists.unshift({ id, name: name.slice(0,40), color: plColor, trackIds: [], cover: newPlCoverNew || null, createdAt: Date.now() }); await savePlaylistsToFB(); $('plModal').classList.remove('show'); toast('Created','ok'); });
 $('plName').addEventListener('keydown', e=>{ if (e.key === 'Enter') $('plOk').click(); });
 $('plSetCancel').addEventListener('click', ()=>$('plSettingsModal').classList.remove('show'));
 $('plSettingsModal').addEventListener('click', e=>{ if (e.target === $('plSettingsModal')) $('plSettingsModal').classList.remove('show'); });
 $('plSetCoverPick').addEventListener('click', ()=>$('plSetCoverInput').click());
 $('plSetCoverClear').addEventListener('click', ()=>{ plSetCoverNew = null; $('plSetCoverPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; });
-$('plSetCoverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f, 300); if (!d){ toast('Не удалось','err'); return; } plSetCoverNew = d; $('plSetCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
+$('plSetCoverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f, 300); if (!d){ toast('Error','err'); return; } plSetCoverNew = d; $('plSetCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
 $('plSetSave').addEventListener('click', async ()=>{
   if (!plSetEditId) return;
   const pl = playlists.find(p=>p.id === plSetEditId);
@@ -2302,7 +2859,7 @@ $('plSetSave').addEventListener('click', async ()=>{
   if (plSetCoverNew !== undefined) pl.cover = plSetCoverNew;
   await savePlaylistsToFB();
   $('plSettingsModal').classList.remove('show');
-  toast('Плейлист обновлён','ok');
+  toast('Updated','ok');
 });
 $('searchInput').addEventListener('input', ()=>renderSearchBody($('searchInput').value));
 $('explore-filters').addEventListener('click', e=>{ const f = e.target.closest('.filter'); if (!f) return; exploreFilter = f.dataset.f; document.querySelectorAll('#explore-filters .filter').forEach(x=>x.classList.toggle('active', x === f)); renderExplore(); });
@@ -2338,7 +2895,7 @@ $('uplCoverInput').addEventListener('change', async e=>{
   const item = pendingReleaseFiles[uplCoverEditIndex];
   if (!item) return;
   const d = await processCover(f, 300);
-  if (!d){ toast('Не удалось','err'); return; }
+  if (!d){ toast('Error','err'); return; }
   item.cover = d;
   refreshReleaseFiles();
 });
@@ -2351,9 +2908,9 @@ $('authGoogle').addEventListener('click', loginWithGoogle);
 $('authEmailToggle').addEventListener('click', ()=>{ const f = $('authEmailForm'); f.style.display = f.style.display === 'none' ? 'block' : 'none'; });
 $('authSwitchMode').addEventListener('click', ()=>{
   authEmailMode = authEmailMode === 'login' ? 'register' : 'login';
-  $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
-  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
-  $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
+  $('authTitle').textContent = authEmailMode === 'register' ? 'Create account' : 'Sign in';
+  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Sign in' : 'Register';
+  $('authSubmit').textContent = authEmailMode === 'register' ? 'Create' : 'Sign in';
   $('captchaWrap').style.display = authEmailMode === 'register' ? 'block' : 'none';
   if (authEmailMode === 'register') newCaptcha();
 });
@@ -2361,6 +2918,34 @@ $('authSubmit').addEventListener('click', loginWithEmail);
 $('authPassword').addEventListener('keydown', e=>{ if (e.key === 'Enter') loginWithEmail(); });
 $('captchaA').addEventListener('keydown', e=>{ if (e.key === 'Enter') loginWithEmail(); });
 $('captchaRefresh').addEventListener('click', ()=>newCaptcha());
+
+// ====== ЯЗЫК + ПРЕДПОЧТЕНИЯ — привязка ======
+document.querySelectorAll('[data-pref]').forEach(btn=>{
+  btn.addEventListener('click', ()=>openPrefModal(btn.dataset.pref));
+});
+$('langBtn').addEventListener('click', ()=>{
+  const list = $('langList');
+  const langs = [['ru','Русский','🇷🇺'],['en','English','🇬🇧'],['de','Deutsch','🇩🇪'],['zh','中文','🇨🇳'],['es','Español','🇪🇸'],['fr','Français','🇫🇷']];
+  list.innerHTML = '';
+  langs.forEach(([code, name, flag])=>{
+    const b = document.createElement('button');
+    b.className = 'pref-radio-row';
+    b.innerHTML = `<input type="radio" name="lng" ${lang===code?'checked':''}><div class="pref-radio"></div><div class="lbl">${flag} ${name}</div>`;
+    b.addEventListener('click', ()=>{
+      lang = code;
+      list.querySelectorAll('input').forEach(x=>x.checked = false);
+      b.querySelector('input').checked = true;
+      applyLanguage(); renderPrefsValues();
+      setTimeout(()=>$('langModal').classList.remove('show'), 200);
+      toast(name,'ok');
+    });
+    list.appendChild(b);
+  });
+  $('langModal').classList.add('show');
+});
+$('langModal').addEventListener('click', e=>{ if (e.target.id==='langModal') e.target.classList.remove('show'); });
+$('prefModal').addEventListener('click', e=>{ if (e.target.id==='prefModal') e.target.classList.remove('show'); });
+$('prefCancel').addEventListener('click', ()=>$('prefModal').classList.remove('show'));
 
 document.addEventListener('keydown', e=>{
   if (e.target.matches('input, textarea')) return;
@@ -2371,10 +2956,14 @@ document.addEventListener('keydown', e=>{
 async function boot(){
   try { await setPersistence(auth, browserLocalPersistence); console.log('[auth] persistence = LOCAL'); } catch(e){ console.error('[auth] persistence fail', e); }
   loadPrefs(); applyTheme();
+  lang = detectLang();
+  document.body.classList.toggle('compact', !!prefs.display.compact);
+  settings.coverSize = prefs.display.coverSize;
   $('setId3').checked = settings.id3; $('setCover').checked = settings.cover; $('setFallback').checked = settings.fallback;
   tracks = []; playlists = []; favIds = []; favArtists = [];
-  renderAll();
-  showLoading('Подключаюсь к Firebase...');
+  applyLanguage();
+  renderPrefsValues();
+  showLoading('Connecting to Firebase...');
   getRedirectResult(auth).catch(e=>console.error(e));
   onAuthStateChanged(auth, user=>{
     if (user){
@@ -2385,7 +2974,7 @@ async function boot(){
       if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
       if (unsubFavArtists) { unsubFavArtists(); unsubFavArtists = null; }
       if (!user.isAnonymous){ update(ref(db,'users/'+user.uid), { isAnonymous: false, email: user.email || null }).catch(e=>console.error(e)); }
-      showLoading('Загружаю данные...');
+      showLoading('Loading data...');
       subscribeUserProfile();
       subscribeTracks();
       subscribePlaylists();
@@ -2396,8 +2985,8 @@ async function boot(){
     } else {
       signInAnonymously(auth).catch(err=>{
         console.error('auth error', err);
-        const map = { 'auth/configuration-not-found':'Включи Anonymous в Firebase', 'auth/operation-not-allowed':'Анонимный вход выключен', 'auth/unauthorized-domain':'Домен не разрешён', 'auth/admin-restricted-operation':'Анонимный вход выключен' };
-        showLoading('Ошибка: ' + (map[err.code] || err.code || err.message));
+        const map = { 'auth/configuration-not-found':'Enable Anonymous in Firebase', 'auth/operation-not-allowed':'Anonymous sign-in disabled', 'auth/unauthorized-domain':'Domain not allowed', 'auth/admin-restricted-operation':'Anonymous disabled' };
+        showLoading('Error: ' + (map[err.code] || err.code || err.message));
       });
     }
   });
