@@ -812,6 +812,41 @@ textarea.finput{min-height:70px;font-family:inherit}
 .auth-provider:disabled{opacity:.5;cursor:not-allowed}
 .auth-provider svg{flex-shrink:0}
 
+/* Капча */
+.captcha-box{
+  padding:14px;background:var(--card);border:1px solid var(--border-hi);
+  border-radius:14px;margin-bottom:12px;
+  display:flex;align-items:center;gap:14px;
+}
+.captcha-q{
+  font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--txt);
+  font-family:'SF Mono',Menlo,Consolas,monospace;
+  flex-shrink:0;
+  padding:0 8px;
+}
+.captcha-input{
+  flex:1;min-width:0;
+  padding:11px 14px;background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;color:var(--txt);font-size:15px;font-weight:700;
+  outline:none;-webkit-appearance:none;transition:.15s;
+  text-align:center;font-family:'SF Mono',Menlo,Consolas,monospace;
+  letter-spacing:.05em;
+}
+.captcha-input:focus{border-color:var(--accent)}
+.captcha-input.err{border-color:var(--danger);animation:shake .4s}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  75%{transform:translateX(6px)}
+}
+.captcha-refresh{
+  width:38px;height:38px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  color:var(--dim);transition:.15s;flex-shrink:0;
+}
+.captcha-refresh:active{transform:scale(.9);color:var(--txt)}
+.captcha-refresh svg{width:16px;height:16px}
+
 .loading-screen{
   position:fixed;inset:0;z-index:600;
   background:var(--bg);display:flex;align-items:center;justify-content:center;
@@ -1405,6 +1440,18 @@ textarea.finput{min-height:70px;font-family:inherit}
       <input class="finput" type="email" id="authEmail" placeholder="you@example.com" autocomplete="email">
       <label class="flabel">Пароль</label>
       <input class="finput" type="password" id="authPassword" placeholder="минимум 6 символов" autocomplete="current-password">
+
+      <div id="captchaWrap" style="display:none">
+        <label class="flabel">Проверка: не робот?</label>
+        <div class="captcha-box">
+          <span class="captcha-q" id="captchaQ">3 + 4 =</span>
+          <input class="captcha-input" type="text" id="captchaA" placeholder="?" maxlength="6" autocomplete="off" inputmode="numeric">
+          <button class="captcha-refresh" id="captchaRefresh" title="Новый пример" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+      </div>
+
       <div class="sheet-acts">
         <button class="ghost" id="authSwitchMode">Регистрация</button>
         <button class="solid" id="authSubmit">Войти</button>
@@ -1434,7 +1481,7 @@ import {
   getAuth, signInAnonymously, onAuthStateChanged,
   GoogleAuthProvider, signInWithPopup, getRedirectResult,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut
+  signOut, updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, get, update, remove, push, onValue, off }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1462,7 +1509,7 @@ let unsubTracks = null, unsubProfile = null, unsubPlaylists = null, unsubFavorit
 
 const PALETTE = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#ef4444','#14b8a6','#6366f1'];
 const DEF_SET = { id3:true, cover:true, fallback:true, coverSize:300 };
-const LS_PREF = 'sonic_pref_v8';
+const LS_PREF = 'sonic_pref_v9';
 
 let tracks = [];
 let playlists = [];
@@ -1488,6 +1535,7 @@ let studioTab = 'upload';
 let pendingReleaseFiles = [];
 let verifyCountdownId = null;
 let authEmailMode = 'login';
+let captchaA = 0, captchaB = 0, captchaOp = '+', captchaAnswer = 0;
 
 function $(id){ return document.getElementById(id); }
 function uid(){ return Math.random().toString(36).slice(2, 10); }
@@ -1640,7 +1688,6 @@ function parseName(name){
   return { artist: 'Неизвестен', title: base.trim() };
 }
 
-/* STORAGE UPLOADS */
 async function uploadFileToStorage(blob, path, contentType){
   const r = sRef(storage, path);
   await uploadBytes(r, blob, { contentType });
@@ -1654,7 +1701,7 @@ async function uploadCoverDataUrlToStorage(dataUrl, path){
   return uploadFileToStorage(blob, path, 'image/jpeg');
 }
 
-/* FIREBASE SYNC */
+/* SYNC */
 function trackFromFirebase(id, data){
   return {
     id,
@@ -1707,6 +1754,8 @@ function subscribeUserProfile(){
   const cb = snap => {
     const data = snap.val();
     const u = auth.currentUser;
+    // ЕДИНСТВЕННЫЙ ИСТОЧНИК ПРАВДЫ — auth.currentUser.isAnonymous
+    profile.isAnonymous = u ? u.isAnonymous : true;
     if (!data){
       set(userRef, {
         name: u && u.displayName ? u.displayName : (profile.name || 'Слушатель'),
@@ -1722,12 +1771,12 @@ function subscribeUserProfile(){
         isAnonymous: u ? u.isAnonymous : true,
         createdAt: Date.now()
       }).catch(e => console.error(e));
+      renderProfile();
       return;
     }
     profile.name = data.name || 'Слушатель';
     profile.avatar = data.avatar || data.photoURL || null;
-    profile.email = data.email || (u && u.email) || null;
-    profile.isAnonymous = data.isAnonymous === true || (u && u.isAnonymous);
+    profile.email = (u && u.email) || data.email || null;
     profile.musicianName = data.musicianName || '';
     profile.musicianGenre = data.musicianGenre || '';
     profile.musicianBio = data.musicianBio || '';
@@ -1777,18 +1826,19 @@ function subscribeFavorites(){
 async function saveUserProfile(){
   if (!firebaseUid) return;
   const userRef = ref(db, 'users/' + firebaseUid);
+  const u = auth.currentUser;
   try {
     await update(userRef, {
       name: profile.name || 'Слушатель',
       avatar: profile.avatar || null,
-      email: profile.email || null,
+      email: (u && u.email) || profile.email || null,
       musicianName: profile.musicianName || '',
       musicianGenre: profile.musicianGenre || '',
       musicianBio: profile.musicianBio || '',
       country: profile.country || '',
       link: profile.link || '',
       verified: !!profile.verified,
-      isAnonymous: profile.isAnonymous === true
+      isAnonymous: u ? u.isAnonymous : true
     });
   } catch(e){ console.error(e); toast('Не удалось сохранить профиль', 'err'); }
 }
@@ -2418,6 +2468,10 @@ function renderArtist(){
 }
 
 function renderProfile(){
+  const u = auth.currentUser;
+  const isAnon = u ? u.isAnonymous : true;
+  profile.isAnonymous = isAnon;
+
   const avatarHtml = profile.avatar
     ? `<img src="${profile.avatar}" alt="">`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
@@ -2454,8 +2508,6 @@ function renderProfile(){
     pb.style.border = '';
   }
 
-  // Account block
-  const isAnon = profile.isAnonymous === true;
   const accBlock = $('accountBlock');
   if (isAnon){
     accBlock.innerHTML = `
@@ -2476,13 +2528,14 @@ function renderProfile(){
     `;
     $('profLoginBtn').addEventListener('click', () => openAuthModal('login'));
   } else {
+    const emailLine = (u && u.email) || profile.email || 'Аккаунт активен';
     accBlock.innerHTML = `
       <div class="verify-item" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06);margin-bottom:12px">
         <div class="verify-check" style="background:#10b981;color:#fff">
           <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
         </div>
         <div class="verify-text">
-          <div class="t">${esc(profile.email || 'Аккаунт активен')}</div>
+          <div class="t">${esc(emailLine)}</div>
           <div class="d">Треки синхронизированы с облаком</div>
         </div>
       </div>
@@ -3171,6 +3224,23 @@ function renderQueue(){
 }
 
 /* AUTH */
+function newCaptcha(){
+  captchaOp = Math.random() < .5 ? '+' : '-';
+  if (captchaOp === '+'){
+    captchaA = Math.floor(Math.random() * 20) + 1;
+    captchaB = Math.floor(Math.random() * 20) + 1;
+    captchaAnswer = captchaA + captchaB;
+  } else {
+    captchaA = Math.floor(Math.random() * 15) + 5;
+    captchaB = Math.floor(Math.random() * Math.min(captchaA, 15)) + 1;
+    captchaAnswer = captchaA - captchaB;
+  }
+  const el = $('captchaQ');
+  if (el) el.textContent = captchaA + ' ' + captchaOp + ' ' + captchaB + ' =';
+  const inp = $('captchaA');
+  if (inp){ inp.value = ''; inp.classList.remove('err'); }
+}
+
 function openAuthModal(mode){
   authEmailMode = mode || 'login';
   $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
@@ -3182,6 +3252,8 @@ function openAuthModal(mode){
   $('authEmailForm').style.display = 'none';
   $('authEmail').value = '';
   $('authPassword').value = '';
+  $('captchaWrap').style.display = 'none';
+  newCaptcha();
   $('authModal').classList.add('show');
 }
 
@@ -3203,6 +3275,7 @@ async function migrateAnonymousData(oldUid, newUid){
       link: newProfile.link || oldProfile.link || '',
       avatar: newProfile.avatar || oldProfile.avatar || null,
       verified: !!(newProfile.verified || oldProfile.verified),
+      isAnonymous: false,
       createdAt: newProfile.createdAt || oldProfile.createdAt || Date.now()
     });
   } catch(e){ console.error('migrate profile', e); }
@@ -3245,8 +3318,19 @@ async function loginWithGoogle(){
     if (oldUid !== newUid){
       await migrateAnonymousData(oldUid, newUid);
     }
+    // Явно ставим isAnonymous: false
+    try {
+      await update(ref(db, 'users/' + newUid), {
+        email: result.user.email || null,
+        photoURL: result.user.photoURL || null,
+        isAnonymous: false
+      });
+    } catch(e){ console.error(e); }
+    profile.isAnonymous = false;
+    profile.email = result.user.email || profile.email;
     $('authModal').classList.remove('show');
     toast('Вошёл как ' + (result.user.displayName || result.user.email), 'ok');
+    renderProfile(); renderAll();
   } catch(e){
     console.error(e);
     if (e.code === 'auth/popup-blocked') toast('Разреши всплывающие окна', 'err');
@@ -3263,6 +3347,18 @@ async function loginWithEmail(){
   const password = $('authPassword').value;
   if (!email || !email.includes('@')){ toast('Введи корректный email', 'err'); return; }
   if (!password || password.length < 6){ toast('Пароль минимум 6 символов', 'err'); return; }
+
+  // Проверка капчи только при регистрации
+  if (authEmailMode === 'register'){
+    const ans = parseInt($('captchaA').value.trim(), 10);
+    if (ans !== captchaAnswer){
+      const inp = $('captchaA');
+      inp.classList.add('err');
+      newCaptcha();
+      toast('Неверный ответ на капчу', 'err');
+      return;
+    }
+  }
 
   const btn = $('authSubmit');
   btn.disabled = true;
@@ -3281,8 +3377,17 @@ async function loginWithEmail(){
     if (oldUid && oldUid !== newUid){
       await migrateAnonymousData(oldUid, newUid);
     }
+    try {
+      await update(ref(db, 'users/' + newUid), {
+        email: cred.user.email || null,
+        isAnonymous: false
+      });
+    } catch(e){ console.error(e); }
+    profile.isAnonymous = false;
+    profile.email = cred.user.email || profile.email;
     $('authModal').classList.remove('show');
     toast(authEmailMode === 'register' ? 'Аккаунт создан' : 'Вошёл', 'ok');
+    renderProfile(); renderAll();
   } catch(e){
     console.error(e);
     const map = {
@@ -3304,7 +3409,6 @@ async function loginWithEmail(){
 async function logoutUser(){
   if (!confirm('Выйти из аккаунта? Ты вернёшься в анонимный режим.')) return;
   try {
-    // Записываем, что профиль снова анонимный
     await signOut(auth);
     toast('Вышел');
   } catch(e){ console.error(e); }
@@ -3821,9 +3925,13 @@ $('authSwitchMode').addEventListener('click', () => {
   $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
   $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
   $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
+  $('captchaWrap').style.display = authEmailMode === 'register' ? 'block' : 'none';
+  if (authEmailMode === 'register') newCaptcha();
 });
 $('authSubmit').addEventListener('click', loginWithEmail);
 $('authPassword').addEventListener('keydown', e => { if (e.key === 'Enter') loginWithEmail(); });
+$('captchaA').addEventListener('keydown', e => { if (e.key === 'Enter') loginWithEmail(); });
+$('captchaRefresh').addEventListener('click', () => newCaptcha());
 
 /* KEYBOARD */
 document.addEventListener('keydown', e => {
@@ -3848,13 +3956,20 @@ function boot(){
 
   onAuthStateChanged(auth, user => {
     if (user){
-      const oldUid = firebaseUid;
       firebaseUid = user.uid;
 
       if (unsubTracks) { unsubTracks(); unsubTracks = null; }
       if (unsubProfile) { unsubProfile(); unsubProfile = null; }
       if (unsubPlaylists) { unsubPlaylists(); unsubPlaylists = null; }
       if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
+
+      // Если user залогинен (не аноним), но в БД isAnonymous: true — починим
+      if (!user.isAnonymous){
+        update(ref(db, 'users/' + user.uid), {
+          isAnonymous: false,
+          email: user.email || null
+        }).catch(e => console.error(e));
+      }
 
       showLoading('Загружаю данные...');
       subscribeUserProfile();
