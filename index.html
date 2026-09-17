@@ -1474,6 +1474,12 @@ import {
 import { getDatabase, ref, set, get, update, remove, push, onValue, off }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+/* ============================================================
+   ⚠️ ГЛАВНЫЙ ФИКС: databaseURL был с неправильным регионом.
+   Firebase сам сказал в консоли:
+     "Database lives in a different region. Please change your
+      database URL to https://sonic-563fa-default-rtdb.firebaseio.com"
+   ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyD0jALLWoEE775lxJAJbl5CF6TdSW9eaNg",
   authDomain: "sonic-563fa.firebaseapp.com",
@@ -1482,7 +1488,7 @@ const firebaseConfig = {
   messagingSenderId: "387934902778",
   appId: "1:387934902778:web:7a6c355090545682ac6c43",
   measurementId: "G-HBBDVLRCCZ",
-  databaseURL: "https://sonic-563fa-default-rtdb.europe-west1.firebasedatabase.app"
+  databaseURL: "https://sonic-563fa-default-rtdb.firebaseio.com"
 };
 
 const fbApp = initializeApp(firebaseConfig);
@@ -1870,7 +1876,6 @@ async function saveUserProfile(){
   pendingProfilePayload = payload;
   console.log('[saveUserProfile] → uid:', firebaseUid, 'keys:', Object.keys(payload));
 
-  // НЕ await — Firebase сам держит локальный кэш и дошлёт при первой возможности
   update(ref(db, 'users/' + firebaseUid), payload)
     .then(() => {
       console.log('[saveUserProfile] ✅ synced to server');
@@ -3525,12 +3530,10 @@ $('profEditSave').addEventListener('click', () => {
     profile.avatar = editProfAvatarNew;
   }
 
-  // Мгновенно применяем и закрываем
   $('profEditModal').classList.remove('show');
   renderProfile();
   renderAll();
 
-  // Fire-and-forget — запись в Firebase в фоне
   saveUserProfile();
   toast('Профиль сохранён', 'ok');
 });
@@ -4041,7 +4044,6 @@ document.addEventListener('keydown', e => {
 
 /* BOOT */
 async function boot(){
-  // 🔑 Стабильная сессия: uid не меняется при F5
   try {
     await setPersistence(auth, browserLocalPersistence);
     console.log('[auth] persistence = LOCAL');
