@@ -1748,6 +1748,7 @@ function subscribeUserProfile(){
     const u = auth.currentUser;
     profile.isAnonymous = u ? u.isAnonymous : true;
     if (!data){
+      console.log('[profile] creating initial profile for', firebaseUid);
       set(userRef, {
         name: u && u.displayName ? u.displayName : 'Слушатель',
         avatar: u && u.photoURL ? u.photoURL : null,
@@ -1758,7 +1759,8 @@ function subscribeUserProfile(){
         verified: false,
         isAnonymous: u ? u.isAnonymous : true,
         createdAt: Date.now()
-      }).catch(e => console.error(e));
+      }).then(() => console.log('[profile] created'))
+        .catch(e => console.error('[profile] create failed', e));
       renderProfile();
       return;
     }
@@ -1812,35 +1814,37 @@ function subscribeFavorites(){
 }
 
 async function saveUserProfile(){
-  if (!firebaseUid){ toast('Не авторизован', 'err'); console.error('no firebaseUid'); return false; }
+  if (!firebaseUid){
+    console.error('[saveUserProfile] no firebaseUid');
+    return { ok:false, error:'Нет авторизации' };
+  }
   const userRef = ref(db, 'users/' + firebaseUid);
   const u = auth.currentUser;
   const payload = {
-    name: profile.name || 'Слушатель',
+    name: (profile.name || 'Слушатель').trim(),
     avatar: profile.avatar || null,
     email: (u && u.email) || profile.email || null,
-    musicianName: profile.musicianName || '',
-    musicianGenre: profile.musicianGenre || '',
-    musicianBio: profile.musicianBio || '',
-    country: profile.country || '',
-    link: profile.link || '',
+    musicianName: (profile.musicianName || '').trim(),
+    musicianGenre: (profile.musicianGenre || '').trim(),
+    musicianBio: (profile.musicianBio || '').trim(),
+    country: (profile.country || '').trim(),
+    link: (profile.link || '').trim(),
     verified: !!profile.verified,
-    isAnonymous: u ? u.isAnonymous : true
+    isAnonymous: u ? u.isAnonymous : true,
+    updatedAt: Date.now()
   };
-  console.log('saveUserProfile →', 'uid:', firebaseUid, 'payload:', payload);
+  console.log('[saveUserProfile] uid:', firebaseUid, 'payload:', payload);
   try {
     await update(userRef, payload);
-    console.log('saveUserProfile OK');
-    return true;
+    console.log('[saveUserProfile] OK');
+    return { ok:true };
   } catch(e){
-    console.error('saveUserProfile FAILED:', e);
-    console.error('code:', e.code, 'message:', e.message);
-    if (e.code === 'PERMISSION_DENIED' || (e.message||'').toLowerCase().includes('permission')){
+    console.error('[saveUserProfile] FAILED', e);
+    const errText = (e && (e.code || e.message)) || 'unknown';
+    if (String(errText).toLowerCase().includes('permission')){
       toast('Нет прав на запись профиля. Проверь Rules', 'err');
-    } else {
-      toast('Ошибка: ' + (e.code || e.message || 'unknown'), 'err');
     }
-    return false;
+    return { ok:false, error: errText };
   }
 }
 
@@ -3466,20 +3470,31 @@ $('profAvatarClear').addEventListener('click', () => {
 $('profEditCancel').addEventListener('click', () => $('profEditModal').classList.remove('show'));
 $('profEditModal').addEventListener('click', e => { if (e.target === $('profEditModal')) $('profEditModal').classList.remove('show'); });
 $('profEditSave').addEventListener('click', async () => {
-  try {
-    profile.name = $('profName').value.trim() || 'Слушатель';
-    if (editProfAvatarNew !== undefined){
-      profile.avatar = editProfAvatarNew;
-    }
-    const ok = await saveUserProfile();
-    if (ok !== false){
-      renderProfile(); renderAll();
-      $('profEditModal').classList.remove('show');
-      toast('Профиль сохранён', 'ok');
-    }
-  } catch(e){
-    console.error('profEditSave error', e);
-    toast('Ошибка: ' + (e.message || 'unknown'), 'err');
+  const btn = $('profEditSave');
+  if (btn.disabled) return;
+  btn.disabled = true;
+  const oldText = btn.textContent;
+  btn.textContent = 'Сохранение...';
+
+  profile.name = $('profName').value.trim() || 'Слушатель';
+  if (editProfAvatarNew !== undefined){
+    profile.avatar = editProfAvatarNew;
+  }
+
+  // Локально применяем сразу
+  $('profEditModal').classList.remove('show');
+  renderProfile();
+  renderAll();
+
+  const res = await saveUserProfile();
+
+  btn.disabled = false;
+  btn.textContent = oldText;
+
+  if (res.ok){
+    toast('Профиль сохранён', 'ok');
+  } else {
+    toast('Локально сохранено. Ошибка: ' + res.error, 'err');
   }
 });
 
@@ -3497,17 +3512,33 @@ $('artistProfileModal').addEventListener('click', e => {
   if (e.target === $('artistProfileModal')) $('artistProfileModal').classList.remove('show');
 });
 $('apSave').addEventListener('click', async () => {
+  const btn = $('apSave');
+  if (btn.disabled) return;
   const name = $('apName').value.trim();
   if (!name){ toast('Введи сценическое имя', 'err'); return; }
-  profile.musicianName = name;
+
+  btn.disabled = true;
+  const oldText = btn.textContent;
+  btn.textContent = 'Сохранение...';
+
+  profile.musicianName  = name;
   profile.musicianGenre = $('apGenre').value.trim();
-  profile.country = $('apCountry').value.trim();
-  profile.musicianBio = $('apBio').value.trim();
-  profile.link = $('apLink').value.trim();
-  await saveUserProfile();
+  profile.country       = $('apCountry').value.trim();
+  profile.musicianBio   = $('apBio').value.trim();
+  profile.link          = $('apLink').value.trim();
+
   $('artistProfileModal').classList.remove('show');
-  toast('Профиль артиста сохранён', 'ok');
+  renderProfile();
   renderAll();
+  if ($('v-studio').classList.contains('active')) renderStudio();
+
+  const res = await saveUserProfile();
+
+  btn.disabled = false;
+  btn.textContent = oldText;
+
+  if (res.ok) toast('Профиль артиста сохранён', 'ok');
+  else toast('Локально сохранено. Ошибка: ' + res.error, 'err');
 });
 
 $('musicianCancel').addEventListener('click', () => $('musicianModal').classList.remove('show'));
@@ -3515,20 +3546,35 @@ $('musicianModal').addEventListener('click', e => {
   if (e.target === $('musicianModal')) $('musicianModal').classList.remove('show');
 });
 $('musicianSave').addEventListener('click', async () => {
+  const btn = $('musicianSave');
+  if (btn.disabled) return;
+  btn.disabled = true;
+  const oldText = btn.textContent;
+  btn.textContent = 'Сохранение...';
+
   const name = $('musicianName').value.trim();
   if (!name){
-    profile.musicianName = ''; profile.musicianGenre = ''; profile.musicianBio = '';
-    await saveUserProfile(); renderAll();
-    $('musicianModal').classList.remove('show');
-    toast('Статус музыканта снят');
-    return;
+    profile.musicianName = '';
+    profile.musicianGenre = '';
+    profile.musicianBio = '';
+  } else {
+    profile.musicianName  = name;
+    profile.musicianGenre = $('musicianGenre').value.trim();
+    profile.musicianBio   = $('musicianBio').value.trim();
   }
-  profile.musicianName = name;
-  profile.musicianGenre = $('musicianGenre').value.trim();
-  profile.musicianBio = $('musicianBio').value.trim();
-  await saveUserProfile(); renderAll();
+
   $('musicianModal').classList.remove('show');
-  toast('Ты теперь ' + name, 'ok');
+  renderProfile();
+  renderAll();
+  if ($('v-studio').classList.contains('active')) renderStudio();
+
+  const res = await saveUserProfile();
+
+  btn.disabled = false;
+  btn.textContent = oldText;
+
+  if (res.ok) toast(name ? ('Ты теперь ' + name) : 'Статус музыканта снят', 'ok');
+  else toast('Локально сохранено. Ошибка: ' + res.error, 'err');
 });
 
 $('setId3').addEventListener('change', () => { settings.id3 = $('setId3').checked; savePrefs(); });
