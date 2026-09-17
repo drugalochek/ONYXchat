@@ -35,6 +35,28 @@ body.mini-visible{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input,select,textarea{font-family:inherit}
 
+/* ==== AUTOFILL FIX ==== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill{
+  -webkit-text-fill-color:var(--txt) !important;
+  -webkit-box-shadow:0 0 0 1000px var(--card) inset !important;
+  transition:background-color 9999s ease-in-out 0s;
+  caret-color:var(--txt);
+}
+input:focus,textarea:focus,select:focus{outline:none}
+
+/* ==== SCROLLBARS ==== */
+*{scrollbar-width:thin;scrollbar-color:rgba(139,92,246,.35) transparent}
+*::-webkit-scrollbar{width:6px;height:6px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:rgba(139,92,246,.35);border-radius:3px}
+*::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.55)}
+.hrow::-webkit-scrollbar{display:none}
+.filter-row::-webkit-scrollbar{display:none}
+
 .topbar{position:sticky;top:0;z-index:40;
   padding:calc(12px + env(safe-area-inset-top)) 16px 10px;
   background:linear-gradient(180deg, var(--bg) 70%, transparent);
@@ -68,7 +90,7 @@ main{padding:0 16px 30px}
 .shead .sub{font-size:12px;color:var(--dim);font-weight:500;margin-top:2px}
 
 .hrow{display:flex;gap:14px;overflow-x:auto;margin:0 -16px;padding:6px 20px 10px;
-  scroll-snap-type:x mandatory;scrollbar-width:none}
+  scroll-snap-type:x mandatory}
 .hrow::-webkit-scrollbar{display:none}
 
 .artist{flex-shrink:0;width:90px;scroll-snap-align:start;cursor:pointer;
@@ -121,18 +143,6 @@ main{padding:0 16px 30px}
 .track-a{font-size:11.5px;color:var(--dim);font-weight:500;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   display:flex;align-items:center;gap:5px}
-.track-a .badge-artist{display:inline-flex;align-items:center;gap:2px;
-  padding:1px 6px;border-radius:8px;font-size:9.5px;font-weight:700;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
-  letter-spacing:.02em;text-transform:uppercase;
-  vertical-align:middle;flex-shrink:0}
-.track-a .badge-artist svg{width:8px;height:8px;fill:#fff}
-.track-a .badge-lyrics{display:inline-flex;align-items:center;gap:2px;
-  padding:1px 6px;border-radius:8px;font-size:9.5px;font-weight:700;
-  background:rgba(6,182,212,.2);color:var(--accent3);
-  letter-spacing:.02em;text-transform:uppercase;
-  vertical-align:middle;flex-shrink:0}
-.track-a .badge-lyrics svg{width:8px;height:8px;fill:currentColor}
 .track-acts{display:flex;align-items:center;gap:0}
 .tfav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   color:var(--dim);transition:.15s}
@@ -145,6 +155,65 @@ main{padding:0 16px 30px}
   color:var(--dim);transition:.15s}
 .tmenu:active{background:var(--card2);color:var(--txt)}
 .tmenu svg{width:16px;height:16px}
+
+/* ==== БЕЙДЖИ (С ФИКСОМ РАЗМЕРА SVG) ==== */
+.badge-artist,.badge-lyrics,.artist-badge,.verified-pill{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:3px !important;
+  line-height:1 !important;
+  height:auto !important;
+  padding:2px 7px !important;
+  border-radius:9px !important;
+  font-size:9.5px !important;
+  font-weight:800 !important;
+  letter-spacing:.02em !important;
+  text-transform:uppercase !important;
+  vertical-align:middle !important;
+  flex-shrink:0 !important;
+  width:auto !important;
+  max-width:fit-content !important;
+}
+.badge-artist{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff !important;
+}
+.badge-lyrics{
+  background:rgba(6,182,212,.2);
+  color:var(--accent3) !important;
+}
+.artist-badge{
+  padding:3px 10px !important;
+  border-radius:12px !important;
+  font-size:10px !important;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff !important;
+}
+.verified-pill{
+  background:linear-gradient(135deg,#06b6d4,#0891b2);
+  color:#fff !important;
+}
+.verified-pill.big{
+  padding:4px 12px !important;
+  border-radius:14px !important;
+  font-size:10.5px !important;
+}
+.badge-artist svg,.badge-lyrics svg,.artist-badge svg,
+.verified-pill svg,.verified-pill.big svg{
+  width:9px !important;
+  height:9px !important;
+  min-width:9px !important;
+  max-width:9px !important;
+  min-height:9px !important;
+  max-height:9px !important;
+  display:inline-block !important;
+  flex-shrink:0 !important;
+  overflow:hidden !important;
+  vertical-align:middle !important;
+}
+.artist-badge svg,.verified-pill.big svg{width:10px !important;height:10px !important;min-width:10px !important;max-width:10px !important;min-height:10px !important;max-height:10px !important}
+.badge-artist svg,.artist-badge svg,.verified-pill svg{fill:#fff !important}
+.badge-lyrics svg{fill:currentColor !important}
 
 .lrow{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;
   padding:9px 4px;border-radius:12px;cursor:pointer;transition:.15s}
@@ -222,8 +291,7 @@ main{padding:0 16px 30px}
 .plpage-del svg{width:20px;height:20px}
 .plpage-tracks{margin-top:14px}
 
-.filter-row{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;
-  scrollbar-width:none;padding-bottom:2px}
+.filter-row{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
 .filter-row::-webkit-scrollbar{display:none}
 .filter{flex-shrink:0;padding:8px 14px;border-radius:20px;
   background:var(--card);border:1px solid var(--border);
@@ -236,7 +304,7 @@ main{padding:0 16px 30px}
 .searchbar:focus-within{border-color:var(--accent);background:var(--card2)}
 .searchbar svg{width:18px;height:18px;color:var(--dim);flex-shrink:0}
 .searchbar input{flex:1;background:none;border:none;color:var(--txt);font-size:15px;
-  font-weight:500;outline:none;-webkit-appearance:none}
+  font-weight:500;-webkit-appearance:none}
 .searchbar input::placeholder{color:var(--dim)}
 .hist-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .hist-head h3{font-size:15px;font-weight:800;letter-spacing:-.02em}
@@ -433,8 +501,8 @@ main{padding:0 16px 30px}
 .flabel{display:block;font-size:10.5px;font-weight:700;color:var(--dim);margin-bottom:5px;
   letter-spacing:.06em;text-transform:uppercase}
 .finput{width:100%;padding:12px 14px;background:var(--card);border:1px solid var(--border);
-  border-radius:12px;color:var(--txt);font-size:14px;font-weight:500;outline:none;
-  margin-bottom:12px;-webkit-appearance:none;transition:.15s;resize:none}
+  border-radius:12px;color:var(--txt);font-size:14px;font-weight:500;
+  margin-bottom:12px;-webkit-appearance:none;transition:border-color .15s;resize:none}
 .finput:focus{border-color:var(--accent)}
 textarea.finput{min-height:70px;font-family:inherit}
 .cover-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -527,11 +595,6 @@ textarea.finput{min-height:70px;font-family:inherit}
 .artist-head-img svg{width:50px;height:50px;opacity:.85}
 .artist-head-name{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px;
   display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
-.artist-head-name .artist-badge{display:inline-flex;align-items:center;gap:3px;
-  padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
-  letter-spacing:.04em;text-transform:uppercase}
-.artist-head-name .artist-badge svg{width:10px;height:10px;fill:#fff}
 .artist-head-meta{font-size:12.5px;color:var(--dim);font-weight:500;margin-bottom:16px}
 .artist-play-btn{padding:12px 28px;border-radius:24px;
   background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
@@ -675,7 +738,54 @@ textarea.finput{min-height:70px;font-family:inherit}
 .upload-zone h3{font-size:15.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
 .upload-zone p{font-size:12.5px;color:var(--dim);line-height:1.5}
 
-/* ==== ПЕР-ФАЙЛОВЫЕ КАРТОЧКИ ЗАГРУЗКИ ==== */
+.studio-field{margin-bottom:12px}
+.studio-field label{
+  display:block;font-size:10.5px;font-weight:700;color:var(--dim);
+  margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;
+}
+.studio-field input,.studio-field textarea,.studio-field select{
+  width:100%;padding:12px 14px;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;color:var(--txt);
+  font-size:14px;font-weight:500;-webkit-appearance:none;
+  transition:border-color .15s;font-family:inherit;resize:none;
+}
+.studio-field input:focus,.studio-field textarea:focus,.studio-field select:focus{
+  border-color:var(--accent);
+}
+.studio-field textarea{min-height:80px}
+
+.studio-release{
+  display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;
+  padding:10px;border-radius:14px;background:var(--card);
+  border:1px solid var(--border);margin-bottom:8px;
+}
+.studio-release-cover{
+  width:56px;height:56px;border-radius:12px;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+}
+.studio-release-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.studio-release-cover svg{width:22px;height:22px}
+.studio-release-info{min-width:0}
+.studio-release-title{
+  font-size:13.5px;font-weight:700;margin-bottom:3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.studio-release-meta{
+  font-size:11.5px;color:var(--dim);font-weight:500;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.studio-release-actions{display:flex;gap:4px}
+.studio-release-actions button{
+  width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--dim);transition:.15s;
+}
+.studio-release-actions button:active{
+  background:var(--card2);color:var(--txt);
+}
+.studio-release-actions button.danger:active{color:var(--danger)}
+.studio-release-actions svg{width:15px;height:15px}
+
 .upl-card{
   display:grid;grid-template-columns:64px 1fr auto;
   gap:12px;align-items:start;
@@ -705,7 +815,7 @@ textarea.finput{min-height:70px;font-family:inherit}
 .upl-fields{display:flex;flex-direction:column;gap:6px;min-width:0}
 .upl-fields input{
   width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--border);
-  border-radius:8px;color:var(--txt);font-size:12.5px;font-weight:500;outline:none;
+  border-radius:8px;color:var(--txt);font-size:12.5px;font-weight:500;
   -webkit-appearance:none;transition:border-color .15s;
 }
 .upl-fields input:focus{border-color:var(--accent)}
@@ -715,6 +825,7 @@ textarea.finput{min-height:70px;font-family:inherit}
   background:rgba(6,182,212,.15);color:var(--accent3);
   align-self:flex-start;display:inline-flex;align-items:center;gap:4px;
   cursor:pointer;transition:.15s;letter-spacing:.03em;text-transform:uppercase;
+  border:none;
 }
 .upl-lyrics-badge:hover{background:rgba(6,182,212,.25)}
 .upl-lyrics-badge svg{width:10px;height:10px;fill:currentColor}
@@ -726,7 +837,7 @@ textarea.finput{min-height:70px;font-family:inherit}
   width:100%;min-height:90px;padding:10px 12px;background:var(--bg);
   border:1px solid var(--border);border-radius:10px;color:var(--txt);
   font-size:12.5px;font-family:'SF Mono',Menlo,Consolas,monospace;
-  outline:none;resize:vertical;-webkit-appearance:none;line-height:1.5;
+  resize:vertical;-webkit-appearance:none;line-height:1.5;
 }
 .upl-lyrics-area textarea:focus{border-color:var(--accent)}
 .upl-lyrics-area .hint{
@@ -748,7 +859,6 @@ textarea.finput{min-height:70px;font-family:inherit}
   animation:spin .8s linear infinite;display:inline-block;
 }
 
-/* ==== МОДАЛКА КАРАОКЕ ==== */
 .lyrics-head{text-align:center;padding:4px 10px 14px;
   border-bottom:1px solid var(--border);margin-bottom:14px}
 .lyrics-title{font-size:18px;font-weight:800;letter-spacing:-.025em;margin-bottom:4px;
@@ -801,7 +911,7 @@ textarea.finput{min-height:70px;font-family:inherit}
   flex:1;min-width:0;
   padding:11px 14px;background:var(--bg);border:1px solid var(--border);
   border-radius:10px;color:var(--txt);font-size:15px;font-weight:700;
-  outline:none;-webkit-appearance:none;transition:.15s;
+  -webkit-appearance:none;transition:.15s;
   text-align:center;font-family:'SF Mono',Menlo,Consolas,monospace;
   letter-spacing:.05em;
 }
@@ -819,6 +929,76 @@ textarea.finput{min-height:70px;font-family:inherit}
 }
 .captcha-refresh:active{transform:scale(.9);color:var(--txt)}
 .captcha-refresh svg{width:16px;height:16px}
+
+.verify-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.verify-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  transition:.15s;
+}
+.verify-item.done{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06)}
+.verify-item.fail{border-color:rgba(244,63,94,.3)}
+.verify-check{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--border-hi);color:var(--dim);
+}
+.verify-check svg{width:12px;height:12px;fill:currentColor}
+.verify-item.done .verify-check{background:#10b981;color:#fff}
+.verify-text{flex:1;min-width:0}
+.verify-text .t{font-size:13.5px;font-weight:600;margin-bottom:2px}
+.verify-text .d{font-size:11.5px;color:var(--dim);font-weight:500}
+
+.verify-agree{
+  display:flex;gap:11px;padding:12px 6px;cursor:pointer;user-select:none;
+  position:relative;border-radius:10px;transition:.15s;
+}
+.verify-agree:active{background:var(--card)}
+.verify-agree input{position:absolute;opacity:0;pointer-events:none}
+.vcb{
+  width:20px;height:20px;border-radius:6px;flex-shrink:0;
+  background:var(--border);border:1.5px solid var(--border-hi);
+  display:flex;align-items:center;justify-content:center;transition:.2s;
+}
+.vcb::after{
+  content:'';width:9px;height:5px;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(-45deg) scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+  margin-top:-2px;
+}
+.verify-agree input:checked + .vcb{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;
+}
+.verify-agree input:checked + .vcb::after{transform:rotate(-45deg) scale(1)}
+.verify-agree .lbl{flex:1;font-size:12.5px;font-weight:500;line-height:1.4;color:var(--txt)}
+.verify-agree .lbl b{color:var(--accent3);font-weight:700}
+
+.verify-code-box{
+  padding:24px 20px;border:2px dashed var(--accent);
+  border-radius:18px;text-align:center;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(6,182,212,.08));
+}
+.verify-code-label{font-size:11px;color:var(--dim);font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.verify-code{
+  font-family:'SF Mono',Menlo,Consolas,monospace;
+  font-size:32px;font-weight:800;letter-spacing:.14em;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  margin-bottom:10px;user-select:all;
+}
+.verify-code-timer{font-size:11.5px;color:var(--dim);font-weight:600}
+.verify-code-timer b{color:var(--danger);font-weight:800}
+
+.verify-code-input{
+  width:100%;padding:16px;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;color:var(--txt);font-size:22px;font-weight:800;
+  font-family:'SF Mono',Menlo,Consolas,monospace;text-align:center;
+  letter-spacing:.2em;text-transform:uppercase;
+  -webkit-appearance:none;transition:.15s;margin-bottom:12px;
+}
+.verify-code-input:focus{border-color:var(--accent);background:var(--card2)}
 
 .loading-screen{
   position:fixed;inset:0;z-index:600;
@@ -1476,7 +1656,6 @@ const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getDatabase(fbApp);
 
-/* RTDB CONNECTION */
 let fbConnected = false;
 const connRef = ref(db, '.info/connected');
 onValue(connRef, snap => {
@@ -1485,7 +1664,6 @@ onValue(connRef, snap => {
   console.log('[fb] connected =', fbConnected);
   updateConnBadge();
   if (fbConnected && !was){
-    console.log('[fb] reconnect → flushing pending profile');
     flushPendingProfile();
   }
 });
@@ -1539,8 +1717,8 @@ let pendingReleaseFiles = [];
 let verifyCountdownId = null;
 let authEmailMode = 'login';
 let captchaA = 0, captchaB = 0, captchaOp = '+', captchaAnswer = 0;
-let uplCoverEditIndex = -1;   // какой файл сейчас меняет обложку
-let lyrActiveLineIdx = -1;    // текущая подсвеченная строка караоке
+let uplCoverEditIndex = -1;
+let lyrActiveLineIdx = -1;
 
 function $(id){ return document.getElementById(id); }
 function uid(){ return Math.random().toString(36).slice(2, 10); }
@@ -1591,34 +1769,28 @@ function showLoading(text){
 }
 function hideLoading(){ $('loadingScreen').classList.add('hide'); }
 
-/* ============ BASE64 / ФАЙЛЫ ============ */
 function fileToBase64AndMime(file){
   return new Promise((resolve, reject) => {
     if (file.size > 6 * 1024 * 1024){
-      reject(new Error('Файл больше 6 МБ — RTDB не примет'));
-      return;
+      reject(new Error('Файл больше 6 МБ')); return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       const dataUrl = reader.result;
       const comma = dataUrl.indexOf(',');
-      if (comma < 0){ reject(new Error('Ошибка чтения файла')); return; }
+      if (comma < 0){ reject(new Error('Ошибка чтения')); return; }
       const meta = dataUrl.substring(5, comma);
       const semi = meta.indexOf(';');
       const mime = semi >= 0 ? meta.substring(0, semi) : 'audio/mpeg';
       const base64 = dataUrl.substring(comma + 1);
-      if (base64.length > 8388608){
-        reject(new Error('base64 > 8 МБ, файл слишком большой'));
-        return;
-      }
+      if (base64.length > 8388608){ reject(new Error('base64 > 8 МБ')); return; }
       resolve({ base64, mime });
     };
-    reader.onerror = () => reject(new Error('Не удалось прочитать файл'));
+    reader.onerror = () => reject(new Error('Ошибка'));
     reader.readAsDataURL(file);
   });
 }
 
-/* METADATA */
 function readTags(file){
   return new Promise(resolve => {
     if (!settings.id3 || typeof window.jsmediatags === 'undefined'){ resolve({}); return; }
@@ -1633,7 +1805,6 @@ function readTags(file){
           if (settings.cover && tg.picture && tg.picture.data){
             try { out.picBlob = new Blob([new Uint8Array(tg.picture.data)], { type: tg.picture.format || 'image/jpeg' }); } catch(e){}
           }
-          // Извлекаем текст песни (USLT/SYLT)
           try {
             let lyrics = '';
             if (tg.lyrics){
@@ -1643,7 +1814,6 @@ function readTags(file){
                 if (typeof lyrics !== 'string') lyrics = '';
               }
             }
-            // SYLT - синхронизированный текст, конвертим в LRC
             if (!lyrics && tg.SYLT && Array.isArray(tg.SYLT.data)){
               lyrics = tg.SYLT.data.map(item => {
                 const total = item.time || 0;
@@ -1662,7 +1832,6 @@ function readTags(file){
   });
 }
 
-/* ============ LRC / KARAOKE ============ */
 function parseLyrics(raw){
   const out = { synced: false, lines: [] };
   if (!raw) return out;
@@ -1689,7 +1858,6 @@ function parseLyrics(raw){
       time: x.time != null ? x.time : null,
       text: x.text
     }));
-    // Сортируем по времени
     out.lines.sort((a, b) => (a.time || 0) - (b.time || 0));
   } else {
     out.synced = false;
@@ -1787,7 +1955,6 @@ function parseName(name){
   return { artist: 'Неизвестен', title: base.trim() };
 }
 
-/* FIREBASE SYNC */
 function trackFromFirebase(id, data){
   return {
     id,
@@ -1806,6 +1973,24 @@ function trackFromFirebase(id, data){
   };
 }
 
+let _deepLinkDone = false;
+function tryOpenDeepLink(){
+  if (_deepLinkDone) return;
+  const params = new URLSearchParams(location.search);
+  const tid = params.get('t');
+  if (!tid){ _deepLinkDone = true; return; }
+  if (!tracks.length) return;
+  _deepLinkDone = true;
+  const idx = tracks.findIndex(x => x.id === tid);
+  try { history.replaceState({}, '', location.pathname + location.hash); } catch(e){}
+  if (idx < 0){ toast('Трек по ссылке не найден', 'err'); return; }
+  setTimeout(() => {
+    playTrackInList(tracks, idx);
+    openFs();
+    toast('Открываю трек по ссылке', 'ok');
+  }, 300);
+}
+
 function subscribeTracks(){
   if (unsubTracks) { unsubTracks(); unsubTracks = null; }
   const allRef = ref(db, 'tracks');
@@ -1820,6 +2005,7 @@ function subscribeTracks(){
       if (!t){ closeMiniPlayer(true); closeFs(); }
       else { updateMiniCover(); updateFsCover(); }
     }
+    tryOpenDeepLink();
   };
   onValue(allRef, cb, err => {
     console.error('tracks sub error', err);
@@ -1899,13 +2085,9 @@ function subscribeFavorites(){
   unsubFavorites = () => off(favRef, 'value', cb);
 }
 
-/* PROFILE SYNC */
 let pendingProfilePayload = null;
 async function saveUserProfile(){
-  if (!firebaseUid){
-    console.error('[saveUserProfile] no firebaseUid');
-    return { ok:false, error:'Нет авторизации' };
-  }
+  if (!firebaseUid){ return { ok:false, error:'Нет авторизации' }; }
   const u = auth.currentUser;
   const payload = {
     name: (profile.name || 'Слушатель').trim(),
@@ -1922,12 +2104,9 @@ async function saveUserProfile(){
   };
   pendingProfilePayload = payload;
   update(ref(db, 'users/' + firebaseUid), payload)
-    .then(() => {
-      console.log('[saveUserProfile] ✅ synced');
-      pendingProfilePayload = null;
-    })
+    .then(() => { pendingProfilePayload = null; })
     .catch(e => {
-      console.error('[saveUserProfile] ❌', e);
+      console.error('[saveUserProfile]', e);
       toast('Не синхронизировано: ' + (e.code || e.message), 'err');
     });
   return { ok:true, pending: !fbConnected };
@@ -1978,7 +2157,6 @@ audio.addEventListener('timeupdate', () => {
   $('fsSeekTh').style.left = p + '%';
   $('fsCur').textContent = fmt(cur);
   $('fsDur').textContent = fmt(dur);
-  // Караоке: подсветка активной строки
   if ($('lyricsModal').classList.contains('show')){
     updateKaraoke(cur);
   }
@@ -2016,7 +2194,6 @@ function playAt(idx){
 
 async function loadAndPlay(t){
   currentId = t.id;
-
   let src = audioCache.get(t.id);
   if (!src){
     toast('Загружаю аудио...');
@@ -2024,18 +2201,15 @@ async function loadAndPlay(t){
       const snap = await get(ref(db, 'audio/' + t.id));
       const audioData = snap.val();
       if (!audioData || !audioData.data){
-        toast('Аудио не найдено в базе', 'err');
-        return;
+        toast('Аудио не найдено', 'err'); return;
       }
       src = `data:${audioData.mime || 'audio/mpeg'};base64,${audioData.data}`;
       audioCache.set(t.id, src);
     } catch(e){
       console.error('audio fetch fail:', e);
-      toast('Не удалось загрузить аудио', 'err');
-      return;
+      toast('Не удалось загрузить аудио', 'err'); return;
     }
   }
-
   audio.src = src;
   audio.play().catch(() => { toast('Не удалось воспроизвести', 'err'); });
 
@@ -2067,8 +2241,8 @@ async function loadAndPlay(t){
   }
   updatePlayUI();
   renderAll();
-  // Обновить открытую модалку караоке
   if ($('lyricsModal').classList.contains('show')) renderLyricsModal();
+  try { history.replaceState({}, '', location.pathname + '?t=' + encodeURIComponent(t.id)); } catch(e){}
 }
 
 function updateMiniCover(){
@@ -2106,7 +2280,6 @@ function updatePlayUI(){
   $('fsShuffle').classList.toggle('active', shuffle);
   $('fsRepeat').classList.toggle('active', repeatMode !== 'off');
   $('fsRepeatBadge').style.display = repeatMode === 'one' ? 'block' : 'none';
-  // Кнопка караоке — активна, если у трека есть текст
   const hasLyrics = !!(t && t.lyrics);
   $('fsLyrics').classList.toggle('active', hasLyrics);
   $('fsLyrics').style.opacity = hasLyrics ? '1' : '0.35';
@@ -2115,6 +2288,7 @@ function closeMiniPlayer(stop){
   if (stop !== false){
     try { audio.pause(); } catch(e){}
     currentId = null;
+    try { history.replaceState({}, '', location.pathname); } catch(e){}
   }
   $('mini').classList.remove('show');
   document.body.classList.remove('mini-visible');
@@ -2127,36 +2301,44 @@ function toggleFav(id){
   saveFavoritesToFB();
   renderAll(); updatePlayUI();
 }
+
+function trackShareUrl(t){
+  return location.origin + location.pathname + '?t=' + encodeURIComponent(t.id);
+}
 function shareTrack(t){
-  const text = `${t.artist} — ${t.title}${t.album ? ' (' + t.album + ')' : ''}`;
-  if (navigator.share) navigator.share({ title: t.title, text }).catch(()=>{});
-  else if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast('Скопировано', 'ok'));
-  else toast(text);
+  const url = trackShareUrl(t);
+  const title = `${t.artist} — ${t.title}`;
+  const text = `${t.artist} — ${t.title}${t.album ? ' · ' + t.album : ''}`;
+  if (navigator.share){
+    navigator.share({ title, text, url }).catch(()=>{});
+  } else if (navigator.clipboard){
+    navigator.clipboard.writeText(url).then(() => toast('Ссылка скопирована', 'ok'))
+      .catch(() => { prompt('Скопируй ссылку:', url); });
+  } else {
+    prompt('Скопируй ссылку:', url);
+  }
 }
 
+/* ==== HTML БЕЙДЖЕЙ: SVG с явными width/height ==== */
 function artistBadgeHtml(artist){
-  if (!profile.musicianName) return '';
-  if (artist !== profile.musicianName) return '';
-  return `<span class="badge-artist"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Артист</span>`;
+  if (!profile.musicianName || artist !== profile.musicianName) return '';
+  return `<span class="badge-artist"><svg width="8" height="8" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Артист</span>`;
 }
 function artistBadgeBigHtml(artist){
-  if (!profile.musicianName) return '';
-  if (artist !== profile.musicianName) return '';
-  return `<span class="artist-badge"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Артист</span>`;
+  if (!profile.musicianName || artist !== profile.musicianName) return '';
+  return `<span class="artist-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Артист</span>`;
 }
 function verifiedBadgeHtml(artist){
-  if (!profile.verified) return '';
-  if (artist !== profile.musicianName) return '';
-  return `<span class="verified-pill"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>OK</span>`;
+  if (!profile.verified || artist !== profile.musicianName) return '';
+  return `<span class="verified-pill"><svg width="9" height="9" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>OK</span>`;
 }
 function verifiedBadgeBigHtml(artist){
-  if (!profile.verified) return '';
-  if (artist !== profile.musicianName) return '';
-  return `<span class="verified-pill big"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Верифицирован</span>`;
+  if (!profile.verified || artist !== profile.musicianName) return '';
+  return `<span class="verified-pill big"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fff" style="display:inline-block;flex-shrink:0"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Верифицирован</span>`;
 }
 function lyricsBadgeHtml(t){
   if (!t || !t.lyrics) return '';
-  return `<span class="badge-lyrics"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Текст</span>`;
+  return `<span class="badge-lyrics"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;flex-shrink:0"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Текст</span>`;
 }
 function getArtistAvatar(artistName, tracksByArtist){
   if (artistName === profile.musicianName && profile.avatar) return profile.avatar;
@@ -2293,16 +2475,11 @@ function renderExplore(){
   else if (exploreFilter === 'long'){ list.sort((a, b) => b.duration - a.duration); title = 'Долгие'; }
   else if (exploreFilter === 'short'){ list.sort((a, b) => a.duration - b.duration); title = 'Короткие'; }
   else if (exploreFilter === 'random'){ list.sort(() => Math.random() - .5); title = 'Случайно'; }
-
   $('explore-title').textContent = title;
   $('explore-sub').textContent = list.length + ' треков';
-
   const el = $('explore-list');
   el.innerHTML = '';
-  if (!list.length){
-    el.innerHTML = emptyState('Пусто', 'Загрузи треки.');
-    return;
-  }
+  if (!list.length){ el.innerHTML = emptyState('Пусто', 'Загрузи треки.'); return; }
   list.forEach((t, i) => el.appendChild(trackRow(t, list, i)));
 }
 
@@ -2328,9 +2505,8 @@ function renderFav(){
       coverContent = `<img src="${pl.cover}" alt="">`;
     } else {
       const first = pl.trackIds.length && getTrack(pl.trackIds[0]) && getTrack(pl.trackIds[0]).cover;
-      if (first){
-        coverContent = `<img src="${first}" alt="">`;
-      } else {
+      if (first){ coverContent = `<img src="${first}" alt="">`; }
+      else {
         coverBg = `background:linear-gradient(135deg,${pl.color},${shade(pl.color,-30)})`;
         coverContent = `<svg class="plc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
       }
@@ -2352,8 +2528,7 @@ function renderFav(){
   });
   plEl.querySelectorAll('.plc-del').forEach(btn => {
     btn.addEventListener('click', e => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       deletePlaylist(btn.dataset.del);
     });
   });
@@ -2405,7 +2580,6 @@ function renderPlaylistPage(){
   if (!pl){ switchView('fav'); return; }
   const list = pl.trackIds.map(getTrack).filter(Boolean);
   const head = $('plPageHead');
-
   let coverHtmlStr;
   if (pl.cover){
     coverHtmlStr = `<img src="${pl.cover}" alt="">`;
@@ -2441,7 +2615,6 @@ function renderPlaylistPage(){
       </button>
     </div>
   `;
-
   $('plPagePlayBtn').addEventListener('click', () => {
     if (!list.length){ toast('Плейлист пуст'); return; }
     playTrackInList(list, 0); openFs();
@@ -2491,12 +2664,10 @@ function renderSearchBody(q){
   const box = $('searchBody');
   q = (q || '').trim().toLowerCase();
   box.innerHTML = '';
-
   if (!q){
     box.innerHTML = `<div class="empty"><div class="empty-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><b>Начни вводить</b>Поиск по трекам, исполнителям и плейлистам.</div>`;
     return;
   }
-
   const trFound = tracks.filter(t =>
     t.title.toLowerCase().includes(q) ||
     t.artist.toLowerCase().includes(q) ||
@@ -2504,12 +2675,10 @@ function renderSearchBody(q){
   );
   const arFound = [...new Set(tracks.filter(t => t.artist.toLowerCase().includes(q)).map(t => t.artist))];
   const plFound = playlists.filter(p => p.name.toLowerCase().includes(q));
-
   if (!trFound.length && !arFound.length && !plFound.length){
     box.innerHTML = '<div class="empty"><b>Ничего не нашлось</b>Попробуй другой запрос.</div>';
     return;
   }
-
   if (arFound.length){
     const h = document.createElement('div');
     h.className = 'hist-head'; h.style.marginTop = '6px';
@@ -2517,11 +2686,7 @@ function renderSearchBody(q){
     box.appendChild(h);
     arFound.slice(0, 5).forEach(a => {
       const av = getArtistAvatar(a);
-      box.appendChild(listRow({
-        title: a, meta: 'Исполнитель',
-        coverImg: av, round: true,
-        onClick: () => openArtist(a)
-      }));
+      box.appendChild(listRow({ title: a, meta: 'Исполнитель', coverImg: av, round: true, onClick: () => openArtist(a) }));
     });
   }
   if (trFound.length){
@@ -2561,7 +2726,6 @@ function renderArtist(){
   if (!tracksBy.length){ switchView('home'); return; }
   const avatar = getArtistAvatar(name, tracksBy);
   const albumsSet = new Set(tracksBy.map(t => t.album).filter(Boolean));
-
   $('artistHead').innerHTML = `
     <div class="artist-head-img">${avatar ? `<img src="${avatar}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}</div>
     <div class="artist-head-name">${esc(name)}${artistBadgeBigHtml(name)}${verifiedBadgeBigHtml(name)}</div>
@@ -2574,7 +2738,6 @@ function renderArtist(){
   $('artistPlayAll').addEventListener('click', () => {
     playTrackInList(tracksBy, 0); openFs();
   });
-
   const content = $('artistContent');
   content.innerHTML = '';
   if (artistTab === 'tracks'){
@@ -2601,7 +2764,6 @@ function renderProfile(){
   const u = auth.currentUser;
   const isAnon = u ? u.isAnonymous : true;
   profile.isAnonymous = isAnon;
-
   const avatarHtml = profile.avatar
     ? `<img src="${profile.avatar}" alt="">`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
@@ -2692,7 +2854,6 @@ function openProfileEdit(){
 function renderStudio(){
   const content = $('studioContent');
   content.innerHTML = '';
-
   if (!profile.musicianName){
     content.innerHTML = `
       <div class="studio-intro">
@@ -2720,7 +2881,6 @@ function renderStudio(){
   const avatarHtml = profile.avatar
     ? `<img src="${profile.avatar}" alt="">`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-
   const myTracks = tracks.filter(t => t.artist === profile.musicianName);
   let verifyBtnHtml;
   if (profile.verified){
@@ -2731,7 +2891,6 @@ function renderStudio(){
   } else {
     verifyBtnHtml = `<button class="studio-verify-btn" id="studioVerifyBtn">Верификация</button>`;
   }
-
   const head = document.createElement('div');
   head.className = 'studio-head';
   head.innerHTML = `
@@ -2743,7 +2902,6 @@ function renderStudio(){
     ${verifyBtnHtml}
   `;
   content.appendChild(head);
-
   const vb = $('studioVerifyBtn');
   if (vb) vb.addEventListener('click', openVerification);
 
@@ -2827,10 +2985,9 @@ function renderStudio(){
         e.stopPropagation();
         const act = btn.dataset.act;
         if (act === 'play'){
-          playTrackInList(al.tracks, 0);
-          openFs();
+          playTrackInList(al.tracks, 0); openFs();
         } else if (act === 'del'){
-          if (!confirm('Удалить релиз «' + al.name + '»? Все треки внутри удалятся.')) return;
+          if (!confirm('Удалить релиз «' + al.name + '»?')) return;
           for (const tr of al.tracks){
             try {
               await remove(ref(db, 'tracks/' + tr.id));
@@ -2879,7 +3036,6 @@ function renderStudio(){
   }
 }
 
-/* ============ ЗАГРУЗКА РЕЛИЗА (пофайловые карточки) ============ */
 function openUploadRelease(){
   pendingReleaseFiles = [];
   $('releaseGenre').value = profile.musicianGenre || '';
@@ -2893,28 +3049,19 @@ function refreshReleaseFiles(){
   list.innerHTML = '';
   if (!pendingReleaseFiles.length) return;
   list.innerHTML = `<div style="font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Файлы (${pendingReleaseFiles.length})</div>`;
-
   pendingReleaseFiles.forEach((item, i) => {
     const el = document.createElement('div');
     el.className = 'upl-card';
-    el.dataset.idx = i;
-
     const coverInner = item.cover
       ? `<img src="${item.cover}" alt=""><div class="upl-cover-hint">Заменить</div>`
       : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><div class="upl-cover-hint">Обложка</div>`;
-
-    const xBtn = item.cover
-      ? `<div class="upl-cover-x" data-x="1">×</div>`
-      : '';
-
+    const xBtn = item.cover ? `<div class="upl-cover-x" data-x="1">×</div>` : '';
     const lyricsBtn = item.lyrics
       ? `<button class="upl-lyrics-badge" data-lyr-toggle="1"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Текст вшит</button>`
       : `<button class="upl-lyrics-badge" data-lyr-toggle="1" style="background:rgba(255,255,255,.06);color:var(--dim)"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg>Добавить текст</button>`;
-
     const loadingBlock = item.loadingTags
       ? `<div class="upl-loading">Читаю теги…</div>`
       : lyricsBtn;
-
     el.innerHTML = `
       <div class="upl-cover" data-cover-pick="1">
         ${coverInner}
@@ -2931,45 +3078,34 @@ function refreshReleaseFiles(){
       </button>
       <div class="upl-lyrics-area ${item._lyrOpen ? 'open' : ''}">
         <textarea data-lyr-input="1" maxlength="8000" placeholder="Вставь текст или LRC-формат&#10;[00:12.34]Строка 1&#10;[00:15.20]Строка 2">${esc(item.lyrics || '')}</textarea>
-        <div class="hint">Если используешь LRC (с временем в квадратных скобках), текст будет подсвечиваться в плеере во время проигрывания.</div>
+        <div class="hint">Если используешь LRC (с временем в квадратных скобках), текст будет подсвечиваться в плеере.</div>
       </div>
     `;
-
-    // Cover pick
     el.querySelector('[data-cover-pick]').addEventListener('click', e => {
       if (e.target.closest('.upl-cover-x')) return;
       uplCoverEditIndex = i;
       $('uplCoverInput').click();
     });
-    // Cover remove
     const xEl = el.querySelector('.upl-cover-x');
     if (xEl) xEl.addEventListener('click', e => {
       e.stopPropagation();
       item.cover = null;
       refreshReleaseFiles();
     });
-    // Remove file
     el.querySelector('[data-remove]').addEventListener('click', () => {
       pendingReleaseFiles.splice(i, 1);
       refreshReleaseFiles();
     });
-    // Inputs
     el.querySelectorAll('input[data-f]').forEach(inp => {
-      inp.addEventListener('input', () => {
-        item[inp.dataset.f] = inp.value;
-      });
+      inp.addEventListener('input', () => { item[inp.dataset.f] = inp.value; });
     });
-    // Lyrics
     const lyBtn = el.querySelector('[data-lyr-toggle]');
     if (lyBtn) lyBtn.addEventListener('click', () => {
       item._lyrOpen = !item._lyrOpen;
       refreshReleaseFiles();
     });
     const lyrInput = el.querySelector('[data-lyr-input]');
-    if (lyrInput) lyrInput.addEventListener('input', () => {
-      item.lyrics = lyrInput.value;
-    });
-
+    if (lyrInput) lyrInput.addEventListener('input', () => { item.lyrics = lyrInput.value; });
     list.appendChild(el);
   });
 }
@@ -2978,18 +3114,11 @@ async function addFilesToPending(files){
   const startIdx = pendingReleaseFiles.length;
   for (const f of files){
     pendingReleaseFiles.push({
-      file: f,
-      title: '',
-      artist: '',
-      album: '',
-      cover: null,
-      lyrics: '',
-      loadingTags: true
+      file: f, title: '', artist: '', album: '',
+      cover: null, lyrics: '', loadingTags: true
     });
   }
   refreshReleaseFiles();
-
-  // Асинхронно читаем теги и заполняем
   const tasks = [];
   for (let i = startIdx; i < pendingReleaseFiles.length; i++){
     const item = pendingReleaseFiles[i];
@@ -3017,60 +3146,41 @@ async function publishRelease(){
   if (!pendingReleaseFiles.length){ toast('Добавь хотя бы один файл', 'err'); return; }
   const genre = $('releaseGenre').value.trim();
   const year = $('releaseYear').value.trim();
-
   const btn = $('releasePublish');
   btn.disabled = true;
   const oldText = btn.textContent;
   btn.textContent = 'Загрузка...';
-
   let added = 0, failed = 0;
   for (const item of pendingReleaseFiles){
     try {
       const f = item.file;
       if (f.size > 6 * 1024 * 1024){
-        toast(`${f.name} больше 6 МБ — пропущен`, 'err');
-        failed++;
-        continue;
+        toast(`${f.name} больше 6 МБ`, 'err'); failed++; continue;
       }
-
       const title  = (item.title || '').trim() || parseName(f.name).title;
       const artist = (item.artist || '').trim() || profile.musicianName || profile.name;
       const album  = (item.album || '').trim();
       const lyrics = (item.lyrics || '').trim();
       const cover  = item.cover || null;
-
       const { base64, mime } = await fileToBase64AndMime(f);
-
       const dur = await new Promise(res => {
         const a = new Audio(); a.preload = 'metadata';
         a.onloadedmetadata = () => res(a.duration || 0);
         a.onerror = () => res(0);
         a.src = `data:${mime};base64,${base64}`;
       });
-
       const newTrackRef = push(ref(db, 'tracks'));
       const trackId = newTrackRef.key;
-
       await set(newTrackRef, {
-        title,
-        artist,
+        title, artist,
         ownerId: firebaseUid,
         ownerName: profile.name,
-        album,
-        genre,
-        year,
-        duration: dur,
-        cover,
-        lyrics,
+        album, genre, year,
+        duration: dur, cover, lyrics,
         addedAt: Date.now(),
         verified: !!profile.verified
       });
-
-      await set(ref(db, 'audio/' + trackId), {
-        data: base64,
-        mime: mime
-      });
-
+      await set(ref(db, 'audio/' + trackId), { data: base64, mime });
       added++;
     } catch(e){
       console.error('upload error', item.file && item.file.name, e);
@@ -3078,7 +3188,6 @@ async function publishRelease(){
       failed++;
     }
   }
-
   btn.disabled = false;
   btn.textContent = oldText;
   $('uploadReleaseModal').classList.remove('show');
@@ -3088,22 +3197,19 @@ async function publishRelease(){
   renderStudio();
 }
 
-/* ============ КАРАОКЕ / ТЕКСТ ============ */
 function renderLyricsModal(){
   const t = currentTrack();
   const head = $('lyrTitle');
   const art = $('lyrArtist');
   const body = $('lyrBody');
   if (!t){
-    head.textContent = '—';
-    art.textContent = '';
+    head.textContent = '—'; art.textContent = '';
     body.classList.remove('plain');
     body.textContent = 'Ничего не играет';
     return;
   }
   head.textContent = t.title;
   art.textContent = t.album ? t.artist + ' — ' + t.album : t.artist;
-
   if (!t.lyrics){
     body.classList.remove('plain');
     body.innerHTML = `<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px 0">Для этого трека нет текста.<br><br>Открой «Настройки трека» и вставь текст вручную.</div>`;
@@ -3142,9 +3248,7 @@ function updateKaraoke(t){
   lines.forEach(el => el.classList.remove('active'));
   if (idx >= 0 && lines[idx]){
     lines[idx].classList.add('active');
-    try {
-      lines[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
-    } catch(e){}
+    try { lines[idx].scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch(e){}
   }
 }
 
@@ -3171,42 +3275,27 @@ function checkVerifyRequirements(){
 function openVerification(){
   const req = checkVerifyRequirements();
   const allOk = req.tracks && req.profile && req.avatar && req.country;
-
   const body = $('verifyBody');
   body.innerHTML = `
     <div class="verify-list">
       <div class="verify-item ${req.tracks ? 'done' : 'fail'}">
-        <div class="verify-check">${req.tracks ? '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
-        <div class="verify-text">
-          <div class="t">Минимум 2 трека</div>
-          <div class="d">У тебя: ${req.tracksCount}</div>
-        </div>
+        <div class="verify-check">${req.tracks ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
+        <div class="verify-text"><div class="t">Минимум 2 трека</div><div class="d">У тебя: ${req.tracksCount}</div></div>
       </div>
       <div class="verify-item ${req.profile ? 'done' : 'fail'}">
-        <div class="verify-check">${req.profile ? '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
-        <div class="verify-text">
-          <div class="t">Заполненный профиль</div>
-          <div class="d">Имя + жанр + био 40+. Био: ${req.bioLen}/40</div>
-        </div>
+        <div class="verify-check">${req.profile ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
+        <div class="verify-text"><div class="t">Заполненный профиль</div><div class="d">Имя + жанр + био 40+. Био: ${req.bioLen}/40</div></div>
       </div>
       <div class="verify-item ${req.avatar ? 'done' : 'fail'}">
-        <div class="verify-check">${req.avatar ? '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
-        <div class="verify-text">
-          <div class="t">Аватар</div>
-          <div class="d">Загрузи фото в профиле</div>
-        </div>
+        <div class="verify-check">${req.avatar ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
+        <div class="verify-text"><div class="t">Аватар</div><div class="d">Загрузи фото в профиле</div></div>
       </div>
       <div class="verify-item ${req.country ? 'done' : 'fail'}">
-        <div class="verify-check">${req.country ? '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
-        <div class="verify-text">
-          <div class="t">Страна</div>
-          <div class="d">Укажи в профиле артиста</div>
-        </div>
+        <div class="verify-check">${req.country ? '<svg viewBox="0 0 24 24" width="12" height="12"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' : ''}</div>
+        <div class="verify-text"><div class="t">Страна</div><div class="d">Укажи в профиле артиста</div></div>
       </div>
     </div>
-
     <div style="font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:16px 0 6px">Подтверждение</div>
-
     <label class="verify-agree">
       <input type="checkbox" id="vAgree1" ${allOk ? '' : 'disabled'}>
       <div class="vcb"></div>
@@ -3215,27 +3304,23 @@ function openVerification(){
     <label class="verify-agree">
       <input type="checkbox" id="vAgree2" ${allOk ? '' : 'disabled'}>
       <div class="vcb"></div>
-      <div class="lbl">Обязуюсь <b>не публиковать</b> чужое без разрешения</div>
+      <div class="lbl">Обязуюсь <b>не публиковать</b> чужое</div>
     </label>
     <label class="verify-agree">
       <input type="checkbox" id="vAgree3" ${allOk ? '' : 'disabled'}>
       <div class="vcb"></div>
-      <div class="lbl">Согласен с <b>правилами платформы</b></div>
+      <div class="lbl">Согласен с <b>правилами</b></div>
     </label>
-
     <div class="sheet-acts" style="margin-top:16px">
       <button class="ghost" id="vCancel">Закрыть</button>
       <button class="solid" id="vStart" ${allOk ? '' : 'disabled'}>Получить код</button>
     </div>
   `;
-
   $('vCancel').addEventListener('click', () => {
     if (verifyCountdownId) clearInterval(verifyCountdownId);
     $('verifyModal').classList.remove('show');
   });
-  if (allOk){
-    $('vStart').addEventListener('click', startVerifyCode);
-  }
+  if (allOk) $('vStart').addEventListener('click', startVerifyCode);
   $('verifyModal').classList.add('show');
 }
 
@@ -3243,12 +3328,10 @@ function startVerifyCode(){
   const a1 = $('vAgree1').checked;
   const a2 = $('vAgree2').checked;
   const a3 = $('vAgree3').checked;
-  if (!a1 || !a2 || !a3){ toast('Подтверди все три пункта', 'err'); return; }
-
+  if (!a1 || !a2 || !a3){ toast('Подтверди все', 'err'); return; }
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
   for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-
   let secondsLeft = 20;
   $('verifyBody').innerHTML = `
     <div class="verify-code-box">
@@ -3257,18 +3340,16 @@ function startVerifyCode(){
       <div class="verify-code-timer">Исчезнет через <b id="vTimer">${secondsLeft}</b> сек</div>
     </div>
     <p style="font-size:12.5px;color:var(--dim);text-align:center;line-height:1.55;margin-bottom:14px">
-      Код создан один раз. После таймера введи его по памяти.
+      Код создан один раз.
     </p>
     <div class="sheet-acts">
       <button class="solid" id="vToInput" style="flex:1">Я запомнил</button>
     </div>
   `;
-
   $('vToInput').addEventListener('click', () => {
     if (verifyCountdownId) clearInterval(verifyCountdownId);
     showVerifyInput(code);
   });
-
   verifyCountdownId = setInterval(() => {
     secondsLeft--;
     const el = $('vTimer');
@@ -3283,7 +3364,7 @@ function startVerifyCode(){
 function showVerifyInput(correctCode){
   $('verifyBody').innerHTML = `
     <p style="font-size:13px;color:var(--dim);line-height:1.55;margin-bottom:14px;text-align:center">
-      Введи код, который видел выше.
+      Введи код.
     </p>
     <input class="verify-code-input" id="vInput" maxlength="6" placeholder="XXXXXX" autocomplete="off">
     <div class="sheet-acts">
@@ -3297,7 +3378,6 @@ function showVerifyInput(correctCode){
     input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   });
   input.addEventListener('keydown', e => { if (e.key === 'Enter') $('vCheck').click(); });
-
   $('vAgain').addEventListener('click', startVerifyCode);
   $('vCheck').addEventListener('click', () => {
     const val = input.value.trim().toUpperCase();
@@ -3353,7 +3433,6 @@ function openTrackMenu(t){
   const isFav = favIds.includes(t.id);
   const notIn = playlists.filter(p => !p.trackIds.includes(t.id));
   const inPls = playlists.filter(p => p.trackIds.includes(t.id));
-  // ⚠️ ВЛАДЕЛЕЦ — только автор загрузки
   const isMine = t.ownerId === firebaseUid;
   const hasLyrics = !!t.lyrics;
 
@@ -3386,7 +3465,6 @@ function openTrackMenu(t){
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       <span class="tm-lbl">Убрать из «<em>${esc(pl.name)}</em>»</span></button>`;
   });
-  // ⚠️ Кнопка «Настройки» — только для владельца
   if (isMine){
     html += `<button class="tm-item" data-a="edit">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -3395,7 +3473,6 @@ function openTrackMenu(t){
   html += `<button class="tm-item" data-a="share">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     <span class="tm-lbl">Поделиться</span></button>`;
-  // ⚠️ Удаление — только владелец
   if (isMine){
     html += `<button class="tm-item danger" data-a="del">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
@@ -3408,7 +3485,6 @@ function closeTrackMenu(){ $('tmModal').classList.remove('show'); menuTrackId = 
 
 let editId = null, editCoverNew = undefined, editReplaceFileObj = undefined;
 function openEdit(t){
-  // ⚠️ Разрешаем открывать только владельцу
   if (t.ownerId !== firebaseUid){
     toast('Редактировать может только автор загрузки', 'err');
     return;
@@ -3566,8 +3642,8 @@ function openAuthModal(mode){
   authEmailMode = mode || 'login';
   $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
   $('authDesc').textContent = authEmailMode === 'register'
-    ? 'Заведи аккаунт, чтобы твои треки сохранились навсегда.'
-    : 'Войди, чтобы сохранить треки и получить профиль артиста.';
+    ? 'Заведи аккаунт, чтобы треки сохранились навсегда.'
+    : 'Войди, чтобы сохранить треки.';
   $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
   $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
   $('authEmailForm').style.display = 'none';
@@ -3580,10 +3656,7 @@ function openAuthModal(mode){
 
 async function migrateAnonymousData(oldUid, newUid){
   if (!oldUid || !newUid || oldUid === newUid) return;
-  try {
-    await set(ref(db, 'linkedAccounts/' + newUid), { from: oldUid, at: Date.now() });
-  } catch(e){ console.error('migrate write', e); }
-
+  try { await set(ref(db, 'linkedAccounts/' + newUid), { from: oldUid, at: Date.now() }); } catch(e){}
   try {
     const oldProfile = (await get(ref(db, 'users/' + oldUid))).val() || {};
     const newProfile = (await get(ref(db, 'users/' + newUid))).val() || {};
@@ -3599,31 +3672,27 @@ async function migrateAnonymousData(oldUid, newUid){
       isAnonymous: false,
       createdAt: newProfile.createdAt || oldProfile.createdAt || Date.now()
     });
-  } catch(e){ console.error('migrate profile', e); }
-
+  } catch(e){}
   try {
     const oldPl = (await get(ref(db, 'playlists/' + oldUid))).val() || {};
     if (Object.keys(oldPl).length) {
       const newPl = (await get(ref(db, 'playlists/' + newUid))).val() || {};
       await set(ref(db, 'playlists/' + newUid), { ...oldPl, ...newPl });
     }
-  } catch(e){ console.error('migrate playlists', e); }
-
+  } catch(e){}
   try {
     const oldFav = (await get(ref(db, 'favorites/' + oldUid))).val() || {};
     const newFav = (await get(ref(db, 'favorites/' + newUid))).val() || {};
     await set(ref(db, 'favorites/' + newUid), { ...oldFav, ...newFav });
-  } catch(e){ console.error('migrate favorites', e); }
-
+  } catch(e){}
   try {
     const allTracks = (await get(ref(db, 'tracks'))).val() || {};
     for (const [id, t] of Object.entries(allTracks)){
       if (t.ownerId === oldUid){
-        try { await update(ref(db, 'tracks/' + id), { ownerId: newUid, ownerName: profile.name || 'Слушатель' }); }
-        catch(e){ console.error('migrate track', id, e); }
+        try { await update(ref(db, 'tracks/' + id), { ownerId: newUid }); } catch(e){}
       }
     }
-  } catch(e){ console.error('migrate tracks', e); }
+  } catch(e){}
 }
 
 async function loginWithGoogle(){
@@ -3636,16 +3705,14 @@ async function loginWithGoogle(){
     const oldUid = firebaseUid;
     const result = await signInWithPopup(auth, provider);
     const newUid = result.user.uid;
-    if (oldUid !== newUid){
-      await migrateAnonymousData(oldUid, newUid);
-    }
+    if (oldUid !== newUid) await migrateAnonymousData(oldUid, newUid);
     try {
       await update(ref(db, 'users/' + newUid), {
         email: result.user.email || null,
         photoURL: result.user.photoURL || null,
         isAnonymous: false
       });
-    } catch(e){ console.error(e); }
+    } catch(e){}
     profile.isAnonymous = false;
     profile.email = result.user.email || profile.email;
     $('authModal').classList.remove('show');
@@ -3655,11 +3722,9 @@ async function loginWithGoogle(){
     console.error(e);
     if (e.code === 'auth/popup-blocked') toast('Разреши всплывающие окна', 'err');
     else if (e.code === 'auth/popup-closed-by-user'){}
-    else if (e.code === 'auth/unauthorized-domain') toast('Домен не разрешён в Firebase', 'err');
+    else if (e.code === 'auth/unauthorized-domain') toast('Домен не разрешён', 'err');
     else toast('Ошибка: ' + (e.code || e.message), 'err');
-  } finally {
-    btn.disabled = false;
-  }
+  } finally { btn.disabled = false; }
 }
 
 async function loginWithEmail(){
@@ -3667,7 +3732,6 @@ async function loginWithEmail(){
   const password = $('authPassword').value;
   if (!email || !email.includes('@')){ toast('Введи корректный email', 'err'); return; }
   if (!password || password.length < 6){ toast('Пароль минимум 6 символов', 'err'); return; }
-
   if (authEmailMode === 'register'){
     const ans = parseInt($('captchaA').value.trim(), 10);
     if (ans !== captchaAnswer){
@@ -3678,30 +3742,20 @@ async function loginWithEmail(){
       return;
     }
   }
-
   const btn = $('authSubmit');
   btn.disabled = true;
   const oldText = btn.textContent;
   btn.textContent = '...';
-
   try {
     const oldUid = firebaseUid;
     let cred;
-    if (authEmailMode === 'register'){
-      cred = await createUserWithEmailAndPassword(auth, email, password);
-    } else {
-      cred = await signInWithEmailAndPassword(auth, email, password);
-    }
+    if (authEmailMode === 'register') cred = await createUserWithEmailAndPassword(auth, email, password);
+    else cred = await signInWithEmailAndPassword(auth, email, password);
     const newUid = cred.user.uid;
-    if (oldUid && oldUid !== newUid){
-      await migrateAnonymousData(oldUid, newUid);
-    }
+    if (oldUid && oldUid !== newUid) await migrateAnonymousData(oldUid, newUid);
     try {
-      await update(ref(db, 'users/' + newUid), {
-        email: cred.user.email || null,
-        isAnonymous: false
-      });
-    } catch(e){ console.error(e); }
+      await update(ref(db, 'users/' + newUid), { email: cred.user.email || null, isAnonymous: false });
+    } catch(e){}
     profile.isAnonymous = false;
     profile.email = cred.user.email || profile.email;
     $('authModal').classList.remove('show');
@@ -3716,7 +3770,7 @@ async function loginWithEmail(){
       'auth/wrong-password': 'Неверный пароль',
       'auth/user-not-found': 'Пользователь не найден',
       'auth/invalid-credential': 'Неверный email или пароль',
-      'auth/operation-not-allowed': 'Email-вход выключен в Firebase'
+      'auth/operation-not-allowed': 'Email-вход выключен'
     };
     toast(map[e.code] || ('Ошибка: ' + (e.code || e.message)), 'err');
   } finally {
@@ -3726,11 +3780,8 @@ async function loginWithEmail(){
 }
 
 async function logoutUser(){
-  if (!confirm('Выйти из аккаунта? Ты вернёшься в анонимный режим.')) return;
-  try {
-    await signOut(auth);
-    toast('Вышел');
-  } catch(e){ console.error(e); }
+  if (!confirm('Выйти из аккаунта?')) return;
+  try { await signOut(auth); toast('Вышел'); } catch(e){}
 }
 
 /* BINDINGS */
@@ -3758,14 +3809,10 @@ $('profEditModal').addEventListener('click', e => { if (e.target === $('profEdit
 $('profEditSave').addEventListener('click', () => {
   const btn = $('profEditSave');
   if (btn.disabled) return;
-
   profile.name = $('profName').value.trim() || 'Слушатель';
-  if (editProfAvatarNew !== undefined){
-    profile.avatar = editProfAvatarNew;
-  }
+  if (editProfAvatarNew !== undefined) profile.avatar = editProfAvatarNew;
   $('profEditModal').classList.remove('show');
-  renderProfile();
-  renderAll();
+  renderProfile(); renderAll();
   saveUserProfile();
   toast('Профиль сохранён', 'ok');
 });
@@ -3788,18 +3835,14 @@ $('apSave').addEventListener('click', () => {
   if (btn.disabled) return;
   const name = $('apName').value.trim();
   if (!name){ toast('Введи сценическое имя', 'err'); return; }
-
   profile.musicianName  = name;
   profile.musicianGenre = $('apGenre').value.trim();
   profile.country       = $('apCountry').value.trim();
   profile.musicianBio   = $('apBio').value.trim();
   profile.link          = $('apLink').value.trim();
-
   $('artistProfileModal').classList.remove('show');
-  renderProfile();
-  renderAll();
+  renderProfile(); renderAll();
   if ($('v-studio').classList.contains('active')) renderStudio();
-
   saveUserProfile();
   toast('Профиль артиста сохранён', 'ok');
 });
@@ -3811,25 +3854,19 @@ $('musicianModal').addEventListener('click', e => {
 $('musicianSave').addEventListener('click', () => {
   const btn = $('musicianSave');
   if (btn.disabled) return;
-
   const name = $('musicianName').value.trim();
   if (!name){
-    profile.musicianName = '';
-    profile.musicianGenre = '';
-    profile.musicianBio = '';
+    profile.musicianName = ''; profile.musicianGenre = ''; profile.musicianBio = '';
   } else {
     profile.musicianName  = name;
     profile.musicianGenre = $('musicianGenre').value.trim();
     profile.musicianBio   = $('musicianBio').value.trim();
   }
-
   $('musicianModal').classList.remove('show');
-  renderProfile();
-  renderAll();
+  renderProfile(); renderAll();
   if ($('v-studio').classList.contains('active')) renderStudio();
-
   saveUserProfile();
-  toast(name ? ('Ты теперь ' + name) : 'Статус музыканта снят', 'ok');
+  toast(name ? ('Ты теперь ' + name) : 'Статус снят', 'ok');
 });
 
 $('setId3').addEventListener('change', () => { settings.id3 = $('setId3').checked; savePrefs(); });
@@ -3843,20 +3880,19 @@ $('themeSwitch').addEventListener('click', e => {
 });
 
 $('profReset').addEventListener('click', async () => {
-  if (!confirm('Удалить все твои загруженные треки? Это необратимо.')) return;
+  if (!confirm('Удалить все твои загруженные треки?')) return;
   const myTracks = tracks.filter(t => t.ownerId === firebaseUid);
   for (const t of myTracks){
     try {
       await remove(ref(db, 'tracks/' + t.id));
       await remove(ref(db, 'audio/' + t.id));
       audioCache.delete(t.id);
-    } catch(e){ console.error(e); }
+    } catch(e){}
   }
   if (myTracks.some(t => t.id === currentId)){ closeMiniPlayer(true); closeFs(); }
-  toast('Все твои треки удалены', 'ok');
+  toast('Все треки удалены', 'ok');
 });
 
-/* MINI */
 $('miniPlay').addEventListener('click', e => {
   e.stopPropagation();
   if (!currentTrack()){
@@ -3876,8 +3912,7 @@ $('mini').addEventListener('click', e => {
   if (currentTrack()) openFs();
 });
 $('miniClose').addEventListener('click', e => {
-  e.stopPropagation();
-  e.preventDefault();
+  e.stopPropagation(); e.preventDefault();
   closeMiniPlayer(true);
   toast('Плеер закрыт');
 });
@@ -3908,7 +3943,6 @@ $('miniClose').addEventListener('click', e => {
   });
 })();
 
-/* FULLSCREEN */
 $('fsBack').addEventListener('click', closeFs);
 $('fs').addEventListener('click', e => { if (e.target === $('fs')) closeFs(); });
 $('fsPlay').addEventListener('click', () => {
@@ -3949,12 +3983,10 @@ $('fsQueue').addEventListener('click', () => {
   $('queueModal').classList.add('show');
 });
 
-/* LYRICS MODAL */
 $('lyricsModal').addEventListener('click', e => {
   if (e.target === $('lyricsModal')) $('lyricsModal').classList.remove('show');
 });
 
-/* TIMER */
 $('timerGrid').addEventListener('click', e => {
   const opt = e.target.closest('.timer-opt');
   if (!opt) return;
@@ -3967,7 +3999,6 @@ $('timerModal').addEventListener('click', e => { if (e.target === $('timerModal'
 $('queueClose').addEventListener('click', () => $('queueModal').classList.remove('show'));
 $('queueModal').addEventListener('click', e => { if (e.target === $('queueModal')) $('queueModal').classList.remove('show'); });
 
-/* FS SEEK */
 let fsSeeking = false;
 function fsSeekAt(e){
   const rect = $('fsSeek').getBoundingClientRect();
@@ -3982,7 +4013,6 @@ $('fsSeek').addEventListener('touchstart', e => { fsSeeking = true; fsSeekAt(e);
 $('fsSeek').addEventListener('touchmove', e => { if (fsSeeking) fsSeekAt(e); }, { passive: true });
 $('fsSeek').addEventListener('touchend', () => fsSeeking = false);
 
-/* FS SWIPE */
 let tsY = 0, tcY = 0, swiping = false;
 $('fs').addEventListener('touchstart', e => {
   if (e.target.closest('button, .fs-seek')) return;
@@ -4002,7 +4032,6 @@ $('fs').addEventListener('touchend', () => {
   swiping = false;
 });
 
-/* TRACK MENU */
 $('tmModal').addEventListener('click', async e => {
   if (e.target === $('tmModal')){ closeTrackMenu(); return; }
   const item = e.target.closest('.tm-item');
@@ -4037,13 +4066,12 @@ $('tmModal').addEventListener('click', async e => {
       await remove(ref(db, 'tracks/' + t.id));
       await remove(ref(db, 'audio/' + t.id));
       audioCache.delete(t.id);
-    } catch(e){ console.error(e); toast('Ошибка', 'err'); }
+    } catch(e){}
     if (currentId === t.id){ closeMiniPlayer(true); closeFs(); }
     closeTrackMenu(); toast('Удалено');
   }
 });
 
-/* EDIT */
 $('editCancel').addEventListener('click', closeEdit);
 $('editModal').addEventListener('click', e => { if (e.target === $('editModal')) closeEdit(); });
 $('editCoverClear').addEventListener('click', () => {
@@ -4082,24 +4110,14 @@ $('editSave').addEventListener('click', async () => {
   if (!editId) return;
   const t = getTrack(editId);
   if (!t) return;
-  // ⚠️ Двойная проверка владельца
-  if (t.ownerId !== firebaseUid){
-    toast('Это не твой трек', 'err');
-    closeEdit();
-    return;
-  }
-
+  if (t.ownerId !== firebaseUid){ toast('Это не твой трек', 'err'); closeEdit(); return; }
   const upd = {
     title: $('editTitle').value.trim() || t.title,
     artist: $('editArtist').value.trim() || 'Неизвестен',
     album: $('editAlbum').value.trim(),
     lyrics: $('editLyrics').value.trim()
   };
-
-  if (editCoverNew !== undefined){
-    upd.cover = editCoverNew;
-  }
-
+  if (editCoverNew !== undefined) upd.cover = editCoverNew;
   try {
     if (editReplaceFileObj){
       const { base64, mime } = await fileToBase64AndMime(editReplaceFileObj);
@@ -4117,7 +4135,6 @@ $('editSave').addEventListener('click', async () => {
         audio.play().catch(()=>{});
       }
     }
-
     await update(ref(db, 'tracks/' + t.id), upd);
   } catch(e){
     console.error('editSave error', e);
@@ -4126,11 +4143,9 @@ $('editSave').addEventListener('click', async () => {
   }
   closeEdit();
   toast('Сохранено', 'ok');
-  // Если открыта модалка караоке — обновим
   if ($('lyricsModal').classList.contains('show')) renderLyricsModal();
 });
 
-/* NEW PLAYLIST */
 $('plCancel').addEventListener('click', () => $('plModal').classList.remove('show'));
 $('plModal').addEventListener('click', e => { if (e.target === $('plModal')) $('plModal').classList.remove('show'); });
 $('newPlCoverPick').addEventListener('click', () => $('plCoverInput').click());
@@ -4151,11 +4166,8 @@ $('plOk').addEventListener('click', async () => {
   if (!name){ toast('Введи название', 'err'); return; }
   const id = uid();
   playlists.unshift({
-    id,
-    name: name.slice(0, 40),
-    color: plColor,
-    trackIds: [],
-    cover: newPlCoverNew || null,
+    id, name: name.slice(0, 40), color: plColor,
+    trackIds: [], cover: newPlCoverNew || null,
     createdAt: Date.now()
   });
   await savePlaylistsToFB();
@@ -4164,7 +4176,6 @@ $('plOk').addEventListener('click', async () => {
 });
 $('plName').addEventListener('keydown', e => { if (e.key === 'Enter') $('plOk').click(); });
 
-/* PLAYLIST SETTINGS */
 $('plSetCancel').addEventListener('click', () => $('plSettingsModal').classList.remove('show'));
 $('plSettingsModal').addEventListener('click', e => { if (e.target === $('plSettingsModal')) $('plSettingsModal').classList.remove('show'); });
 $('plSetCoverPick').addEventListener('click', () => $('plSetCoverInput').click());
@@ -4192,18 +4203,14 @@ $('plSetSave').addEventListener('click', async () => {
     const m = bg.match(/#[0-9a-f]{6}/i);
     if (m) pl.color = m[0];
   }
-  if (plSetCoverNew !== undefined){
-    pl.cover = plSetCoverNew;
-  }
+  if (plSetCoverNew !== undefined) pl.cover = plSetCoverNew;
   await savePlaylistsToFB();
   $('plSettingsModal').classList.remove('show');
   toast('Плейлист обновлён', 'ok');
 });
 
-/* SEARCH */
 $('searchInput').addEventListener('input', () => renderSearchBody($('searchInput').value));
 
-/* EXPLORE */
 $('explore-filters').addEventListener('click', e => {
   const f = e.target.closest('.filter');
   if (!f) return;
@@ -4212,14 +4219,12 @@ $('explore-filters').addEventListener('click', e => {
   renderExplore();
 });
 
-/* LIKED */
 $('liked-row').addEventListener('click', () => {
   const favs = tracks.filter(t => favIds.includes(t.id));
   if (favs.length){ playTrackInList(favs, 0); openFs(); }
   else toast('В избранном пусто');
 });
 
-/* BACKS */
 $('artistBack').addEventListener('click', () => {
   switchView('home');
   currentArtist = null;
@@ -4236,7 +4241,6 @@ $('playlistBack').addEventListener('click', () => {
   switchView('fav');
 });
 
-/* RELEASE UPLOAD */
 function pickFilesForUpload(){
   const inp = document.createElement('input');
   inp.type = 'file';
@@ -4279,7 +4283,6 @@ $('uploadReleaseModal').addEventListener('click', e => {
 });
 $('releasePublish').addEventListener('click', publishRelease);
 
-/* AUTH BINDINGS */
 $('authCancel').addEventListener('click', () => $('authModal').classList.remove('show'));
 $('authModal').addEventListener('click', e => { if (e.target === $('authModal')) $('authModal').classList.remove('show'); });
 $('authGoogle').addEventListener('click', loginWithGoogle);
@@ -4300,67 +4303,54 @@ $('authPassword').addEventListener('keydown', e => { if (e.key === 'Enter') logi
 $('captchaA').addEventListener('keydown', e => { if (e.key === 'Enter') loginWithEmail(); });
 $('captchaRefresh').addEventListener('click', () => newCaptcha());
 
-/* KEYBOARD */
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, textarea')) return;
   if (e.code === 'Space'){ e.preventDefault(); $('miniPlay').click(); }
   if (e.key === 'Escape'){ closeFs(); closeTrackMenu(); closeEdit(); $('lyricsModal').classList.remove('show'); }
 });
 
-/* BOOT */
 async function boot(){
   try {
     await setPersistence(auth, browserLocalPersistence);
     console.log('[auth] persistence = LOCAL');
   } catch(e){ console.error('[auth] persistence fail', e); }
-
   loadPrefs();
   applyTheme();
   $('setId3').checked = settings.id3;
   $('setCover').checked = settings.cover;
   $('setFallback').checked = settings.fallback;
-
   tracks = []; playlists = []; favIds = [];
   renderAll();
   showLoading('Подключаюсь к Firebase...');
-
   getRedirectResult(auth).catch(e => console.error(e));
-
   onAuthStateChanged(auth, user => {
     if (user){
       firebaseUid = user.uid;
-      console.log('[auth] uid:', firebaseUid, 'anonymous:', user.isAnonymous);
-
+      console.log('[auth] uid:', firebaseUid);
       if (unsubTracks) { unsubTracks(); unsubTracks = null; }
       if (unsubProfile) { unsubProfile(); unsubProfile = null; }
       if (unsubPlaylists) { unsubPlaylists(); unsubPlaylists = null; }
       if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
-
       if (!user.isAnonymous){
-        update(ref(db, 'users/' + user.uid), {
-          isAnonymous: false,
-          email: user.email || null
-        }).catch(e => console.error(e));
+        update(ref(db, 'users/' + user.uid), { isAnonymous: false, email: user.email || null }).catch(e => console.error(e));
       }
-
       showLoading('Загружаю данные...');
       subscribeUserProfile();
       subscribeTracks();
       subscribePlaylists();
       subscribeFavorites();
       setTimeout(hideLoading, 700);
-
       renderProfile();
     } else {
       signInAnonymously(auth).catch(err => {
         console.error('auth error', err);
         const map = {
-          'auth/configuration-not-found': 'Включи Anonymous в Firebase Authentication',
+          'auth/configuration-not-found': 'Включи Anonymous в Firebase',
           'auth/operation-not-allowed': 'Анонимный вход выключен',
-          'auth/unauthorized-domain': 'Домен не разрешён в Firebase',
-          'auth/admin-restricted-operation': 'Анонимный вход выключен в консоли Firebase'
+          'auth/unauthorized-domain': 'Домен не разрешён',
+          'auth/admin-restricted-operation': 'Анонимный вход выключен'
         };
-        showLoading('Ошибка авторизации: ' + (map[err.code] || err.code || err.message));
+        showLoading('Ошибка: ' + (map[err.code] || err.code || err.message));
       });
     }
   });
