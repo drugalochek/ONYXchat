@@ -1329,7 +1329,7 @@ textarea.finput{min-height:70px;font-family:inherit}
   <div class="sheet">
     <div class="sheet-handle"></div>
     <h3 class="ftitle">Новая публикация</h3>
-    <p class="fdesc">Загрузи треки. До 6 МБ на файл (ограничение базы).</p>
+    <p class="fdesc">Загрузи треки. До 6 МБ на файл.</p>
     <div class="upload-zone" id="releaseUploadZone">
       <div class="u-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
@@ -1493,7 +1493,7 @@ let unsubTracks = null, unsubProfile = null, unsubPlaylists = null, unsubFavorit
 
 const PALETTE = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#ef4444','#14b8a6','#6366f1'];
 const DEF_SET = { id3:true, cover:true, fallback:true, coverSize:300 };
-const LS_PREF = 'sonic_pref_v10';
+const LS_PREF = 'sonic_pref_v11';
 const audioCache = new Map();
 
 let tracks = [];
@@ -1812,31 +1812,33 @@ function subscribeFavorites(){
 }
 
 async function saveUserProfile(){
-  if (!firebaseUid){ toast('Ты не авторизован', 'err'); return false; }
+  if (!firebaseUid){ toast('Не авторизован', 'err'); console.error('no firebaseUid'); return false; }
   const userRef = ref(db, 'users/' + firebaseUid);
   const u = auth.currentUser;
+  const payload = {
+    name: profile.name || 'Слушатель',
+    avatar: profile.avatar || null,
+    email: (u && u.email) || profile.email || null,
+    musicianName: profile.musicianName || '',
+    musicianGenre: profile.musicianGenre || '',
+    musicianBio: profile.musicianBio || '',
+    country: profile.country || '',
+    link: profile.link || '',
+    verified: !!profile.verified,
+    isAnonymous: u ? u.isAnonymous : true
+  };
+  console.log('saveUserProfile →', 'uid:', firebaseUid, 'payload:', payload);
   try {
-    await update(userRef, {
-      name: profile.name || 'Слушатель',
-      avatar: profile.avatar || null,
-      email: (u && u.email) || profile.email || null,
-      musicianName: profile.musicianName || '',
-      musicianGenre: profile.musicianGenre || '',
-      musicianBio: profile.musicianBio || '',
-      country: profile.country || '',
-      link: profile.link || '',
-      verified: !!profile.verified,
-      isAnonymous: u ? u.isAnonymous : true
-    });
+    await update(userRef, payload);
+    console.log('saveUserProfile OK');
     return true;
   } catch(e){
     console.error('saveUserProfile FAILED:', e);
-    if (e.code === 'PERMISSION_DENIED' || (e.message && e.message.includes('permission'))){
-      toast('Нет прав на запись. Проверь правила RTDB', 'err');
-    } else if (e.message && e.message.includes('too large')){
-      toast('Файл слишком большой для базы', 'err');
+    console.error('code:', e.code, 'message:', e.message);
+    if (e.code === 'PERMISSION_DENIED' || (e.message||'').toLowerCase().includes('permission')){
+      toast('Нет прав на запись профиля. Проверь Rules', 'err');
     } else {
-      toast('Ошибка: ' + (e.code || e.message), 'err');
+      toast('Ошибка: ' + (e.code || e.message || 'unknown'), 'err');
     }
     return false;
   }
@@ -4015,7 +4017,8 @@ function boot(){
         const map = {
           'auth/configuration-not-found': 'Включи Anonymous в Firebase Authentication',
           'auth/operation-not-allowed': 'Анонимный вход выключен',
-          'auth/unauthorized-domain': 'Домен не разрешён в Firebase'
+          'auth/unauthorized-domain': 'Домен не разрешён в Firebase',
+          'auth/admin-restricted-operation': 'Анонимный вход выключен в консоли Firebase'
         };
         showLoading('Ошибка авторизации: ' + (map[err.code] || err.code || err.message));
       });
