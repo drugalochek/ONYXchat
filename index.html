@@ -801,7 +801,17 @@ textarea.finput{min-height:70px;font-family:inherit}
 }
 .verified-pill.big svg{width:11px;height:11px}
 
-/* Loading overlay */
+.auth-provider{
+  display:flex;align-items:center;gap:12px;
+  width:100%;padding:14px 16px;margin-bottom:10px;
+  border-radius:14px;background:var(--card);
+  border:1px solid var(--border);color:var(--txt);
+  font-size:14px;font-weight:600;transition:.15s;text-align:left;
+}
+.auth-provider:active{background:var(--card2);border-color:var(--border-hi)}
+.auth-provider:disabled{opacity:.5;cursor:not-allowed}
+.auth-provider svg{flex-shrink:0}
+
 .loading-screen{
   position:fixed;inset:0;z-index:600;
   background:var(--bg);display:flex;align-items:center;justify-content:center;
@@ -953,6 +963,9 @@ textarea.finput{min-height:70px;font-family:inherit}
     <h1 class="ptitle">Профиль</h1>
     <div class="prof-head" id="profHead"></div>
     <div class="prof-stats" id="profStats"></div>
+
+    <div id="accountBlock" style="margin-bottom:20px"></div>
+
     <div class="prof-settings-title">Аккаунт</div>
     <button class="set-btn" id="profEditBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -964,6 +977,7 @@ textarea.finput{min-height:70px;font-family:inherit}
       <span id="profStudioLabel">Студия артиста</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
+
     <div class="prof-settings-title">Внешний вид</div>
     <div class="set-btn" style="cursor:default">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -973,6 +987,7 @@ textarea.finput{min-height:70px;font-family:inherit}
         <button data-t="light" style="padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--dim)">Светлая</button>
       </div>
     </div>
+
     <div class="prof-settings-title">Импорт</div>
     <label class="set-sw">
       <input type="checkbox" id="setId3">
@@ -989,6 +1004,7 @@ textarea.finput{min-height:70px;font-family:inherit}
       <div class="sw-track"></div>
       <div class="sw-text"><div class="sw-l">Fallback на имя файла</div><div class="sw-d">Artist - Title.mp3 если тегов нет</div></div>
     </label>
+
     <div class="prof-settings-title">Данные</div>
     <button class="set-btn" id="profReset" style="color:var(--danger)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
@@ -1368,6 +1384,43 @@ textarea.finput{min-height:70px;font-family:inherit}
   </div>
 </div>
 
+<div class="modal" id="authModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3 class="ftitle" id="authTitle">Войти в Sonic</h3>
+    <p class="fdesc" id="authDesc">Войди, чтобы сохранить треки и получить профиль артиста.</p>
+
+    <button class="auth-provider" id="authGoogle">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Войти через Google
+    </button>
+
+    <button class="auth-provider" id="authEmailToggle">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+      Почта и пароль
+    </button>
+
+    <div id="authEmailForm" style="display:none;margin-top:14px">
+      <label class="flabel">Email</label>
+      <input class="finput" type="email" id="authEmail" placeholder="you@example.com" autocomplete="email">
+      <label class="flabel">Пароль</label>
+      <input class="finput" type="password" id="authPassword" placeholder="минимум 6 символов" autocomplete="current-password">
+      <div class="sheet-acts">
+        <button class="ghost" id="authSwitchMode">Регистрация</button>
+        <button class="solid" id="authSubmit">Войти</button>
+      </div>
+    </div>
+
+    <div class="sheet-acts" style="margin-top:14px">
+      <button class="ghost" id="authCancel">Отмена</button>
+    </div>
+
+    <p style="font-size:11.5px;color:var(--dim);text-align:center;margin-top:14px;line-height:1.5">
+      Можно остаться анонимно — тогда треки хранятся только в этом браузере.
+    </p>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 <input type="file" id="coverInput" class="hidden" accept="image/*">
 <input type="file" id="replaceFileInput" class="hidden" accept="audio/*">
@@ -1377,11 +1430,15 @@ textarea.finput{min-height:70px;font-family:inherit}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, set, get, update, remove, push, onValue, off, serverTimestamp }
+import {
+  getAuth, signInAnonymously, onAuthStateChanged,
+  GoogleAuthProvider, signInWithPopup, getRedirectResult,
+  createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set, get, update, remove, push, onValue, off }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject }
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -1400,18 +1457,16 @@ const auth = getAuth(fbApp);
 const db = getDatabase(fbApp);
 const storage = getStorage(fbApp);
 
-/* GLOBAL STATE */
 let firebaseUid = null;
 let unsubTracks = null, unsubProfile = null, unsubPlaylists = null, unsubFavorites = null;
 
 const PALETTE = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#ef4444','#14b8a6','#6366f1'];
 const DEF_SET = { id3:true, cover:true, fallback:true, coverSize:300 };
-const LS_PREF = 'sonic_pref_v7';
+const LS_PREF = 'sonic_pref_v8';
 
 let tracks = [];
 let playlists = [];
 let favIds = [];
-let history = [];
 let settings = { ...DEF_SET };
 let theme = 'dark', shuffle = false, repeatMode = 'off';
 let currentId = null, queue = [], qi = -1;
@@ -1421,9 +1476,10 @@ let sleepTimerId = null, sleepAt = 0;
 let currentPlaylistId = null;
 let profile = {
   name: 'Слушатель', avatar: null,
+  email: null, isAnonymous: true,
   musicianName: '', musicianGenre: '', musicianBio: '',
   country: '', link: '',
-  verified: false, verifyPending: false, verifyCode: null
+  verified: false
 };
 let editProfAvatarNew = undefined;
 let newPlCoverNew = undefined;
@@ -1431,6 +1487,7 @@ let plSetCoverNew = undefined, plSetEditId = null;
 let studioTab = 'upload';
 let pendingReleaseFiles = [];
 let verifyCountdownId = null;
+let authEmailMode = 'login';
 
 function $(id){ return document.getElementById(id); }
 function uid(){ return Math.random().toString(36).slice(2, 10); }
@@ -1467,7 +1524,6 @@ function loadPrefs(){
     if (p.settings) settings = { ...DEF_SET, ...p.settings };
   } catch(e){}
 }
-
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', theme);
   document.querySelectorAll('#themeSwitch button').forEach(b => {
@@ -1476,6 +1532,11 @@ function applyTheme(){
     b.style.color = on ? '#fff' : 'var(--dim)';
   });
 }
+function showLoading(text){
+  $('loadingText').textContent = text || 'Подключаюсь...';
+  $('loadingScreen').classList.remove('hide');
+}
+function hideLoading(){ $('loadingScreen').classList.add('hide'); }
 
 /* METADATA */
 function readTags(file){
@@ -1579,14 +1640,15 @@ function parseName(name){
   return { artist: 'Неизвестен', title: base.trim() };
 }
 
-/* FIREBASE STORAGE UPLOADS */
+/* STORAGE UPLOADS */
 async function uploadFileToStorage(blob, path, contentType){
   const r = sRef(storage, path);
   await uploadBytes(r, blob, { contentType });
   return await getDownloadURL(r);
 }
 async function uploadCoverDataUrlToStorage(dataUrl, path){
-  if (!dataUrl || !dataUrl.startsWith('data:')) return dataUrl;
+  if (!dataUrl) return null;
+  if (!dataUrl.startsWith('data:')) return dataUrl;
   const res = await fetch(dataUrl);
   const blob = await res.blob();
   return uploadFileToStorage(blob, path, 'image/jpeg');
@@ -1604,7 +1666,6 @@ function trackFromFirebase(id, data){
     duration: data.duration || 0,
     audioUrl: data.audioUrl || null,
     remote: data.audioUrl || null,
-    dataUrl: null,
     cover: data.cover || null,
     addedAt: data.addedAt || 0,
     verified: !!data.verified,
@@ -1614,7 +1675,7 @@ function trackFromFirebase(id, data){
 }
 
 function subscribeTracks(){
-  if (unsubTracks) unsubTracks();
+  if (unsubTracks) { unsubTracks(); unsubTracks = null; }
   const allRef = ref(db, 'tracks');
   const cb = snap => {
     const val = snap.val() || {};
@@ -1641,26 +1702,32 @@ function subscribeTracks(){
 }
 
 function subscribeUserProfile(){
-  if (unsubProfile) unsubProfile();
+  if (unsubProfile) { unsubProfile(); unsubProfile = null; }
   const userRef = ref(db, 'users/' + firebaseUid);
   const cb = snap => {
     const data = snap.val();
+    const u = auth.currentUser;
     if (!data){
       set(userRef, {
-        name: profile.name || 'Слушатель',
-        avatar: null,
+        name: u && u.displayName ? u.displayName : (profile.name || 'Слушатель'),
+        avatar: u && u.photoURL ? u.photoURL : null,
+        photoURL: u && u.photoURL ? u.photoURL : null,
+        email: u && u.email ? u.email : null,
         musicianName: '',
         musicianGenre: '',
         musicianBio: '',
         country: '',
         link: '',
         verified: false,
+        isAnonymous: u ? u.isAnonymous : true,
         createdAt: Date.now()
       }).catch(e => console.error(e));
       return;
     }
     profile.name = data.name || 'Слушатель';
-    profile.avatar = data.avatar || null;
+    profile.avatar = data.avatar || data.photoURL || null;
+    profile.email = data.email || (u && u.email) || null;
+    profile.isAnonymous = data.isAnonymous === true || (u && u.isAnonymous);
     profile.musicianName = data.musicianName || '';
     profile.musicianGenre = data.musicianGenre || '';
     profile.musicianBio = data.musicianBio || '';
@@ -1675,7 +1742,7 @@ function subscribeUserProfile(){
 }
 
 function subscribePlaylists(){
-  if (unsubPlaylists) unsubPlaylists();
+  if (unsubPlaylists) { unsubPlaylists(); unsubPlaylists = null; }
   const plRef = ref(db, 'playlists/' + firebaseUid);
   const cb = snap => {
     const val = snap.val() || {};
@@ -1695,7 +1762,7 @@ function subscribePlaylists(){
 }
 
 function subscribeFavorites(){
-  if (unsubFavorites) unsubFavorites();
+  if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
   const favRef = ref(db, 'favorites/' + firebaseUid);
   const cb = snap => {
     const val = snap.val() || {};
@@ -1714,12 +1781,14 @@ async function saveUserProfile(){
     await update(userRef, {
       name: profile.name || 'Слушатель',
       avatar: profile.avatar || null,
+      email: profile.email || null,
       musicianName: profile.musicianName || '',
       musicianGenre: profile.musicianGenre || '',
       musicianBio: profile.musicianBio || '',
       country: profile.country || '',
       link: profile.link || '',
-      verified: !!profile.verified
+      verified: !!profile.verified,
+      isAnonymous: profile.isAnonymous === true
     });
   } catch(e){ console.error(e); toast('Не удалось сохранить профиль', 'err'); }
 }
@@ -1752,7 +1821,7 @@ async function saveFavoritesToFB(){
   } catch(e){ console.error(e); }
 }
 
-/* AUDIO PLAYER */
+/* PLAYER */
 const audio = new Audio();
 audio.preload = 'metadata';
 audio.addEventListener('timeupdate', () => {
@@ -1796,7 +1865,7 @@ function playAt(idx){
 }
 async function loadAndPlay(t){
   currentId = t.id;
-  const src = t.audioUrl || t.dataUrl || t.remote;
+  const src = t.audioUrl || t.remote;
   if (!src){ toast('Трек недоступен', 'err'); return; }
   audio.src = src;
   audio.play().catch(() => { toast('Не удалось воспроизвести', 'err'); });
@@ -2384,6 +2453,47 @@ function renderProfile(){
     pb.classList.add('profile');
     pb.style.border = '';
   }
+
+  // Account block
+  const isAnon = profile.isAnonymous === true;
+  const accBlock = $('accountBlock');
+  if (isAnon){
+    accBlock.innerHTML = `
+      <div class="verify-item" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);margin-bottom:12px">
+        <div class="verify-check" style="background:#f59e0b;color:#fff">
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        </div>
+        <div class="verify-text">
+          <div class="t">Ты анонимный</div>
+          <div class="d">Треки хранятся только в этом браузере. Войди, чтобы не потерять.</div>
+        </div>
+      </div>
+      <button class="set-btn" id="profLoginBtn" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Войти или создать аккаунт
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    `;
+    $('profLoginBtn').addEventListener('click', () => openAuthModal('login'));
+  } else {
+    accBlock.innerHTML = `
+      <div class="verify-item" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06);margin-bottom:12px">
+        <div class="verify-check" style="background:#10b981;color:#fff">
+          <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+        </div>
+        <div class="verify-text">
+          <div class="t">${esc(profile.email || 'Аккаунт активен')}</div>
+          <div class="d">Треки синхронизированы с облаком</div>
+        </div>
+      </div>
+      <button class="set-btn" id="profLogoutBtn" style="color:var(--danger)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Выйти из аккаунта
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    `;
+    $('profLogoutBtn').addEventListener('click', logoutUser);
+  }
 }
 
 function openProfileEdit(){
@@ -2435,8 +2545,6 @@ function renderStudio(){
       <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
       Верифицирован
     </button>`;
-  } else if (profile.verifyPending){
-    verifyBtnHtml = `<button class="studio-verify-btn pending" disabled>Проверка...</button>`;
   } else {
     verifyBtnHtml = `<button class="studio-verify-btn" id="studioVerifyBtn">Верификация</button>`;
   }
@@ -2644,20 +2752,17 @@ async function publishRelease(){
       let coverData = null;
       if (tags.picBlob) coverData = await processCover(tags.picBlob);
 
-      // Upload audio
       const ts = Date.now();
       const safeName = f.name.replace(/[^a-zA-Z0-9._-]/g, '_');
       const audioPath = `tracks/${firebaseUid}/${ts}_${safeName}`;
       const audioUrl = await uploadFileToStorage(f, audioPath, f.type || 'audio/mpeg');
 
-      // Upload cover
       let coverUrl = null;
       if (coverData){
         const coverPath = `covers/${firebaseUid}/${ts}_${safeName}.jpg`;
         coverUrl = await uploadCoverDataUrlToStorage(coverData, coverPath);
       }
 
-      // Duration
       const dur = await new Promise(res => {
         const a = new Audio(); a.preload = 'metadata';
         a.onloadedmetadata = () => res(a.duration || 0);
@@ -2665,7 +2770,6 @@ async function publishRelease(){
         a.src = audioUrl;
       });
 
-      // Save to RTDB
       const newRef = push(ref(db, 'tracks'));
       await set(newRef, {
         title,
@@ -2789,8 +2893,6 @@ function startVerifyCode(){
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
   for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  profile.verifyCode = code;
-  profile.verifyPending = true;
 
   let secondsLeft = 20;
   $('verifyBody').innerHTML = `
@@ -2847,8 +2949,6 @@ function showVerifyInput(correctCode){
     if (!val){ toast('Введи код', 'err'); return; }
     if (val === correctCode.toUpperCase()){
       profile.verified = true;
-      profile.verifyPending = false;
-      profile.verifyCode = null;
       await saveUserProfile();
       $('verifyModal').classList.remove('show');
       toast('Верификация пройдена', 'ok');
@@ -3070,7 +3170,147 @@ function renderQueue(){
   });
 }
 
-/* ============ BINDINGS ============ */
+/* AUTH */
+function openAuthModal(mode){
+  authEmailMode = mode || 'login';
+  $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
+  $('authDesc').textContent = authEmailMode === 'register'
+    ? 'Заведи аккаунт, чтобы твои треки сохранились навсегда.'
+    : 'Войди, чтобы сохранить треки и получить профиль артиста.';
+  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
+  $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
+  $('authEmailForm').style.display = 'none';
+  $('authEmail').value = '';
+  $('authPassword').value = '';
+  $('authModal').classList.add('show');
+}
+
+async function migrateAnonymousData(oldUid, newUid){
+  if (!oldUid || !newUid || oldUid === newUid) return;
+  try {
+    await set(ref(db, 'linkedAccounts/' + newUid), { from: oldUid, at: Date.now() });
+  } catch(e){ console.error('migrate write', e); }
+
+  try {
+    const oldProfile = (await get(ref(db, 'users/' + oldUid))).val() || {};
+    const newProfile = (await get(ref(db, 'users/' + newUid))).val() || {};
+    await update(ref(db, 'users/' + newUid), {
+      name: newProfile.name || oldProfile.name || 'Слушатель',
+      musicianName: newProfile.musicianName || oldProfile.musicianName || '',
+      musicianGenre: newProfile.musicianGenre || oldProfile.musicianGenre || '',
+      musicianBio: newProfile.musicianBio || oldProfile.musicianBio || '',
+      country: newProfile.country || oldProfile.country || '',
+      link: newProfile.link || oldProfile.link || '',
+      avatar: newProfile.avatar || oldProfile.avatar || null,
+      verified: !!(newProfile.verified || oldProfile.verified),
+      createdAt: newProfile.createdAt || oldProfile.createdAt || Date.now()
+    });
+  } catch(e){ console.error('migrate profile', e); }
+
+  try {
+    const oldPl = (await get(ref(db, 'playlists/' + oldUid))).val() || {};
+    if (Object.keys(oldPl).length) {
+      const newPl = (await get(ref(db, 'playlists/' + newUid))).val() || {};
+      await set(ref(db, 'playlists/' + newUid), { ...oldPl, ...newPl });
+    }
+  } catch(e){ console.error('migrate playlists', e); }
+
+  try {
+    const oldFav = (await get(ref(db, 'favorites/' + oldUid))).val() || {};
+    const newFav = (await get(ref(db, 'favorites/' + newUid))).val() || {};
+    await set(ref(db, 'favorites/' + newUid), { ...oldFav, ...newFav });
+  } catch(e){ console.error('migrate favorites', e); }
+
+  try {
+    const allTracks = (await get(ref(db, 'tracks'))).val() || {};
+    for (const [id, t] of Object.entries(allTracks)){
+      if (t.ownerId === oldUid){
+        try { await update(ref(db, 'tracks/' + id), { ownerId: newUid, ownerName: profile.name || 'Слушатель' }); }
+        catch(e){ console.error('migrate track', id, e); }
+      }
+    }
+  } catch(e){ console.error('migrate tracks', e); }
+}
+
+async function loginWithGoogle(){
+  if (!firebaseUid){ toast('Сначала дождись загрузки', 'err'); return; }
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  const btn = $('authGoogle');
+  btn.disabled = true;
+  try {
+    const oldUid = firebaseUid;
+    const result = await signInWithPopup(auth, provider);
+    const newUid = result.user.uid;
+    if (oldUid !== newUid){
+      await migrateAnonymousData(oldUid, newUid);
+    }
+    $('authModal').classList.remove('show');
+    toast('Вошёл как ' + (result.user.displayName || result.user.email), 'ok');
+  } catch(e){
+    console.error(e);
+    if (e.code === 'auth/popup-blocked') toast('Разреши всплывающие окна', 'err');
+    else if (e.code === 'auth/popup-closed-by-user'){}
+    else if (e.code === 'auth/unauthorized-domain') toast('Домен не разрешён в Firebase', 'err');
+    else toast('Ошибка: ' + (e.code || e.message), 'err');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function loginWithEmail(){
+  const email = $('authEmail').value.trim();
+  const password = $('authPassword').value;
+  if (!email || !email.includes('@')){ toast('Введи корректный email', 'err'); return; }
+  if (!password || password.length < 6){ toast('Пароль минимум 6 символов', 'err'); return; }
+
+  const btn = $('authSubmit');
+  btn.disabled = true;
+  const oldText = btn.textContent;
+  btn.textContent = '...';
+
+  try {
+    const oldUid = firebaseUid;
+    let cred;
+    if (authEmailMode === 'register'){
+      cred = await createUserWithEmailAndPassword(auth, email, password);
+    } else {
+      cred = await signInWithEmailAndPassword(auth, email, password);
+    }
+    const newUid = cred.user.uid;
+    if (oldUid && oldUid !== newUid){
+      await migrateAnonymousData(oldUid, newUid);
+    }
+    $('authModal').classList.remove('show');
+    toast(authEmailMode === 'register' ? 'Аккаунт создан' : 'Вошёл', 'ok');
+  } catch(e){
+    console.error(e);
+    const map = {
+      'auth/email-already-in-use': 'Email уже используется',
+      'auth/invalid-email': 'Некорректный email',
+      'auth/weak-password': 'Пароль слишком простой',
+      'auth/wrong-password': 'Неверный пароль',
+      'auth/user-not-found': 'Пользователь не найден',
+      'auth/invalid-credential': 'Неверный email или пароль',
+      'auth/operation-not-allowed': 'Email-вход выключен в Firebase'
+    };
+    toast(map[e.code] || ('Ошибка: ' + (e.code || e.message)), 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
+}
+
+async function logoutUser(){
+  if (!confirm('Выйти из аккаунта? Ты вернёшься в анонимный режим.')) return;
+  try {
+    // Записываем, что профиль снова анонимный
+    await signOut(auth);
+    toast('Вышел');
+  } catch(e){ console.error(e); }
+}
+
+/* BINDINGS */
 document.querySelectorAll('.nbtn').forEach(b => {
   b.addEventListener('click', () => switchView(b.dataset.v));
 });
@@ -3312,7 +3552,7 @@ $('fs').addEventListener('touchend', () => {
   swiping = false;
 });
 
-/* TRACK MENU clicks */
+/* TRACK MENU */
 $('tmModal').addEventListener('click', async e => {
   if (e.target === $('tmModal')){ closeTrackMenu(); return; }
   const item = e.target.closest('.tm-item');
@@ -3390,7 +3630,6 @@ $('editSave').addEventListener('click', async () => {
     artist: $('editArtist').value.trim() || 'Неизвестен',
     album: $('editAlbum').value.trim()
   };
-  // cover
   if (editCoverNew !== undefined){
     if (editCoverNew === null) upd.cover = null;
     else {
@@ -3400,7 +3639,6 @@ $('editSave').addEventListener('click', async () => {
       } catch(e){ console.error(e); toast('Не удалось загрузить обложку', 'err'); return; }
     }
   }
-  // audio replace
   if (editReplaceFileObj){
     try {
       const ts = Date.now();
@@ -3570,6 +3808,23 @@ $('uploadReleaseModal').addEventListener('click', e => {
 });
 $('releasePublish').addEventListener('click', publishRelease);
 
+/* AUTH BINDINGS */
+$('authCancel').addEventListener('click', () => $('authModal').classList.remove('show'));
+$('authModal').addEventListener('click', e => { if (e.target === $('authModal')) $('authModal').classList.remove('show'); });
+$('authGoogle').addEventListener('click', loginWithGoogle);
+$('authEmailToggle').addEventListener('click', () => {
+  const f = $('authEmailForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+});
+$('authSwitchMode').addEventListener('click', () => {
+  authEmailMode = authEmailMode === 'login' ? 'register' : 'login';
+  $('authTitle').textContent = authEmailMode === 'register' ? 'Создать аккаунт' : 'Войти в Sonic';
+  $('authSwitchMode').textContent = authEmailMode === 'register' ? 'Войти' : 'Регистрация';
+  $('authSubmit').textContent = authEmailMode === 'register' ? 'Создать' : 'Войти';
+});
+$('authSubmit').addEventListener('click', loginWithEmail);
+$('authPassword').addEventListener('keydown', e => { if (e.key === 'Enter') loginWithEmail(); });
+
 /* KEYBOARD */
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, textarea')) return;
@@ -3578,14 +3833,6 @@ document.addEventListener('keydown', e => {
 });
 
 /* BOOT */
-function showLoading(text){
-  $('loadingText').textContent = text || 'Подключаюсь...';
-  $('loadingScreen').classList.remove('hide');
-}
-function hideLoading(){
-  $('loadingScreen').classList.add('hide');
-}
-
 function boot(){
   loadPrefs();
   applyTheme();
@@ -3597,20 +3844,35 @@ function boot(){
   renderAll();
   showLoading('Подключаюсь к Firebase...');
 
+  getRedirectResult(auth).catch(e => console.error(e));
+
   onAuthStateChanged(auth, user => {
     if (user){
+      const oldUid = firebaseUid;
       firebaseUid = user.uid;
+
+      if (unsubTracks) { unsubTracks(); unsubTracks = null; }
+      if (unsubProfile) { unsubProfile(); unsubProfile = null; }
+      if (unsubPlaylists) { unsubPlaylists(); unsubPlaylists = null; }
+      if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
+
       showLoading('Загружаю данные...');
       subscribeUserProfile();
       subscribeTracks();
       subscribePlaylists();
       subscribeFavorites();
-      // скрываем экран загрузки через секунду, чтобы подписки успели прилететь
-      setTimeout(hideLoading, 800);
+      setTimeout(hideLoading, 700);
+
+      renderProfile();
     } else {
       signInAnonymously(auth).catch(err => {
         console.error('auth error', err);
-        showLoading('Ошибка авторизации: ' + (err.message || 'unknown'));
+        const map = {
+          'auth/configuration-not-found': 'Включи Anonymous в Firebase Authentication',
+          'auth/operation-not-allowed': 'Анонимный вход выключен',
+          'auth/unauthorized-domain': 'Домен не разрешён в Firebase'
+        };
+        showLoading('Ошибка авторизации: ' + (map[err.code] || err.code || err.message));
       });
     }
   });
