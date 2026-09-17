@@ -1468,7 +1468,8 @@ import {
   getAuth, signInAnonymously, onAuthStateChanged,
   GoogleAuthProvider, signInWithPopup, getRedirectResult,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut
+  signOut,
+  setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, get, update, remove, push, onValue, off }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1487,6 +1488,37 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getDatabase(fbApp);
+
+/* ============ RTDB CONNECTION ============ */
+let fbConnected = false;
+const connRef = ref(db, '.info/connected');
+onValue(connRef, snap => {
+  const was = fbConnected;
+  fbConnected = !!snap.val();
+  console.log('[fb] connected =', fbConnected);
+  updateConnBadge();
+  if (fbConnected && !was){
+    console.log('[fb] reconnect → flushing pending profile');
+    flushPendingProfile();
+  }
+});
+
+function updateConnBadge(){
+  let dot = document.getElementById('connDot');
+  if (!dot){
+    dot = document.createElement('span');
+    dot.id = 'connDot';
+    dot.style.cssText = `
+      position:fixed;top:calc(22px + env(safe-area-inset-top));right:56px;
+      width:8px;height:8px;border-radius:50%;z-index:200;
+      transition:background .3s,box-shadow .3s;pointer-events:none;`;
+    document.body.appendChild(dot);
+  }
+  dot.style.background = fbConnected ? '#10b981' : '#f43f5e';
+  dot.style.boxShadow = fbConnected
+    ? '0 0 8px rgba(16,185,129,.9)'
+    : '0 0 8px rgba(244,63,94,.9)';
+}
 
 let firebaseUid = null;
 let unsubTracks = null, unsubProfile = null, unsubPlaylists = null, unsubFavorites = null;
@@ -1813,12 +1845,14 @@ function subscribeFavorites(){
   unsubFavorites = () => off(favRef, 'value', cb);
 }
 
+/* ============ PROFILE SYNC (fire-and-forget + очередь) ============ */
+let pendingProfilePayload = null;
+
 async function saveUserProfile(){
   if (!firebaseUid){
     console.error('[saveUserProfile] no firebaseUid');
     return { ok:false, error:'Нет авторизации' };
   }
-  const userRef = ref(db, 'users/' + firebaseUid);
   const u = auth.currentUser;
   const payload = {
     name: (profile.name || 'Слушатель').trim(),
@@ -1833,19 +1867,32 @@ async function saveUserProfile(){
     isAnonymous: u ? u.isAnonymous : true,
     updatedAt: Date.now()
   };
-  console.log('[saveUserProfile] uid:', firebaseUid, 'payload:', payload);
-  try {
-    await update(userRef, payload);
-    console.log('[saveUserProfile] OK');
-    return { ok:true };
-  } catch(e){
-    console.error('[saveUserProfile] FAILED', e);
-    const errText = (e && (e.code || e.message)) || 'unknown';
-    if (String(errText).toLowerCase().includes('permission')){
-      toast('Нет прав на запись профиля. Проверь Rules', 'err');
-    }
-    return { ok:false, error: errText };
-  }
+  pendingProfilePayload = payload;
+  console.log('[saveUserProfile] → uid:', firebaseUid, 'keys:', Object.keys(payload));
+
+  // НЕ await — Firebase сам держит локальный кэш и дошлёт при первой возможности
+  update(ref(db, 'users/' + firebaseUid), payload)
+    .then(() => {
+      console.log('[saveUserProfile] ✅ synced to server');
+      pendingProfilePayload = null;
+    })
+    .catch(e => {
+      console.error('[saveUserProfile] ❌ FAILED', e);
+      toast('Не синхронизировано: ' + (e.code || e.message), 'err');
+    });
+
+  return { ok:true, pending: !fbConnected };
+}
+
+function flushPendingProfile(){
+  if (!pendingProfilePayload || !firebaseUid || !fbConnected) return;
+  console.log('[saveUserProfile] retrying pending payload…');
+  update(ref(db, 'users/' + firebaseUid), pendingProfilePayload)
+    .then(() => {
+      console.log('[saveUserProfile] ✅ pending flushed');
+      pendingProfilePayload = null;
+    })
+    .catch(e => console.error('[saveUserProfile] retry fail', e));
 }
 
 async function savePlaylistsToFB(){
@@ -3032,12 +3079,12 @@ function showVerifyInput(correctCode){
   input.addEventListener('keydown', e => { if (e.key === 'Enter') $('vCheck').click(); });
 
   $('vAgain').addEventListener('click', startVerifyCode);
-  $('vCheck').addEventListener('click', async () => {
+  $('vCheck').addEventListener('click', () => {
     const val = input.value.trim().toUpperCase();
     if (!val){ toast('Введи код', 'err'); return; }
     if (val === correctCode.toUpperCase()){
       profile.verified = true;
-      await saveUserProfile();
+      saveUserProfile();
       $('verifyModal').classList.remove('show');
       toast('Верификация пройдена', 'ok');
       renderAll();
@@ -3469,33 +3516,23 @@ $('profAvatarClear').addEventListener('click', () => {
 });
 $('profEditCancel').addEventListener('click', () => $('profEditModal').classList.remove('show'));
 $('profEditModal').addEventListener('click', e => { if (e.target === $('profEditModal')) $('profEditModal').classList.remove('show'); });
-$('profEditSave').addEventListener('click', async () => {
+$('profEditSave').addEventListener('click', () => {
   const btn = $('profEditSave');
   if (btn.disabled) return;
-  btn.disabled = true;
-  const oldText = btn.textContent;
-  btn.textContent = 'Сохранение...';
 
   profile.name = $('profName').value.trim() || 'Слушатель';
   if (editProfAvatarNew !== undefined){
     profile.avatar = editProfAvatarNew;
   }
 
-  // Локально применяем сразу
+  // Мгновенно применяем и закрываем
   $('profEditModal').classList.remove('show');
   renderProfile();
   renderAll();
 
-  const res = await saveUserProfile();
-
-  btn.disabled = false;
-  btn.textContent = oldText;
-
-  if (res.ok){
-    toast('Профиль сохранён', 'ok');
-  } else {
-    toast('Локально сохранено. Ошибка: ' + res.error, 'err');
-  }
+  // Fire-and-forget — запись в Firebase в фоне
+  saveUserProfile();
+  toast('Профиль сохранён', 'ok');
 });
 
 $('profStudioBtn').addEventListener('click', () => {
@@ -3511,15 +3548,11 @@ $('apCancel').addEventListener('click', () => $('artistProfileModal').classList.
 $('artistProfileModal').addEventListener('click', e => {
   if (e.target === $('artistProfileModal')) $('artistProfileModal').classList.remove('show');
 });
-$('apSave').addEventListener('click', async () => {
+$('apSave').addEventListener('click', () => {
   const btn = $('apSave');
   if (btn.disabled) return;
   const name = $('apName').value.trim();
   if (!name){ toast('Введи сценическое имя', 'err'); return; }
-
-  btn.disabled = true;
-  const oldText = btn.textContent;
-  btn.textContent = 'Сохранение...';
 
   profile.musicianName  = name;
   profile.musicianGenre = $('apGenre').value.trim();
@@ -3532,25 +3565,17 @@ $('apSave').addEventListener('click', async () => {
   renderAll();
   if ($('v-studio').classList.contains('active')) renderStudio();
 
-  const res = await saveUserProfile();
-
-  btn.disabled = false;
-  btn.textContent = oldText;
-
-  if (res.ok) toast('Профиль артиста сохранён', 'ok');
-  else toast('Локально сохранено. Ошибка: ' + res.error, 'err');
+  saveUserProfile();
+  toast('Профиль артиста сохранён', 'ok');
 });
 
 $('musicianCancel').addEventListener('click', () => $('musicianModal').classList.remove('show'));
 $('musicianModal').addEventListener('click', e => {
   if (e.target === $('musicianModal')) $('musicianModal').classList.remove('show');
 });
-$('musicianSave').addEventListener('click', async () => {
+$('musicianSave').addEventListener('click', () => {
   const btn = $('musicianSave');
   if (btn.disabled) return;
-  btn.disabled = true;
-  const oldText = btn.textContent;
-  btn.textContent = 'Сохранение...';
 
   const name = $('musicianName').value.trim();
   if (!name){
@@ -3568,13 +3593,8 @@ $('musicianSave').addEventListener('click', async () => {
   renderAll();
   if ($('v-studio').classList.contains('active')) renderStudio();
 
-  const res = await saveUserProfile();
-
-  btn.disabled = false;
-  btn.textContent = oldText;
-
-  if (res.ok) toast(name ? ('Ты теперь ' + name) : 'Статус музыканта снят', 'ok');
-  else toast('Локально сохранено. Ошибка: ' + res.error, 'err');
+  saveUserProfile();
+  toast(name ? ('Ты теперь ' + name) : 'Статус музыканта снят', 'ok');
 });
 
 $('setId3').addEventListener('change', () => { settings.id3 = $('setId3').checked; savePrefs(); });
@@ -4020,7 +4040,13 @@ document.addEventListener('keydown', e => {
 });
 
 /* BOOT */
-function boot(){
+async function boot(){
+  // 🔑 Стабильная сессия: uid не меняется при F5
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    console.log('[auth] persistence = LOCAL');
+  } catch(e){ console.error('[auth] persistence fail', e); }
+
   loadPrefs();
   applyTheme();
   $('setId3').checked = settings.id3;
@@ -4036,6 +4062,7 @@ function boot(){
   onAuthStateChanged(auth, user => {
     if (user){
       firebaseUid = user.uid;
+      console.log('[auth] uid:', firebaseUid, 'anonymous:', user.isAnonymous);
 
       if (unsubTracks) { unsubTracks(); unsubTracks = null; }
       if (unsubProfile) { unsubProfile(); unsubProfile = null; }
