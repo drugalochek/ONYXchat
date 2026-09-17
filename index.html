@@ -812,7 +812,6 @@ textarea.finput{min-height:70px;font-family:inherit}
 .auth-provider:disabled{opacity:.5;cursor:not-allowed}
 .auth-provider svg{flex-shrink:0}
 
-/* Капча */
 .captcha-box{
   padding:14px;background:var(--card);border:1px solid var(--border-hi);
   border-radius:14px;margin-bottom:12px;
@@ -998,9 +997,7 @@ textarea.finput{min-height:70px;font-family:inherit}
     <h1 class="ptitle">Профиль</h1>
     <div class="prof-head" id="profHead"></div>
     <div class="prof-stats" id="profStats"></div>
-
     <div id="accountBlock" style="margin-bottom:20px"></div>
-
     <div class="prof-settings-title">Аккаунт</div>
     <button class="set-btn" id="profEditBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -1012,7 +1009,6 @@ textarea.finput{min-height:70px;font-family:inherit}
       <span id="profStudioLabel">Студия артиста</span>
       <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
-
     <div class="prof-settings-title">Внешний вид</div>
     <div class="set-btn" style="cursor:default">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -1022,7 +1018,6 @@ textarea.finput{min-height:70px;font-family:inherit}
         <button data-t="light" style="padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--dim)">Светлая</button>
       </div>
     </div>
-
     <div class="prof-settings-title">Импорт</div>
     <label class="set-sw">
       <input type="checkbox" id="setId3">
@@ -1039,7 +1034,6 @@ textarea.finput{min-height:70px;font-family:inherit}
       <div class="sw-track"></div>
       <div class="sw-text"><div class="sw-l">Fallback на имя файла</div><div class="sw-d">Artist - Title.mp3 если тегов нет</div></div>
     </label>
-
     <div class="prof-settings-title">Данные</div>
     <button class="set-btn" id="profReset" style="color:var(--danger)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
@@ -1074,7 +1068,6 @@ textarea.finput{min-height:70px;font-family:inherit}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>
     <span id="fsTimerText">15:00</span>
   </div>
-
   <header class="fs-head">
     <button class="fs-back" id="fsBack">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -1085,7 +1078,6 @@ textarea.finput{min-height:70px;font-family:inherit}
     </div>
     <div></div>
   </header>
-
   <div class="fs-cov-wrap">
     <div class="fs-side" id="fsPrev"></div>
     <div class="fs-cov" id="fsCover">
@@ -1093,7 +1085,6 @@ textarea.finput{min-height:70px;font-family:inherit}
     </div>
     <div class="fs-side" id="fsNext"></div>
   </div>
-
   <div class="fs-acts">
     <button class="fs-act" id="fsShare" title="Поделиться">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1105,7 +1096,6 @@ textarea.finput{min-height:70px;font-family:inherit}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </button>
   </div>
-
   <div class="fs-seek-row">
     <span class="fs-time" id="fsCur">0:00</span>
     <div class="fs-seek" id="fsSeek">
@@ -1114,12 +1104,10 @@ textarea.finput{min-height:70px;font-family:inherit}
     </div>
     <span class="fs-time" id="fsDur">0:00</span>
   </div>
-
   <div class="fs-info">
     <div class="fs-title" id="fsTitle">—</div>
     <div class="fs-artist" id="fsArtist">—</div>
   </div>
-
   <div class="fs-ctrl-row">
     <button class="fs-ctrl small" id="fsRepeat" title="Повтор">
       <svg id="fsRepeatIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>
@@ -1139,7 +1127,6 @@ textarea.finput{min-height:70px;font-family:inherit}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
     </button>
   </div>
-
   <div class="fs-bottom">
     <button class="fs-btm" id="fsTimer" title="Таймер сна">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>
@@ -1342,13 +1329,13 @@ textarea.finput{min-height:70px;font-family:inherit}
   <div class="sheet">
     <div class="sheet-handle"></div>
     <h3 class="ftitle">Новая публикация</h3>
-    <p class="fdesc">Загрузи треки. Они появятся в твоём профиле артиста.</p>
+    <p class="fdesc">Загрузи треки. До 6 МБ на файл (ограничение базы).</p>
     <div class="upload-zone" id="releaseUploadZone">
       <div class="u-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
       </div>
       <h3>Нажми или перетащи файлы</h3>
-      <p>MP3, WAV, FLAC, M4A, OGG — несколько сразу</p>
+      <p>MP3, WAV, OGG — до 6 МБ каждый</p>
     </div>
     <div id="releaseFileList" style="margin-bottom:12px"></div>
     <div class="studio-field">
@@ -1481,12 +1468,10 @@ import {
   getAuth, signInAnonymously, onAuthStateChanged,
   GoogleAuthProvider, signInWithPopup, getRedirectResult,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, updateProfile
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set, get, update, remove, push, onValue, off }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0jALLWoEE775lxJAJbl5CF6TdSW9eaNg",
@@ -1502,14 +1487,14 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getDatabase(fbApp);
-const storage = getStorage(fbApp);
 
 let firebaseUid = null;
 let unsubTracks = null, unsubProfile = null, unsubPlaylists = null, unsubFavorites = null;
 
 const PALETTE = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#ef4444','#14b8a6','#6366f1'];
 const DEF_SET = { id3:true, cover:true, fallback:true, coverSize:300 };
-const LS_PREF = 'sonic_pref_v9';
+const LS_PREF = 'sonic_pref_v10';
+const audioCache = new Map();
 
 let tracks = [];
 let playlists = [];
@@ -1560,7 +1545,7 @@ function toast(text, type){
     el.style.transition = 'opacity .3s, transform .3s';
     el.style.opacity = '0'; el.style.transform = 'translateY(8px)';
     setTimeout(() => el.remove(), 300);
-  }, 2200);
+  }, 2600);
 }
 function savePrefs(){
   try { localStorage.setItem(LS_PREF, JSON.stringify({ theme, settings })); } catch(e){}
@@ -1585,6 +1570,33 @@ function showLoading(text){
   $('loadingScreen').classList.remove('hide');
 }
 function hideLoading(){ $('loadingScreen').classList.add('hide'); }
+
+/* ============ BASE64 / ФАЙЛЫ ============ */
+function fileToBase64AndMime(file){
+  return new Promise((resolve, reject) => {
+    if (file.size > 6 * 1024 * 1024){
+      reject(new Error('Файл больше 6 МБ — RTDB не примет'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const comma = dataUrl.indexOf(',');
+      if (comma < 0){ reject(new Error('Ошибка чтения файла')); return; }
+      const meta = dataUrl.substring(5, comma);
+      const semi = meta.indexOf(';');
+      const mime = semi >= 0 ? meta.substring(0, semi) : 'audio/mpeg';
+      const base64 = dataUrl.substring(comma + 1);
+      if (base64.length > 8388608){
+        reject(new Error('base64 > 8 МБ, файл слишком большой'));
+        return;
+      }
+      resolve({ base64, mime });
+    };
+    reader.onerror = () => reject(new Error('Не удалось прочитать файл'));
+    reader.readAsDataURL(file);
+  });
+}
 
 /* METADATA */
 function readTags(file){
@@ -1620,7 +1632,7 @@ function processCover(blobOrFile, size){
         const ctx = c.getContext('2d');
         const min = Math.min(img.width, img.height);
         ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, sz, sz);
-        const dataUrl = c.toDataURL('image/jpeg', .82);
+        const dataUrl = c.toDataURL('image/jpeg', .75);
         URL.revokeObjectURL(url); resolve(dataUrl);
       } catch(e){ URL.revokeObjectURL(url); resolve(null); }
     };
@@ -1635,11 +1647,11 @@ function processAvatar(blobOrFile){
     const img = new Image();
     img.onload = () => {
       try {
-        const c = document.createElement('canvas'); c.width = c.height = 200;
+        const c = document.createElement('canvas'); c.width = c.height = 140;
         const ctx = c.getContext('2d');
         const min = Math.min(img.width, img.height);
-        ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, 200, 200);
-        const dataUrl = c.toDataURL('image/jpeg', .85);
+        ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, 140, 140);
+        const dataUrl = c.toDataURL('image/jpeg', .78);
         URL.revokeObjectURL(url); resolve(dataUrl);
       } catch(e){ URL.revokeObjectURL(url); resolve(null); }
     };
@@ -1688,20 +1700,7 @@ function parseName(name){
   return { artist: 'Неизвестен', title: base.trim() };
 }
 
-async function uploadFileToStorage(blob, path, contentType){
-  const r = sRef(storage, path);
-  await uploadBytes(r, blob, { contentType });
-  return await getDownloadURL(r);
-}
-async function uploadCoverDataUrlToStorage(dataUrl, path){
-  if (!dataUrl) return null;
-  if (!dataUrl.startsWith('data:')) return dataUrl;
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-  return uploadFileToStorage(blob, path, 'image/jpeg');
-}
-
-/* SYNC */
+/* FIREBASE SYNC */
 function trackFromFirebase(id, data){
   return {
     id,
@@ -1711,8 +1710,6 @@ function trackFromFirebase(id, data){
     genre: data.genre || '',
     year: data.year || '',
     duration: data.duration || 0,
-    audioUrl: data.audioUrl || null,
-    remote: data.audioUrl || null,
     cover: data.cover || null,
     addedAt: data.addedAt || 0,
     verified: !!data.verified,
@@ -1732,13 +1729,8 @@ function subscribeTracks(){
     renderAll();
     if (currentId){
       const t = getTrack(currentId);
-      if (!t){
-        closeMiniPlayer(true);
-        closeFs();
-      } else {
-        updateMiniCover();
-        updateFsCover();
-      }
+      if (!t){ closeMiniPlayer(true); closeFs(); }
+      else { updateMiniCover(); updateFsCover(); }
     }
   };
   onValue(allRef, cb, err => {
@@ -1754,19 +1746,15 @@ function subscribeUserProfile(){
   const cb = snap => {
     const data = snap.val();
     const u = auth.currentUser;
-    // ЕДИНСТВЕННЫЙ ИСТОЧНИК ПРАВДЫ — auth.currentUser.isAnonymous
     profile.isAnonymous = u ? u.isAnonymous : true;
     if (!data){
       set(userRef, {
-        name: u && u.displayName ? u.displayName : (profile.name || 'Слушатель'),
+        name: u && u.displayName ? u.displayName : 'Слушатель',
         avatar: u && u.photoURL ? u.photoURL : null,
         photoURL: u && u.photoURL ? u.photoURL : null,
         email: u && u.email ? u.email : null,
-        musicianName: '',
-        musicianGenre: '',
-        musicianBio: '',
-        country: '',
-        link: '',
+        musicianName: '', musicianGenre: '', musicianBio: '',
+        country: '', link: '',
         verified: false,
         isAnonymous: u ? u.isAnonymous : true,
         createdAt: Date.now()
@@ -1824,7 +1812,7 @@ function subscribeFavorites(){
 }
 
 async function saveUserProfile(){
-  if (!firebaseUid) return;
+  if (!firebaseUid){ toast('Ты не авторизован', 'err'); return false; }
   const userRef = ref(db, 'users/' + firebaseUid);
   const u = auth.currentUser;
   try {
@@ -1840,7 +1828,18 @@ async function saveUserProfile(){
       verified: !!profile.verified,
       isAnonymous: u ? u.isAnonymous : true
     });
-  } catch(e){ console.error(e); toast('Не удалось сохранить профиль', 'err'); }
+    return true;
+  } catch(e){
+    console.error('saveUserProfile FAILED:', e);
+    if (e.code === 'PERMISSION_DENIED' || (e.message && e.message.includes('permission'))){
+      toast('Нет прав на запись. Проверь правила RTDB', 'err');
+    } else if (e.message && e.message.includes('too large')){
+      toast('Файл слишком большой для базы', 'err');
+    } else {
+      toast('Ошибка: ' + (e.code || e.message), 'err');
+    }
+    return false;
+  }
 }
 
 async function savePlaylistsToFB(){
@@ -1858,7 +1857,7 @@ async function savePlaylistsToFB(){
       };
     });
     await set(plRef, payload);
-  } catch(e){ console.error(e); }
+  } catch(e){ console.error(e); toast('Не удалось сохранить плейлисты', 'err'); }
 }
 
 async function saveFavoritesToFB(){
@@ -1913,10 +1912,29 @@ function playAt(idx){
   if (!t) return;
   loadAndPlay(t);
 }
+
 async function loadAndPlay(t){
   currentId = t.id;
-  const src = t.audioUrl || t.remote;
-  if (!src){ toast('Трек недоступен', 'err'); return; }
+
+  let src = audioCache.get(t.id);
+  if (!src){
+    toast('Загружаю аудио...');
+    try {
+      const snap = await get(ref(db, 'audio/' + t.id));
+      const audioData = snap.val();
+      if (!audioData || !audioData.data){
+        toast('Аудио не найдено в базе', 'err');
+        return;
+      }
+      src = `data:${audioData.mime || 'audio/mpeg'};base64,${audioData.data}`;
+      audioCache.set(t.id, src);
+    } catch(e){
+      console.error('audio fetch fail:', e);
+      toast('Не удалось загрузить аудио', 'err');
+      return;
+    }
+  }
+
   audio.src = src;
   audio.play().catch(() => { toast('Не удалось воспроизвести', 'err'); });
 
@@ -1949,6 +1967,7 @@ async function loadAndPlay(t){
   updatePlayUI();
   renderAll();
 }
+
 function updateMiniCover(){
   const t = currentTrack();
   $('miniCover').innerHTML = t && t.cover
@@ -2651,7 +2670,7 @@ function renderStudio(){
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
         </div>
         <h3>Нажми или перетащи файлы</h3>
-        <p>MP3, WAV, FLAC, M4A, OGG</p>
+        <p>MP3, WAV, OGG — до 6 МБ каждый</p>
       </div>
       <p style="text-align:center;font-size:12px;color:var(--dim);line-height:1.5;padding:0 20px">
         Все загруженные треки автоматически привяжутся к твоему сценическому имени <b style="color:var(--accent3)">${esc(profile.musicianName)}</b>.
@@ -2702,7 +2721,11 @@ function renderStudio(){
         } else if (act === 'del'){
           if (!confirm('Удалить релиз «' + al.name + '»? Все треки внутри удалятся.')) return;
           for (const tr of al.tracks){
-            try { await remove(ref(db, 'tracks/' + tr.id)); } catch(e){ console.error(e); }
+            try {
+              await remove(ref(db, 'tracks/' + tr.id));
+              await remove(ref(db, 'audio/' + tr.id));
+              audioCache.delete(tr.id);
+            } catch(e){ console.error(e); }
           }
           if (al.tracks.some(t => t.id === currentId)){ closeMiniPlayer(true); closeFs(); }
           toast('Релиз удалён');
@@ -2767,7 +2790,7 @@ function refreshReleaseFiles(){
       </div>
       <div class="studio-release-info">
         <div class="studio-release-title">${esc(f.name)}</div>
-        <div class="studio-release-meta">${(f.size/1024/1024).toFixed(1)} МБ</div>
+        <div class="studio-release-meta">${(f.size/1024/1024).toFixed(2)} МБ</div>
       </div>
       <div class="studio-release-actions">
         <button data-i="${i}">
@@ -2781,6 +2804,7 @@ function refreshReleaseFiles(){
     list.appendChild(el);
   });
 }
+
 async function publishRelease(){
   if (!firebaseUid){ toast('Нет соединения', 'err'); return; }
   if (!pendingReleaseFiles.length){ toast('Добавь хотя бы один файл', 'err'); return; }
@@ -2796,6 +2820,12 @@ async function publishRelease(){
   let added = 0, failed = 0;
   for (const f of pendingReleaseFiles){
     try {
+      if (f.size > 6 * 1024 * 1024){
+        toast(`${f.name} больше 6 МБ — пропущен`, 'err');
+        failed++;
+        continue;
+      }
+
       const tags = await readTags(f);
       const fb = parseName(f.name);
       const title = (tags.title && tags.title.trim()) || fb.title;
@@ -2805,26 +2835,19 @@ async function publishRelease(){
       let coverData = null;
       if (tags.picBlob) coverData = await processCover(tags.picBlob);
 
-      const ts = Date.now();
-      const safeName = f.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const audioPath = `tracks/${firebaseUid}/${ts}_${safeName}`;
-      const audioUrl = await uploadFileToStorage(f, audioPath, f.type || 'audio/mpeg');
-
-      let coverUrl = null;
-      if (coverData){
-        const coverPath = `covers/${firebaseUid}/${ts}_${safeName}.jpg`;
-        coverUrl = await uploadCoverDataUrlToStorage(coverData, coverPath);
-      }
+      const { base64, mime } = await fileToBase64AndMime(f);
 
       const dur = await new Promise(res => {
         const a = new Audio(); a.preload = 'metadata';
         a.onloadedmetadata = () => res(a.duration || 0);
         a.onerror = () => res(0);
-        a.src = audioUrl;
+        a.src = `data:${mime};base64,${base64}`;
       });
 
-      const newRef = push(ref(db, 'tracks'));
-      await set(newRef, {
+      const newTrackRef = push(ref(db, 'tracks'));
+      const trackId = newTrackRef.key;
+
+      await set(newTrackRef, {
         title,
         artist,
         ownerId: firebaseUid,
@@ -2833,14 +2856,20 @@ async function publishRelease(){
         genre,
         year,
         duration: dur,
-        audioUrl,
-        cover: coverUrl,
+        cover: coverData,
         addedAt: Date.now(),
         verified: !!profile.verified
       });
+
+      await set(ref(db, 'audio/' + trackId), {
+        data: base64,
+        mime: mime
+      });
+
       added++;
     } catch(e){
       console.error('upload error', f.name, e);
+      toast(e.message || 'Ошибка загрузки', 'err');
       failed++;
     }
   }
@@ -3318,7 +3347,6 @@ async function loginWithGoogle(){
     if (oldUid !== newUid){
       await migrateAnonymousData(oldUid, newUid);
     }
-    // Явно ставим isAnonymous: false
     try {
       await update(ref(db, 'users/' + newUid), {
         email: result.user.email || null,
@@ -3348,7 +3376,6 @@ async function loginWithEmail(){
   if (!email || !email.includes('@')){ toast('Введи корректный email', 'err'); return; }
   if (!password || password.length < 6){ toast('Пароль минимум 6 символов', 'err'); return; }
 
-  // Проверка капчи только при регистрации
   if (authEmailMode === 'register'){
     const ans = parseInt($('captchaA').value.trim(), 10);
     if (ans !== captchaAnswer){
@@ -3437,20 +3464,21 @@ $('profAvatarClear').addEventListener('click', () => {
 $('profEditCancel').addEventListener('click', () => $('profEditModal').classList.remove('show'));
 $('profEditModal').addEventListener('click', e => { if (e.target === $('profEditModal')) $('profEditModal').classList.remove('show'); });
 $('profEditSave').addEventListener('click', async () => {
-  profile.name = $('profName').value.trim() || 'Слушатель';
-  if (editProfAvatarNew !== undefined){
-    if (editProfAvatarNew === null) profile.avatar = null;
-    else {
-      try {
-        const path = `avatars/${firebaseUid}/${Date.now()}.jpg`;
-        profile.avatar = await uploadCoverDataUrlToStorage(editProfAvatarNew, path);
-      } catch(e){ console.error(e); toast('Не удалось загрузить аватар', 'err'); return; }
+  try {
+    profile.name = $('profName').value.trim() || 'Слушатель';
+    if (editProfAvatarNew !== undefined){
+      profile.avatar = editProfAvatarNew;
     }
+    const ok = await saveUserProfile();
+    if (ok !== false){
+      renderProfile(); renderAll();
+      $('profEditModal').classList.remove('show');
+      toast('Профиль сохранён', 'ok');
+    }
+  } catch(e){
+    console.error('profEditSave error', e);
+    toast('Ошибка: ' + (e.message || 'unknown'), 'err');
   }
-  await saveUserProfile();
-  renderProfile(); renderAll();
-  $('profEditModal').classList.remove('show');
-  toast('Профиль сохранён', 'ok');
 });
 
 $('profStudioBtn').addEventListener('click', () => {
@@ -3515,7 +3543,11 @@ $('profReset').addEventListener('click', async () => {
   if (!confirm('Удалить все твои загруженные треки? Это необратимо.')) return;
   const myTracks = tracks.filter(t => t.ownerId === firebaseUid);
   for (const t of myTracks){
-    try { await remove(ref(db, 'tracks/' + t.id)); } catch(e){ console.error(e); }
+    try {
+      await remove(ref(db, 'tracks/' + t.id));
+      await remove(ref(db, 'audio/' + t.id));
+      audioCache.delete(t.id);
+    } catch(e){ console.error(e); }
   }
   if (myTracks.some(t => t.id === currentId)){ closeMiniPlayer(true); closeFs(); }
   toast('Все твои треки удалены', 'ok');
@@ -3685,7 +3717,11 @@ $('tmModal').addEventListener('click', async e => {
   else if (a === 'share'){ shareTrack(t); closeTrackMenu(); }
   else if (a === 'del'){
     if (!confirm('Удалить «' + t.title + '»?')) return;
-    try { await remove(ref(db, 'tracks/' + t.id)); } catch(e){ console.error(e); toast('Ошибка', 'err'); }
+    try {
+      await remove(ref(db, 'tracks/' + t.id));
+      await remove(ref(db, 'audio/' + t.id));
+      audioCache.delete(t.id);
+    } catch(e){ console.error(e); toast('Ошибка', 'err'); }
     if (currentId === t.id){ closeMiniPlayer(true); closeFs(); }
     closeTrackMenu(); toast('Удалено');
   }
@@ -3729,39 +3765,41 @@ $('editSave').addEventListener('click', async () => {
   if (!editId) return;
   const t = getTrack(editId);
   if (!t) return;
+
   const upd = {
     title: $('editTitle').value.trim() || t.title,
     artist: $('editArtist').value.trim() || 'Неизвестен',
     album: $('editAlbum').value.trim()
   };
+
   if (editCoverNew !== undefined){
-    if (editCoverNew === null) upd.cover = null;
-    else {
-      try {
-        const path = `covers/${firebaseUid}/${Date.now()}_edit.jpg`;
-        upd.cover = await uploadCoverDataUrlToStorage(editCoverNew, path);
-      } catch(e){ console.error(e); toast('Не удалось загрузить обложку', 'err'); return; }
-    }
+    upd.cover = editCoverNew;
   }
-  if (editReplaceFileObj){
-    try {
-      const ts = Date.now();
-      const safeName = editReplaceFileObj.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const path = `tracks/${firebaseUid}/${ts}_${safeName}`;
-      upd.audioUrl = await uploadFileToStorage(editReplaceFileObj, path, editReplaceFileObj.type || 'audio/mpeg');
+
+  try {
+    if (editReplaceFileObj){
+      const { base64, mime } = await fileToBase64AndMime(editReplaceFileObj);
+      await set(ref(db, 'audio/' + t.id), { data: base64, mime });
+      audioCache.delete(t.id);
       upd.duration = await new Promise(res => {
         const a = new Audio(); a.preload = 'metadata';
         a.onloadedmetadata = () => res(a.duration || 0);
         a.onerror = () => res(0);
-        a.src = upd.audioUrl;
+        a.src = `data:${mime};base64,${base64}`;
       });
       if (currentId === t.id){
-        audio.src = upd.audioUrl;
+        audio.src = `data:${mime};base64,${base64}`;
+        audioCache.set(t.id, audio.src);
         audio.play().catch(()=>{});
       }
-    } catch(e){ console.error(e); toast('Не удалось загрузить файл', 'err'); return; }
+    }
+
+    await update(ref(db, 'tracks/' + t.id), upd);
+  } catch(e){
+    console.error('editSave error', e);
+    toast(e.message || 'Ошибка сохранения', 'err');
+    return;
   }
-  try { await update(ref(db, 'tracks/' + t.id), upd); } catch(e){ console.error(e); }
   closeEdit(); toast('Сохранено', 'ok');
 });
 
@@ -3776,7 +3814,7 @@ $('newPlCoverClear').addEventListener('click', () => {
 $('plCoverInput').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = '';
   if (!f) return;
-  const d = await processCover(f, 400);
+  const d = await processCover(f, 300);
   if (!d){ toast('Не удалось', 'err'); return; }
   newPlCoverNew = d;
   $('newPlCoverPrev').innerHTML = `<img src="${d}" alt="">`;
@@ -3785,15 +3823,13 @@ $('plOk').addEventListener('click', async () => {
   const name = $('plName').value.trim();
   if (!name){ toast('Введи название', 'err'); return; }
   const id = uid();
-  let coverUrl = null;
-  if (newPlCoverNew){
-    try {
-      coverUrl = await uploadCoverDataUrlToStorage(newPlCoverNew, `covers/${firebaseUid}/playlist_${id}.jpg`);
-    } catch(e){ console.error(e); }
-  }
   playlists.unshift({
-    id, name: name.slice(0, 40), color: plColor, trackIds: [],
-    cover: coverUrl, createdAt: Date.now()
+    id,
+    name: name.slice(0, 40),
+    color: plColor,
+    trackIds: [],
+    cover: newPlCoverNew || null,
+    createdAt: Date.now()
   });
   await savePlaylistsToFB();
   $('plModal').classList.remove('show');
@@ -3812,7 +3848,7 @@ $('plSetCoverClear').addEventListener('click', () => {
 $('plSetCoverInput').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = '';
   if (!f) return;
-  const d = await processCover(f, 400);
+  const d = await processCover(f, 300);
   if (!d){ toast('Не удалось', 'err'); return; }
   plSetCoverNew = d;
   $('plSetCoverPrev').innerHTML = `<img src="${d}" alt="">`;
@@ -3830,12 +3866,7 @@ $('plSetSave').addEventListener('click', async () => {
     if (m) pl.color = m[0];
   }
   if (plSetCoverNew !== undefined){
-    if (plSetCoverNew === null) pl.cover = null;
-    else {
-      try {
-        pl.cover = await uploadCoverDataUrlToStorage(plSetCoverNew, `covers/${firebaseUid}/playlist_${pl.id}_${Date.now()}.jpg`);
-      } catch(e){ console.error(e); }
-    }
+    pl.cover = plSetCoverNew;
   }
   await savePlaylistsToFB();
   $('plSettingsModal').classList.remove('show');
@@ -3963,7 +3994,6 @@ function boot(){
       if (unsubPlaylists) { unsubPlaylists(); unsubPlaylists = null; }
       if (unsubFavorites) { unsubFavorites(); unsubFavorites = null; }
 
-      // Если user залогинен (не аноним), но в БД isAnonymous: true — починим
       if (!user.isAnonymous){
         update(ref(db, 'users/' + user.uid), {
           isAnonymous: false,
