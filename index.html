@@ -1126,6 +1126,15 @@ function generateSinceYouLike(){
 }
 
 
+
+function generatePct(){
+  const counts = {};
+  tracks.forEach(t2=>{ if (favIds.includes(t2.id) && t2.artist) counts[t2.artist] = (counts[t2.artist]||0)+1; });
+  if (!Object.keys(counts).length && favArtists.length){ favArtists.forEach(a => { if (a) counts[a] = 1; }); }
+  const top = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0]);
+  return top.map(name => ({ name, tracks: tracks.filter(t2=>t2.artist === name) })).filter(x=>x.tracks.length >= 1);
+}
+
 // ============ OPEN ============
 function openMix(mixId){ currentPlaylistId = mixId; renderPlaylistPage(); switchView('playlist'); }
 function openLikedPage(){ currentPlaylistId = LIKED_ID; renderPlaylistPage(); switchView('playlist'); }
@@ -1138,7 +1147,7 @@ function renderMixPage(mixId){
   else if (mixId.startsWith('__daily_')) mix = generateDailyMixes().find(m => m.id === mixId);
   else if (mixId.startsWith('__artist_')) { const name = decodeURIComponent(mixId.replace('__artist_','')); const ts = tracks.filter(t2=>t2.artist === name); if (ts.length >= 2) mix = { id: mixId, name, tag:t('artist_mix_tag'), sub: tn(ts.length), tracks: shuffleWithSeed(ts, 'artist_'+name), icon:'person', cls:'mix-cover-artist' }; }
   else if (mixId === '__mix_foryou__') mix = generateMixes().find(m => m.id === mixId);
-  else if (mixId.startsWith('__pct_'))) {
+  else if (mixId.startsWith('__pct_')) {
     // 100% для вас — открывается как страница со ВСЕМИ песнями автора
     const artist = decodeURIComponent(mixId.replace('__pct_',''));
     const list = tracks.filter(t2=>t2.artist === artist);
