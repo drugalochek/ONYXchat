@@ -1309,12 +1309,14 @@ function updateHourCountdown(){
   if (!$('shead-hour') || $('shead-hour').style.display === 'none') return;
   el.innerHTML = `${esc(t('hour_sub'))}<span class="hour-countdown">· ${getHourCountdown()}</span>`;
 }
+let lastHourTick = Math.floor(Date.now() / 3600000);
 function startHourTimer(){
   if (hourTimerId) clearInterval(hourTimerId);
+  lastHourTick = Math.floor(Date.now() / 3600000);
   hourTimerId = setInterval(()=>{
-    const left = getHourCountdown();
     updateHourCountdown();
-    if (left === '00:00:00') renderHome();
+    const now = Math.floor(Date.now() / 3600000);
+    if (now !== lastHourTick){ lastHourTick = now; renderHome(); }
   },1000);
 }
 
