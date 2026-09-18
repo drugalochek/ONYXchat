@@ -801,7 +801,7 @@ empty_mood:'Для этого настроения пока нет треков'
 },
 en:{home:'Home',explore:'Explore',fav:'Favorites',search:'Search',profile:'Profile',studio:'Studio',back:'Back',greet_morning:'Good morning',greet_day:'Good afternoon',greet_evening:'Good evening',greet_night:'Good night',liked_artists:'Favorite artists',special_for_you:'Made for you',since_like:'Similar artists',mixes_for_you:'Mixes for you',artist_mixes:'Mixes from favorite artists',genre_of_hour:'Genre of the hour',liked_genres:'Your favorite genres',pct_for_you:'100% for you',curated:'Playlists you\'ll love',curated_sub:'Handpicked',new_for_you:'New for you',fav_tracks:'Favorite tracks',liked:'Liked tracks',all_artists:'All artists',all_tracks:'All tracks',recent:'Recent',long:'Long',short:'Short',random:'Random',genres:'Genres',playlists:'Playlists',uploaded:'Uploaded',albums:'Albums',tracks_lc:'Tracks',save:'Save',cancel:'Cancel',create:'Create',close:'Close',remove:'Remove',delete:'Delete',edit:'Edit',account:'Account',appearance:'Appearance',data:'Data',theme:'Theme',dark:'Dark',light:'Light',language:'Language',edit_profile:'Edit name & avatar',artist_studio:'Artist studio',delete_uploads:'Delete all uploads',profile_l:'Profile',name_l:'Name',upload_avatar:'Upload avatar',remove_avatar:'Remove avatar',artist_profile:'Artist profile',stage_name:'Stage name',genre_l:'Genre',country_l:'Country',bio_l:'About',links_l:'Links',track_settings:'Track settings',track_settings_d:'Edit metadata and cover.',change_cover:'Change cover',remove_cover:'Remove cover',title_l:'Title',artist_l:'Artist',album_l:'Album',lyrics_l:'Lyrics',new_playlist:'New playlist',new_playlist_d:'Name, color, cover.',upload_cover:'Upload cover',color_l:'Color',playlist_settings:'Playlist settings',verify_title:'Verification',verify_desc:'Complete requirements.',new_release:'New release',new_release_d:'Upload files.',upload_here:'Click or drop files',release_genre:'Genre',release_year:'Year',publish:'Publish',sleep_timer:'Sleep timer',min:'min',off:'Off',queue:'Queue',login_google:'Sign in with Google',login_email:'Email & password',login:'Sign in',register:'Register',password:'Password',captcha:'Verify — tap the matching emoji',music_by:'Now playing',tracks_word:'track',tracks_word2:'tracks',tracks_word5:'tracks',artist_1:'artist',artist_n:'artists',album_1:'album',album_n:'albums',listen_all:'Play all',follow_artist:'Like',unfollow_artist:'Liked',no_liked:'Like tracks and artists ♥ — they will appear here.',need_3_fav:'Need 3+ favorites',from_liked:'From favorites',same_genre:'Same genre',nothing_found:'Nothing found',start_typing:'Start typing',search_ph:'Tracks, artists, playlists...',search_hint:'Search tracks, artists and playlists.',genre_tag:'Genre',daily_sub:'Updates daily',hour_sub:'New genre every hour',since_title_prefix:'Similar to',mix_day:'Mix of the day',mix_week:'Mix of the week',daily_mix:'Daily mix',mix_foryou:'For you',tag_foryou:'Personal',tag_today:'Today',tag_week:'This week',tag_hour:'Now',updates_monday:'Updates Mondays',artist_mix_tag:'Artist',cur_rock:'Rock classics',cur_country:'Country & folk',cur_pop:'Pop hits',cur_hiphop:'Hip-hop',cur_electronic:'Electronic',cur_jazz:'Jazz & blues',cur_lofi:'Lo-Fi & chill',cur_metal:'Metal & rock',similar_t:'Similar',published:'Published',welcome_title:'Welcome to Sonic',welcome_desc:'Sign in or create an account to save tracks in the cloud and get an artist profile. Or continue without account — data will be stored only on this device.',login_or_register:'Sign in or register',continue_guest:'Continue as guest',benefit_sync:'Sync tracks across devices',benefit_upload:'Upload your tracks to the cloud',benefit_artist:'Artist profile with badge',guest_banner:'You are in guest mode — data is stored on this device only.',confirm_delete_playlist:'Delete playlist?',confirm_delete_playlist_t:'Are you sure? This action cannot be undone.',confirm_delete_track:'Delete track?',confirm_delete_track_t:'Are you sure you want to delete this track?',confirm_delete_all:'Delete all uploads?',confirm_delete_all_t:'All uploaded tracks will be permanently deleted.',confirm_logout:'Sign out?',confirm_logout_t:'You can sign back in anytime.',confirm_yes:'Yes, delete',confirm_yes_logout:'Sign out',confirm_no:'Cancel',import_l:'Import',id3:'Read ID3 tags',id3_d:'Title, artist, album, lyrics',cover:'Read cover',cover_d:'Image from tags',fallback:'Fallback to filename',verify_benefits:'What verification unlocks:',verify_b1:'Unlimited uploads (max 5 without verification)',verify_b2:'OK badge next to your name',verify_b3:'Priority in search and "Verified" block',verify_b4:'Artist profile visible to everyone',verify_req:'Requirements:',verify_req_tracks:'Minimum 2 tracks',verify_req_profile:'Complete artist profile',verify_req_avatar:'Avatar',verify_req_country:'Country specified',verify_bio:'Bio',verify_upload_limit:'Upload limit: 5 tracks without verification.',verify_done:'Verified',upload_limit_msg:'Without verification you can upload max 5 tracks.',verify_rights:'I own the rights',verify_no_piracy:'Not publishing others',verify_rules:'Agree to rules',verify_start:'Get code',verify_code:'Remember this code',captcha_ok:'Done',refresh:'Refresh',notifications:'Notifications',clear_all:'Clear',notif_new_release:'New track',notif_recommend:'Recommendation',notif_welcome:'Welcome',empty_mood:'No tracks for this mood yet',empty_genre:'No tracks in this genre'}
 };
-['de','zh','es','fr'].forEach(c => { I18N[c] = { ...I18N.en }; });
+['es'].forEach(c => { I18N[c] = { ...I18N.en }; });
 
 let lang = 'ru';
 function t(k, fb){ return (I18N[lang] && I18N[lang][k]) || (I18N.en && I18N.en[k]) || (I18N.ru && I18N.ru[k]) || fb || k; }
@@ -815,7 +815,7 @@ function applyLang(){
   document.documentElement.setAttribute('lang', lang);
   try { localStorage.setItem('sonic_lang', lang); } catch(e){}
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const k = el.dataset.i18n; if (k) el.textContent = t(k); });
-  const lv = $('langVal'); if (lv){ const names = {ru:'Русский',en:'English',de:'Deutsch',zh:'中文',es:'Español',fr:'Français'}; lv.textContent = names[lang]||'English'; }
+  const lv = $('langVal'); if (lv){ const names = {ru:'Русский',en:'English',es:'Español'}; lv.textContent = names[lang]||'English'; }
   const sp = $('searchInput'); if (sp) sp.placeholder = t('search_ph');
   renderAll();
 }
@@ -895,7 +895,7 @@ const GENRE_DISPLAY = {
   ru:{rock:'Рок',pop:'Поп','hip-hop':'Хип-хоп',country:'Кантри',jazz:'Джаз',electronic:'Электроника','r&b':'R&B',classical:'Классика',blues:'Блюз',reggae:'Регги',folk:'Фолк и акустика',indie:'Инди',metal:'Метал',punk:'Панк',soul:'Соул',funk:'Фанк',disco:'Диско',latin:'Латина',soundtrack:'Саундтрек',instrumental:'Инструментал',chiptune:'Чиптюн','lo-fi':'Lo-Fi','video game':'Игры',anime:'Аниме',gospel:'Госпел',opera:'Опера',trap:'Трэп','k-pop':'K-Pop'},
   en:{rock:'Rock',pop:'Pop','hip-hop':'Hip-Hop',country:'Country',jazz:'Jazz',electronic:'Electronic','r&b':'R&B',classical:'Classical',blues:'Blues',reggae:'Reggae',folk:'Folk',indie:'Indie',metal:'Metal',punk:'Punk',soul:'Soul',funk:'Funk',disco:'Disco',latin:'Latin',soundtrack:'Soundtrack',instrumental:'Instrumental',chiptune:'Chiptune','lo-fi':'Lo-Fi','video game':'Games',anime:'Anime',gospel:'Gospel',opera:'Opera',trap:'Trap','k-pop':'K-Pop'}
 };
-['de','zh','es','fr'].forEach(c => { GENRE_DISPLAY[c] = { ...GENRE_DISPLAY.en }; });
+['es'].forEach(c => { GENRE_DISPLAY[c] = { ...GENRE_DISPLAY.en }; });
 function genreName(canon){ const d = GENRE_DISPLAY[lang]||GENRE_DISPLAY.ru; return d[canon] || canon; }
 const GENRE_COLORS = {rock:'#ef4444',pop:'#ec4899','hip-hop':'#8b5cf6',country:'#84cc16',jazz:'#6366f1',electronic:'#06b6d4','r&b':'#a855f7',classical:'#0ea5e9',blues:'#1e40af',reggae:'#10b981',folk:'#0d9488',indie:'#14b8a6',metal:'#475569',punk:'#dc2626',soul:'#7c3aed',funk:'#eab308',disco:'#d946ef',latin:'#f97316',soundtrack:'#7e22ce',instrumental:'#64748b',chiptune:'#22c55e','lo-fi':'#0f766e','video game':'#2563eb',anime:'#db2777',gospel:'#b45309',opera:'#7f1d1d',trap:'#7c2d12','k-pop':'#f472b6'};
 
@@ -1028,7 +1028,7 @@ function toggleFavArtist(name){ if (!name) return; const i = favArtists.indexOf(
 function seededRandom(seed){ let h = 2166136261; const s = String(seed); for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return () => { h ^= h<<13; h ^= h>>>17; h ^= h<<5; return ((h>>>0)/4294967296); }; }
 function shuffleWithSeed(arr, seed){ const rnd = seededRandom(seed); const a = [...arr]; for (let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
 function getFavoritePool(){ const s = new Set(favArtists); const seen = new Set(); const p = []; tracks.forEach(t2=>{ if (favIds.includes(t2.id) || s.has(t2.artist)){ if (!seen.has(t2.id)){ seen.add(t2.id); p.push(t2); } } }); return p; }
-function getFavoriteArtists(){ const set = new Set(favArtists); tracks.forEach(t2 => { if (favIds.includes(t2.id)) set.add(t2.artist); }); return [...set].filter(Boolean); }
+function getFavoriteArtists(){ return [...new Set(favArtists)].filter(Boolean); }
 
 const MIX_ICONS = {
   sun:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
@@ -1356,7 +1356,7 @@ function renderFav(){
   nc.addEventListener('click', openPlModal);
   plEl.appendChild(nc);
   const upEl = $('fav-uploaded'); upEl.innerHTML = '';
-  const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid);
+  const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid && firebaseUid);
   if (!myTracks.length) upEl.innerHTML = `<div style="padding:10px 0;color:var(--dim);font-size:12.5px">—</div>`;
   else myTracks.slice(0,5).forEach((t2,i)=>upEl.appendChild(trackRow(t2, myTracks, i)));
 }
@@ -1400,7 +1400,7 @@ function renderProfile(){
   const isMusician = !!profile.musicianName;
   $('profHead').innerHTML = `<div class="prof-avatar" id="profAvatarClick">${avatarHtml}<div class="edit-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div><div class="prof-name">${esc(profile.name)}${verifiedBadgeBigHtml(profile.musicianName)}</div>${isMusician ? `<div class="prof-meta">${esc(profile.musicianName)}${profile.musicianGenre ? ' · '+esc(profile.musicianGenre) : ''}</div>` : ''}`;
   $('profAvatarClick').addEventListener('click', openProfileEdit);
-  $('profStats').innerHTML = `<div class="prof-stat"><div class="n">${tracks.length}</div><div class="l">${t('tracks_word5')}</div></div><div class="prof-stat"><div class="n">${tracks.filter(t2=>t2.ownerId === firebaseUid).length}</div><div class="l">${t('uploaded')}</div></div><div class="prof-stat"><div class="n">${favIds.length}</div><div class="l">${t('liked')}</div></div>`;
+  $('profStats').innerHTML = `<div class="prof-stat"><div class="n">${tracks.length}</div><div class="l">${t('tracks_word5')}</div></div><div class="prof-stat"><div class="n">${tracks.filter(t2=>t2.ownerId === firebaseUid && firebaseUid).length}</div><div class="l">${t('uploaded')}</div></div><div class="prof-stat"><div class="n">${favIds.length}</div><div class="l">${t('liked')}</div></div>`;
   $('profStudioLabel').textContent = t('artist_studio');
   const pb = $('profileBtn');
   if (profile.avatar){ pb.innerHTML = `<img src="${profile.avatar}" alt="">`; pb.classList.remove('profile'); pb.style.border = '2px solid var(--accent)'; }
@@ -1683,7 +1683,7 @@ $('setId3').addEventListener('change', ()=>{ settings.id3 = $('setId3').checked;
 $('setCover').addEventListener('change', ()=>{ settings.cover = $('setCover').checked; savePrefs(); });
 $('setFallback').addEventListener('change', ()=>{ settings.fallback = $('setFallback').checked; savePrefs(); });
 $('themeSwitch').addEventListener('click', e=>{ const b = e.target.closest('button'); if (!b) return; theme = b.dataset.t; applyTheme(); savePrefs(); });
-$('profReset').addEventListener('click', async ()=>{ const ok = await showConfirm(t('confirm_delete_all'), t('confirm_delete_all_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid); for (const t2 of myTracks){ try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} } if (myTracks.some(t2=>t2.id === currentId)){ closeMiniPlayer(true); closeFs(); } });
+$('profReset').addEventListener('click', async ()=>{ const ok = await showConfirm(t('confirm_delete_all'), t('confirm_delete_all_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid && firebaseUid); for (const t2 of myTracks){ try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} } if (myTracks.some(t2=>t2.id === currentId)){ closeMiniPlayer(true); closeFs(); } });
 
 $('miniPlay').addEventListener('click', e=>{ e.stopPropagation(); if (!currentTrack()){ if (!tracks.length) return; playTrackInList(tracks, 0); return; } if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); });
 $('miniFav').addEventListener('click', e=>{ e.stopPropagation(); const t2 = currentTrack(); if (t2) toggleFav(t2.id); });
@@ -1736,7 +1736,7 @@ function openTrackMenu(t2){
   const isFav = favIds.includes(t2.id);
   const notIn = playlists.filter(p=>!p.trackIds.includes(t2.id));
   const inPls = playlists.filter(p=>p.trackIds.includes(t2.id));
-  const isMine = t2.ownerId === firebaseUid && firebaseUid;
+  const isMine = !!(firebaseUid && t2.ownerId && t2.ownerId === firebaseUid);
   const has = !!t2.lyrics;
   let html = '';
   if (has) html += `<button class="tm-item" data-a="lyrics"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg><span class="tm-lbl">${t('lyrics_l')}</span></button>`;
@@ -1766,18 +1766,18 @@ $('tmModal').addEventListener('click', async e=>{
   else if (a === 'newPl'){ closeTrackMenu(); openPlModal(); }
   else if (a === 'edit'){ closeTrackMenu(); openEdit(t2); }
   else if (a === 'share'){ shareTrack(t2); closeTrackMenu(); }
-  else if (a === 'del'){ if (t2.ownerId !== firebaseUid) return; closeTrackMenu(); const ok = await showConfirm(t('confirm_delete_track'), t('confirm_delete_track_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} if (currentId === t2.id){ closeMiniPlayer(true); closeFs(); } renderAll(); }
+  else if (a === 'del'){ if (!firebaseUid || !t2.ownerId || t2.ownerId !== firebaseUid) return; closeTrackMenu(); const ok = await showConfirm(t('confirm_delete_track'), t('confirm_delete_track_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} if (currentId === t2.id){ closeMiniPlayer(true); closeFs(); } renderAll(); }
 });
 
 let editId = null, editCoverNew = undefined;
-function openEdit(t2){ if (t2.ownerId !== firebaseUid) return; editId = t2.id; editCoverNew = undefined; $('editTitle').value = t2.title || ''; $('editArtist').value = t2.artist || ''; $('editAlbum').value = t2.album || ''; $('editLyrics').value = t2.lyrics || ''; $('editCoverPrev').innerHTML = t2.cover ? `<img src="${t2.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; $('editModal').classList.add('show'); }
+function openEdit(t2){ if (!firebaseUid || !t2.ownerId || t2.ownerId !== firebaseUid) return; editId = t2.id; editCoverNew = undefined; $('editTitle').value = t2.title || ''; $('editArtist').value = t2.artist || ''; $('editAlbum').value = t2.album || ''; $('editLyrics').value = t2.lyrics || ''; $('editCoverPrev').innerHTML = t2.cover ? `<img src="${t2.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; $('editModal').classList.add('show'); }
 function closeEdit(){ $('editModal').classList.remove('show'); editId = null; editCoverNew = undefined; }
 $('editCancel').addEventListener('click', closeEdit);
 $('editModal').addEventListener('click', e=>{ if (e.target === $('editModal')) closeEdit(); });
 $('editCoverClear').addEventListener('click', ()=>{ editCoverNew = null; $('editCoverPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; });
 $('editCoverPick').addEventListener('click', ()=>$('coverInput').click());
 $('coverInput').addEventListener('change', async e=>{ const f = e.target.files[0]; e.target.value = ''; if (!f) return; const d = await processCover(f); if (!d) return; editCoverNew = d; $('editCoverPrev').innerHTML = `<img src="${d}" alt="">`; });
-$('editSave').addEventListener('click', async ()=>{ if (!editId) return; const t2 = getTrack(editId); if (!t2) return; const upd = { title: $('editTitle').value.trim() || t2.title, artist: $('editArtist').value.trim() || '—', album: $('editAlbum').value.trim(), lyrics: $('editLyrics').value.trim() }; if (editCoverNew !== undefined) upd.cover = editCoverNew; try { await update(ref(db, 'tracks/'+t2.id), upd); } catch(e){ return; } closeEdit(); if ($('lyricsModal').classList.contains('show')) renderLyricsModal(); renderAll(); });
+$('editSave').addEventListener('click', async ()=>{ if (!editId) return; const t2 = getTrack(editId); if (!t2) return; if (!firebaseUid || !t2.ownerId || t2.ownerId !== firebaseUid) return; const upd = { title: $('editTitle').value.trim() || t2.title, artist: $('editArtist').value.trim() || '—', album: $('editAlbum').value.trim(), lyrics: $('editLyrics').value.trim() }; if (editCoverNew !== undefined) upd.cover = editCoverNew; try { await update(ref(db, 'tracks/'+t2.id), upd); } catch(e){ return; } closeEdit(); if ($('lyricsModal').classList.contains('show')) renderLyricsModal(); renderAll(); });
 
 let plColor = PALETTE[0];
 function openPlModal(){ $('plName').value = ''; plColor = PALETTE[playlists.length % PALETTE.length]; newPlCoverNew = undefined; $('newPlCoverPrev').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`; const cp = $('plColors'); cp.innerHTML = ''; PALETTE.forEach(c=>{ const d = document.createElement('button'); d.className = 'cdot' + (c === plColor ? ' active' : ''); d.style.background = `linear-gradient(135deg, ${c}, ${shade(c,-30)})`; d.addEventListener('click', ()=>{ plColor = c; cp.querySelectorAll('.cdot').forEach(x=>x.classList.toggle('active', x === d)); }); cp.appendChild(d); }); $('plModal').classList.add('show'); setTimeout(()=>$('plName').focus(), 100); }
@@ -1822,7 +1822,7 @@ $('welcomeLogin').addEventListener('click', ()=>{ $('welcomeModal').classList.re
 $('welcomeGuest').addEventListener('click', ()=>{ guestMode = true; savePrefs(); $('welcomeModal').classList.remove('show'); renderAll(); });
 
 $('langBtn').addEventListener('click', ()=>{
-  const list = $('langList'); const langs = [['ru','Русский','🇷🇺'],['en','English','🇬🇧'],['de','Deutsch','🇩🇪'],['zh','中文','🇨🇳'],['es','Español','🇪🇸'],['fr','Français','🇫🇷']];
+  const list = $('langList'); const langs = [['ru','Русский','🇷🇺'],['en','English','🇬🇧'],['es','Español','🇪🇸']];
   list.innerHTML = '';
   langs.forEach(([code, name, flag])=>{ const b = document.createElement('button'); b.className = 'pref-radio-row'; b.innerHTML = `<input type="radio" name="lng" ${lang===code?'checked':''}><div class="pref-radio"></div><div class="lbl">${flag} ${name}</div>`; b.addEventListener('click', ()=>{ lang = code; list.querySelectorAll('input').forEach(x=>x.checked = false); b.querySelector('input').checked = true; applyLang(); setTimeout(()=>$('langModal').classList.remove('show'), 200); }); list.appendChild(b); });
   $('langModal').classList.add('show');
