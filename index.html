@@ -412,11 +412,6 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 .verify-agree input:checked + .vcb{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
 .verify-agree input:checked + .vcb::after{transform:rotate(-45deg) scale(1)}
 .verify-agree .lbl{flex:1;font-size:12.5px;line-height:1.4}
-.verify-code-box{padding:24px 20px;border:2px dashed var(--accent);border-radius:18px;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(6,182,212,.08))}
-.verify-code-label{font-size:11px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
-.verify-code{font-family:monospace;font-size:32px;letter-spacing:.14em;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;user-select:all}
-.verify-code-timer{font-size:11.5px;color:var(--dim)}
-.verify-code-input{width:100%;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;color:var(--txt);font-size:22px;font-family:monospace;text-align:center;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
 .verify-benefit-list{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--soft);border-radius:12px;margin-bottom:14px;font-size:12.5px}
 .verify-benefit-list div{display:flex;align-items:center;gap:8px;line-height:1.4}
 .verify-benefit-list svg{width:16px;height:16px;color:var(--accent3);flex-shrink:0}
@@ -476,6 +471,16 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 .picker-chip{padding:9px 14px;border-radius:20px;background:var(--card);border:1px solid var(--border);color:var(--txt);font-size:13px;cursor:pointer;transition:.15s}
 .picker-chip:hover,.picker-chip:active{background:var(--soft);border-color:var(--accent)}
 .picker-chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
+.stat-hero{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.stat-hero-cov{width:80px;height:80px;border-radius:14px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff}
+.stat-hero-cov img{width:100%;height:100%;object-fit:cover;display:block}
+.stat-hero-info{flex:1;min-width:0}
+.stat-hero-t{font-size:17px;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stat-hero-a{font-size:12.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-cell{padding:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;text-align:center}
+.stat-cell .v{font-size:22px;font-weight:700;margin-bottom:4px}
+.stat-cell .l{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
 </style>
 </head>
 <body>
@@ -583,10 +588,6 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
     <div class="prof-settings-title" data-i18n="appearance"></div>
     <button class="set-btn" id="langBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="language"></span><span style="margin-left:auto;color:var(--dim);font-size:12px;padding-left:8px" id="langVal"></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="set-btn" style="cursor:default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span data-i18n="theme"></span><div id="themeSwitch" style="margin-left:auto;display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px"><button data-t="dark" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)" data-i18n="dark"></button><button data-t="light" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)" data-i18n="light"></button></div></div>
-    <div class="prof-settings-title" data-i18n="import_l"></div>
-    <label class="set-sw"><input type="checkbox" id="setId3"><div class="sw-track"></div><div class="sw-text"><div class="sw-l" data-i18n="id3"></div><div class="sw-d" data-i18n="id3_d"></div></div></label>
-    <label class="set-sw"><input type="checkbox" id="setCover"><div class="sw-track"></div><div class="sw-text"><div class="sw-l" data-i18n="cover"></div><div class="sw-d" data-i18n="cover_d"></div></div></label>
-    <label class="set-sw"><input type="checkbox" id="setFallback"><div class="sw-track"></div><div class="sw-text"><div class="sw-l" data-i18n="fallback"></div><div class="sw-d">Artist - Title.mp3</div></div></label>
     <div class="prof-settings-title" data-i18n="data"></div>
     <button class="set-btn" id="profReset" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span data-i18n="delete_uploads"></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
   </section>
@@ -636,6 +637,13 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 
 <div class="modal" id="tmModal"><div class="sheet"><div class="sheet-handle"></div><div class="tm-hero"><div class="tm-title" id="tmTitle"></div><div class="tm-album" id="tmAlbum"></div></div><div class="tm-circle" id="tmCircle"></div><div class="tm-artist" id="tmArtist"></div><div class="tm-menu" id="tmMenu"></div></div></div>
 <div class="modal" id="lyricsModal"><div class="sheet" style="max-height:90vh"><div class="sheet-handle"></div><div class="lyrics-head"><div class="lyrics-title" id="lyrTitle"></div><div class="lyrics-artist" id="lyrArtist"></div></div><div class="lyrics-body" id="lyrBody"></div></div></div>
+
+<div class="modal" id="trackStatsModal"><div class="sheet">
+  <div class="sheet-handle"></div>
+  <h3 class="ftitle">Track statistics</h3>
+  <div id="trackStatsBody"></div>
+  <div class="sheet-acts" style="margin-top:14px"><button class="solid" id="trackStatsClose">Close</button></div>
+</div></div>
 
 <div class="modal" id="confirmModal"><div class="sheet"><div class="sheet-handle"></div><h3 class="ftitle" id="confirmTitle"></h3><p class="fdesc" id="confirmText"></p><div class="sheet-acts"><button class="ghost" id="confirmCancel"></button><button class="danger-btn" id="confirmOk"></button></div></div></div>
 
@@ -799,14 +807,13 @@ confirm_delete_track:'Удалить трек?',confirm_delete_track_t:'Вы у�
 confirm_delete_all:'Удалить все загрузки?',confirm_delete_all_t:'Все ваши загруженные треки будут удалены безвозвратно.',
 confirm_logout:'Выйти из аккаунта?',confirm_logout_t:'Вы сможете снова войти в любой момент.',
 confirm_yes:'Да, удалить',confirm_yes_logout:'Выйти',confirm_no:'Отмена',
-import_l:'Импорт',id3:'Читать ID3-теги',id3_d:'Название, исполнитель, альбом, текст',cover:'Читать обложку',cover_d:'Картинка из тегов',fallback:'Fallback на имя файла',
 verify_done:'Верифицирован',upload_limit_msg:'Без верификации можно загрузить максимум 5 треков.',
 captcha_ok:'Готово',refresh:'Обновить',
 notifications:'Уведомления',clear_all:'Очистить',
 notif_new_release:'Новый трек',notif_welcome:'Добро пожаловать'
 },
-en:{home:'Home',explore:'Explore',fav:'Favorites',search:'Search',profile:'Profile',studio:'Studio',back:'Back',greet_morning:'Good morning',greet_day:'Good afternoon',greet_evening:'Good evening',greet_night:'Good night',liked_artists:'Favorite artists',mixes_for_you:'Mixes for you',genre_of_hour:'Genre of the half-hour',pct_for_you:'100% for you',new_for_you:'New for you',no_fresh:'No fresh tracks yet',liked:'Liked tracks',all_artists:'All artists',all_tracks:'All tracks',recent:'Recent',long:'Long',short:'Short',random:'Random',playlists:'Playlists',uploaded:'Uploaded',albums:'Albums',tracks_lc:'Tracks',save:'Save',cancel:'Cancel',create:'Create',close:'Close',remove:'Remove',delete:'Delete',edit:'Edit',account:'Account',appearance:'Appearance',data:'Data',theme:'Theme',dark:'Dark',light:'Light',language:'Language',edit_profile:'Edit name & avatar',artist_studio:'Artist studio',delete_uploads:'Delete all uploads',profile_l:'Profile',name_l:'Name',upload_avatar:'Upload avatar',remove_avatar:'Remove avatar',artist_profile:'Artist profile',stage_name:'Stage name',genre_l:'Genre',country_l:'Country',bio_l:'About',links_l:'Links',track_settings:'Track settings',track_settings_d:'Edit metadata and cover.',change_cover:'Change cover',remove_cover:'Remove cover',title_l:'Title',artist_l:'Artist',album_l:'Album',lyrics_l:'Lyrics',new_playlist:'New playlist',new_playlist_d:'Name, color, cover.',upload_cover:'Upload cover',color_l:'Color',playlist_settings:'Playlist settings',verify_title:'Verification',verify_desc:'Complete requirements.',new_release:'New release',new_release_d:'Upload files.',upload_here:'Click or drop files',release_genre:'Genre',release_country:'Country',release_year:'Year',publish:'Publish',sleep_timer:'Sleep timer',min:'min',off:'Off',queue:'Queue',login_google:'Sign in with Google',login_email:'Email & password',login:'Sign in',register:'Register',password:'Password',captcha:'Verify — tap the matching emoji',music_by:'Now playing',tracks_word:'track',tracks_word2:'tracks',tracks_word5:'tracks',artist_1:'artist',artist_n:'artists',album_1:'album',album_n:'albums',listen_all:'Play all',follow_artist:'Like',unfollow_artist:'Liked',no_liked:'Like tracks and artists ♥ — they will appear here.',from_liked:'From favorites',nothing_found:'Nothing found',start_typing:'Start typing',search_ph:'Tracks, artists, playlists...',search_hint:'Search tracks, artists and playlists.',genre_tag:'Genre',hour_sub:'New genre every 30 min',mix_day:'Mix of the day',mix_week:'Mix of the week',daily_mix:'Daily mix',mix_foryou:'For you',tag_foryou:'Personal',tag_today:'Today',tag_week:'This week',tag_hour:'Now',updates_monday:'Updates Mondays',artist_mix_tag:'Artist',similar_t:'Similar',published:'Published',welcome_title:'Welcome to Sonic',welcome_desc:'Sign in or create an account to save tracks in the cloud and get an artist profile. Or continue without account — data will be stored only on this device.',login_or_register:'Sign in or register',continue_guest:'Continue as guest',benefit_sync:'Sync tracks across devices',benefit_upload:'Upload your tracks to the cloud',benefit_artist:'Artist profile with badge',guest_banner:'You are in guest mode — data is stored on this device only.',confirm_delete_playlist:'Delete playlist?',confirm_delete_playlist_t:'Are you sure? This action cannot be undone.',confirm_delete_track:'Delete track?',confirm_delete_track_t:'Are you sure you want to delete this track?',confirm_delete_all:'Delete all uploads?',confirm_delete_all_t:'All uploaded tracks will be permanently deleted.',confirm_logout:'Sign out?',confirm_logout_t:'You can sign back in anytime.',confirm_yes:'Yes, delete',confirm_yes_logout:'Sign out',confirm_no:'Cancel',import_l:'Import',id3:'Read ID3 tags',id3_d:'Title, artist, album, lyrics',cover:'Read cover',cover_d:'Image from tags',fallback:'Fallback to filename',verify_done:'Verified',upload_limit_msg:'Without verification you can upload max 5 tracks.',captcha_ok:'Done',refresh:'Refresh',notifications:'Notifications',clear_all:'Clear',notif_new_release:'New track',notif_welcome:'Welcome'},
-es:{home:'Inicio',explore:'Explorar',fav:'Favoritos',search:'Buscar',profile:'Perfil',studio:'Estudio',back:'Atrás',greet_morning:'Buenos días',greet_day:'Buenas tardes',greet_evening:'Buenas tardes',greet_night:'Buenas noches',liked_artists:'Artistas favoritos',mixes_for_you:'Mezclas para ti',genre_of_hour:'Género de la media hora',pct_for_you:'100% para ti',new_for_you:'Novedades para ti',no_fresh:'Aún no hay canciones recientes',liked:'Canciones favoritas',all_artists:'Todos los artistas',all_tracks:'Todas las canciones',recent:'Recientes',long:'Largas',short:'Cortas',random:'Aleatorio',playlists:'Listas',uploaded:'Subidas',albums:'Álbumes',tracks_lc:'Canciones',save:'Guardar',cancel:'Cancelar',create:'Crear',close:'Cerrar',remove:'Quitar',delete:'Eliminar',edit:'Editar',account:'Cuenta',appearance:'Apariencia',data:'Datos',theme:'Tema',dark:'Oscuro',light:'Claro',language:'Idioma',edit_profile:'Editar nombre y avatar',artist_studio:'Estudio del artista',delete_uploads:'Eliminar todas mis subidas',profile_l:'Perfil',name_l:'Nombre',upload_avatar:'Subir avatar',remove_avatar:'Quitar avatar',artist_profile:'Perfil de artista',stage_name:'Nombre artístico',genre_l:'Género',country_l:'País',bio_l:'Sobre mí',links_l:'Enlaces',track_settings:'Ajustes de la canción',track_settings_d:'Edita los metadatos y la portada.',change_cover:'Cambiar portada',remove_cover:'Quitar portada',title_l:'Título',artist_l:'Artista',album_l:'Álbum',lyrics_l:'Letra',new_playlist:'Nueva lista',new_playlist_d:'Nombre, color y portada.',upload_cover:'Subir portada',color_l:'Color',playlist_settings:'Ajustes de la lista',verify_title:'Verificación',verify_desc:'Completa los requisitos.',new_release:'Nuevo lanzamiento',new_release_d:'Sube archivos.',upload_here:'Toca o suelta archivos',release_genre:'Género',release_country:'País',release_year:'Año',publish:'Publicar',sleep_timer:'Temporizador',min:'min',off:'Apagado',queue:'Cola',login_google:'Iniciar con Google',login_email:'Correo y contraseña',login:'Iniciar sesión',register:'Registrarse',password:'Contraseña',captcha:'Verifica — toca el emoji igual',music_by:'Reproduciendo',tracks_word:'canción',tracks_word2:'canciones',tracks_word5:'canciones',artist_1:'artista',artist_n:'artistas',album_1:'álbum',album_n:'álbumes',listen_all:'Reproducir todo',follow_artist:'Me gusta',unfollow_artist:'En favoritos',no_liked:'Dale me gusta a canciones y artistas ♥ — aparecerán aquí.',from_liked:'De favoritos',nothing_found:'Nada encontrado',start_typing:'Empieza a escribir',search_ph:'Canciones, artistas, listas...',search_hint:'Busca canciones, artistas y listas.',genre_tag:'Género',hour_sub:'Nuevo género cada 30 min',mix_day:'Mezcla del día',mix_week:'Mezcla de la semana',daily_mix:'Mezcla diaria',mix_foryou:'Para ti',tag_foryou:'Personal',tag_today:'Hoy',tag_week:'Esta semana',tag_hour:'Ahora',updates_monday:'Se actualiza los lunes',artist_mix_tag:'Artista',similar_t:'Similares',published:'Publicado',welcome_title:'Bienvenido a Sonic',welcome_desc:'Inicia sesión o crea una cuenta para guardar tus canciones en la nube y obtener un perfil de artista. O continúa sin cuenta.',login_or_register:'Iniciar sesión o registrarse',continue_guest:'Continuar como invitado',benefit_sync:'Sincroniza canciones entre dispositivos',benefit_upload:'Sube tus canciones a la nube',benefit_artist:'Perfil de artista con insignia',guest_banner:'Estás en modo invitado — los datos se guardan solo en este dispositivo.',confirm_delete_playlist:'¿Eliminar lista?',confirm_delete_playlist_t:'¿Seguro? Esta acción no se puede deshacer.',confirm_delete_track:'¿Eliminar canción?',confirm_delete_track_t:'¿Seguro que quieres eliminar esta canción?',confirm_delete_all:'¿Eliminar todas las subidas?',confirm_delete_all_t:'Todas tus canciones subidas se eliminarán permanentemente.',confirm_logout:'¿Cerrar sesión?',confirm_logout_t:'Puedes volver a entrar cuando quieras.',confirm_yes:'Sí, eliminar',confirm_yes_logout:'Cerrar sesión',confirm_no:'Cancelar',import_l:'Importar',id3:'Leer etiquetas ID3',id3_d:'Título, artista, álbum, letra',cover:'Leer portada',cover_d:'Imagen de las etiquetas',fallback:'Usar nombre del archivo',verify_done:'Verificado',upload_limit_msg:'Sin verificación puedes subir máx. 5 canciones.',captcha_ok:'Listo',refresh:'Actualizar',notifications:'Notificaciones',clear_all:'Limpiar',notif_new_release:'Nueva canción',notif_welcome:'Bienvenido'}
+en:{home:'Home',explore:'Explore',fav:'Favorites',search:'Search',profile:'Profile',studio:'Studio',back:'Back',greet_morning:'Good morning',greet_day:'Good afternoon',greet_evening:'Good evening',greet_night:'Good night',liked_artists:'Favorite artists',mixes_for_you:'Mixes for you',genre_of_hour:'Genre of the half-hour',pct_for_you:'100% for you',new_for_you:'New for you',no_fresh:'No fresh tracks yet',liked:'Liked tracks',all_artists:'All artists',all_tracks:'All tracks',recent:'Recent',long:'Long',short:'Short',random:'Random',playlists:'Playlists',uploaded:'Uploaded',albums:'Albums',tracks_lc:'Tracks',save:'Save',cancel:'Cancel',create:'Create',close:'Close',remove:'Remove',delete:'Delete',edit:'Edit',account:'Account',appearance:'Appearance',data:'Data',theme:'Theme',dark:'Dark',light:'Light',language:'Language',edit_profile:'Edit name & avatar',artist_studio:'Artist studio',delete_uploads:'Delete all uploads',profile_l:'Profile',name_l:'Name',upload_avatar:'Upload avatar',remove_avatar:'Remove avatar',artist_profile:'Artist profile',stage_name:'Stage name',genre_l:'Genre',country_l:'Country',bio_l:'About',links_l:'Links',track_settings:'Track settings',track_settings_d:'Edit metadata and cover.',change_cover:'Change cover',remove_cover:'Remove cover',title_l:'Title',artist_l:'Artist',album_l:'Album',lyrics_l:'Lyrics',new_playlist:'New playlist',new_playlist_d:'Name, color, cover.',upload_cover:'Upload cover',color_l:'Color',playlist_settings:'Playlist settings',verify_title:'Verification',verify_desc:'Complete requirements.',new_release:'New release',new_release_d:'Upload files.',upload_here:'Click or drop files',release_genre:'Genre',release_country:'Country',release_year:'Year',publish:'Publish',sleep_timer:'Sleep timer',min:'min',off:'Off',queue:'Queue',login_google:'Sign in with Google',login_email:'Email & password',login:'Sign in',register:'Register',password:'Password',captcha:'Verify — tap the matching emoji',music_by:'Now playing',tracks_word:'track',tracks_word2:'tracks',tracks_word5:'tracks',artist_1:'artist',artist_n:'artists',album_1:'album',album_n:'albums',listen_all:'Play all',follow_artist:'Like',unfollow_artist:'Liked',no_liked:'Like tracks and artists ♥ — they will appear here.',from_liked:'From favorites',nothing_found:'Nothing found',start_typing:'Start typing',search_ph:'Tracks, artists, playlists...',search_hint:'Search tracks, artists and playlists.',genre_tag:'Genre',hour_sub:'New genre every 30 min',mix_day:'Mix of the day',mix_week:'Mix of the week',daily_mix:'Daily mix',mix_foryou:'For you',tag_foryou:'Personal',tag_today:'Today',tag_week:'This week',tag_hour:'Now',updates_monday:'Updates Mondays',artist_mix_tag:'Artist',similar_t:'Similar',published:'Published',welcome_title:'Welcome to Sonic',welcome_desc:'Sign in or create an account to save tracks in the cloud and get an artist profile. Or continue without account — data will be stored only on this device.',login_or_register:'Sign in or register',continue_guest:'Continue as guest',benefit_sync:'Sync tracks across devices',benefit_upload:'Upload your tracks to the cloud',benefit_artist:'Artist profile with badge',guest_banner:'You are in guest mode — data is stored on this device only.',confirm_delete_playlist:'Delete playlist?',confirm_delete_playlist_t:'Are you sure? This action cannot be undone.',confirm_delete_track:'Delete track?',confirm_delete_track_t:'Are you sure you want to delete this track?',confirm_delete_all:'Delete all uploads?',confirm_delete_all_t:'All uploaded tracks will be permanently deleted.',confirm_logout:'Sign out?',confirm_logout_t:'You can sign back in anytime.',confirm_yes:'Yes, delete',confirm_yes_logout:'Sign out',confirm_no:'Cancel',verify_done:'Verified',upload_limit_msg:'Without verification you can upload max 5 tracks.',captcha_ok:'Done',refresh:'Refresh',notifications:'Notifications',clear_all:'Clear',notif_new_release:'New track',notif_welcome:'Welcome'},
+es:{home:'Inicio',explore:'Explorar',fav:'Favoritos',search:'Buscar',profile:'Perfil',studio:'Estudio',back:'Atrás',greet_morning:'Buenos días',greet_day:'Buenas tardes',greet_evening:'Buenas tardes',greet_night:'Buenas noches',liked_artists:'Artistas favoritos',mixes_for_you:'Mezclas para ti',genre_of_hour:'Género de la media hora',pct_for_you:'100% para ti',new_for_you:'Novedades para ti',no_fresh:'Aún no hay canciones recientes',liked:'Canciones favoritas',all_artists:'Todos los artistas',all_tracks:'Todas las canciones',recent:'Recientes',long:'Largas',short:'Cortas',random:'Aleatorio',playlists:'Listas',uploaded:'Subidas',albums:'Álbumes',tracks_lc:'Canciones',save:'Guardar',cancel:'Cancelar',create:'Crear',close:'Cerrar',remove:'Quitar',delete:'Eliminar',edit:'Editar',account:'Cuenta',appearance:'Apariencia',data:'Datos',theme:'Tema',dark:'Oscuro',light:'Claro',language:'Idioma',edit_profile:'Editar nombre y avatar',artist_studio:'Estudio del artista',delete_uploads:'Eliminar todas mis subidas',profile_l:'Perfil',name_l:'Nombre',upload_avatar:'Subir avatar',remove_avatar:'Quitar avatar',artist_profile:'Perfil de artista',stage_name:'Nombre artístico',genre_l:'Género',country_l:'País',bio_l:'Sobre mí',links_l:'Enlaces',track_settings:'Ajustes de la canción',track_settings_d:'Edita los metadatos y la portada.',change_cover:'Cambiar portada',remove_cover:'Quitar portada',title_l:'Título',artist_l:'Artista',album_l:'Álbum',lyrics_l:'Letra',new_playlist:'Nueva lista',new_playlist_d:'Nombre, color y portada.',upload_cover:'Subir portada',color_l:'Color',playlist_settings:'Ajustes de la lista',verify_title:'Verificación',verify_desc:'Completa los requisitos.',new_release:'Nuevo lanzamiento',new_release_d:'Sube archivos.',upload_here:'Toca o suelta archivos',release_genre:'Género',release_country:'País',release_year:'Año',publish:'Publicar',sleep_timer:'Temporizador',min:'min',off:'Apagado',queue:'Cola',login_google:'Iniciar con Google',login_email:'Correo y contraseña',login:'Iniciar sesión',register:'Registrarse',password:'Contraseña',captcha:'Verifica — toca el emoji igual',music_by:'Reproduciendo',tracks_word:'canción',tracks_word2:'canciones',tracks_word5:'canciones',artist_1:'artista',artist_n:'artistas',album_1:'álbum',album_n:'álbumes',listen_all:'Reproducir todo',follow_artist:'Me gusta',unfollow_artist:'En favoritos',no_liked:'Dale me gusta a canciones y artistas ♥ — aparecerán aquí.',from_liked:'De favoritos',nothing_found:'Nada encontrado',start_typing:'Empieza a escribir',search_ph:'Canciones, artistas, listas...',search_hint:'Busca canciones, artistas y listas.',genre_tag:'Género',hour_sub:'Nuevo género cada 30 min',mix_day:'Mezcla del día',mix_week:'Mezcla de la semana',daily_mix:'Mezcla diaria',mix_foryou:'Para ti',tag_foryou:'Personal',tag_today:'Hoy',tag_week:'Esta semana',tag_hour:'Ahora',updates_monday:'Se actualiza los lunes',artist_mix_tag:'Artista',similar_t:'Similares',published:'Publicado',welcome_title:'Bienvenido a Sonic',welcome_desc:'Inicia sesión o crea una cuenta para guardar tus canciones en la nube y obtener un perfil de artista. O continúa sin cuenta.',login_or_register:'Iniciar sesión o registrarse',continue_guest:'Continuar como invitado',benefit_sync:'Sincroniza canciones entre dispositivos',benefit_upload:'Sube tus canciones a la nube',benefit_artist:'Perfil de artista con insignia',guest_banner:'Estás en modo invitado — los datos se guardan solo en este dispositivo.',confirm_delete_playlist:'¿Eliminar lista?',confirm_delete_playlist_t:'¿Seguro? Esta acción no se puede deshacer.',confirm_delete_track:'¿Eliminar canción?',confirm_delete_track_t:'¿Seguro que quieres eliminar esta canción?',confirm_delete_all:'¿Eliminar todas las subidas?',confirm_delete_all_t:'Todas tus canciones subidas se eliminarán permanentemente.',confirm_logout:'¿Cerrar sesión?',confirm_logout_t:'Puedes volver a entrar cuando quieras.',confirm_yes:'Sí, eliminar',confirm_yes_logout:'Cerrar sesión',confirm_no:'Cancelar',verify_done:'Verificado',upload_limit_msg:'Sin verificación puedes subir máx. 5 canciones.',captcha_ok:'Listo',refresh:'Actualizar',notifications:'Notificaciones',clear_all:'Limpiar',notif_new_release:'Nueva canción',notif_welcome:'Bienvenido'}
 };
 
 let lang = 'ru';
@@ -887,10 +894,7 @@ function normalizeGenres(raw){
   if (!raw) return [];
   const parts = String(raw).split(/[,;\/&]+/).map(x=>x.trim()).filter(Boolean);
   const set = new Set();
-  for (const p of parts){
-    const c = normalizeGenreSingle(p);
-    if (c) set.add(c);
-  }
+  for (const p of parts){ const c = normalizeGenreSingle(p); if (c) set.add(c); }
   return [...set];
 }
 
@@ -1005,11 +1009,7 @@ function newCaptcha(){
     if (cell.dataset.e === captchaTarget){
       captchaSolved = true;
       $('captchaGrid').innerHTML = `<div class="captcha-ok" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>${t('captcha_ok')}</div>`;
-    } else {
-      cell.classList.add('failed');
-      setTimeout(()=>cell.classList.remove('failed'), 500);
-      newCaptcha();
-    }
+    } else { cell.classList.add('failed'); setTimeout(()=>cell.classList.remove('failed'), 500); newCaptcha(); }
   });
   $('captchaRefresh').addEventListener('click', newCaptcha);
 }
@@ -1132,11 +1132,7 @@ function renderMixPage(mixId){
   if (mixId === '__hour_genre__') mix = generateGenreOfHour();
   else if (mixId.startsWith('__artist_')) { const name = decodeURIComponent(mixId.replace('__artist_','').replace(/__$/,'')); const ts = tracks.filter(t2=>t2.artist === name); if (ts.length >= 2) mix = { id: mixId, name, tag:t('artist_mix_tag'), sub: tn(ts.length), tracks: shuffleWithSeed(ts, 'artist_'+name), icon:'person', cls:'mix-cover-artist' }; }
   else if (mixId === '__mix_foryou__') mix = generateMixes().find(m => m.id === mixId);
-  else if (mixId.startsWith('__pct_')) {
-    const artist = decodeURIComponent(mixId.replace('__pct_','').replace(/__$/,''));
-    const list = tracks.filter(t2=>t2.artist === artist);
-    if (list.length) mix = { id: mixId, name:'100% '+artist, tag:'100%', sub: tn(list.length), tracks: list, icon:'star', cls:'mix-cover-pct' };
-  }
+  else if (mixId.startsWith('__pct_')) { const artist = decodeURIComponent(mixId.replace('__pct_','').replace(/__$/,'')); const list = tracks.filter(t2=>t2.artist === artist); if (list.length) mix = { id: mixId, name:'100% '+artist, tag:'100%', sub: tn(list.length), tracks: list, icon:'star', cls:'mix-cover-pct' }; }
   else if (mixId.startsWith('__genre_')) { const canon = decodeURIComponent(mixId.replace('__genre_','').replace(/__$/,'')); const list = shuffleWithSeed(tracks.filter(t2 => normalizeGenres(t2.genre).includes(canon)), 'genre_'+canon); if (list.length) mix = { id: mixId, name: genreName(canon), tag:t('genre_tag'), sub: tn(list.length), tracks: list, icon:'music', cls:'mix-cover-genre' }; }
   else mix = generateMixes().find(m => m.id === mixId);
 
@@ -1433,6 +1429,36 @@ function renderProfile(){
 }
 function openProfileEdit(){ editProfAvatarNew = undefined; $('profName').value = profile.name || ''; $('profAvatarPrev').innerHTML = profile.avatar ? `<img src="${profile.avatar}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`; $('profEditModal').classList.add('show'); setTimeout(()=>$('profName').focus(),100); }
 
+function openTrackStats(t2){
+  const totalListen = t2.listenSec || 0;
+  const plays = t2.plays || 0;
+  const likes = t2.likes || 0;
+  const avg = plays ? Math.round(totalListen/plays) : 0;
+  const cover = t2.cover ? `<img src="${t2.cover}" alt="">` : `<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+  $('trackStatsBody').innerHTML = `
+    <div class="stat-hero">
+      <div class="stat-hero-cov">${cover}</div>
+      <div class="stat-hero-info">
+        <div class="stat-hero-t">${esc(t2.title||'—')}</div>
+        <div class="stat-hero-a">${esc(t2.artist||'—')}${t2.album ? ' · '+esc(t2.album) : ''}</div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="v">${plays}</div><div class="l">Plays</div></div>
+      <div class="stat-cell"><div class="v">${likes}</div><div class="l">Likes</div></div>
+      <div class="stat-cell"><div class="v">${fmt(avg)}</div><div class="l">Avg listen</div></div>
+      <div class="stat-cell"><div class="v">${fmt(totalListen)}</div><div class="l">Total listen</div></div>
+    </div>
+    <div style="padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-size:12.5px;color:var(--dim);text-align:center">
+      ${t2.genre ? 'Genre: <b style="color:var(--txt)">'+esc((GENRE_DISPLAY.en && GENRE_DISPLAY.en[t2.genre]) || t2.genre)+'</b> · ' : ''}
+      ${t2.country ? 'Country: <b style="color:var(--txt)">'+esc(t2.country)+'</b> · ' : ''}
+      ${t2.year ? 'Year: <b style="color:var(--txt)">'+esc(t2.year)+'</b>' : ''}
+    </div>`;
+  $('trackStatsModal').classList.add('show');
+}
+$('trackStatsClose').addEventListener('click', ()=>$('trackStatsModal').classList.remove('show'));
+$('trackStatsModal').addEventListener('click', e=>{ if (e.target === $('trackStatsModal')) e.target.classList.remove('show'); });
+
 function renderStudio(){
   const content = $('studioContent'); content.innerHTML = '';
   if (!firebaseUid){
@@ -1470,17 +1496,28 @@ function renderStudio(){
     sum.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:12px';
     sum.innerHTML = `<div style="text-align:center"><div style="font-size:20px;font-weight:700">${totalPlays}</div><div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em">Plays</div></div><div style="text-align:center"><div style="font-size:20px;font-weight:700">${totalLikes}</div><div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em">Likes</div></div><div style="text-align:center"><div style="font-size:20px;font-weight:700">${fmt(avgListen)}</div><div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em">Avg listen</div></div>`;
     pane.appendChild(sum);
-    const albumsMap = {};
-    myTracks.forEach(t2=>{ const k = t2.album || '—'; albumsMap[k] = albumsMap[k] || { name: k, tracks: [] }; albumsMap[k].tracks.push(t2); });
-    Object.values(albumsMap).forEach(al=>{
-      const first = al.tracks[0];
-      const aPlays = al.tracks.reduce((s,t2)=>s+(t2.plays||0),0);
-      const aLikes = al.tracks.reduce((s,t2)=>s+(t2.likes||0),0);
-      const aListen = al.tracks.reduce((s,t2)=>s+(t2.listenSec||0),0);
-      const aAvg = aPlays ? Math.round(aListen/aPlays) : 0;
+    const sorted = [...myTracks].sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+    sorted.forEach(t2=>{
       const row = document.createElement('div'); row.className = 'studio-release';
-      row.innerHTML = `<div class="studio-release-cover">${first.cover ? `<img src="${first.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div><div class="studio-release-info"><div class="studio-release-title">${esc(al.name)}</div><div class="studio-release-meta">${tn(al.tracks.length)} · <b>${aPlays}</b> plays · <b>${aLikes}</b> likes · avg <b>${fmt(aAvg)}</b></div></div><div class="studio-release-actions"><button data-act="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><button data-act="del" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
-      row.addEventListener('click', async e=>{ const b = e.target.closest('[data-act]'); if (!b) return; e.stopPropagation(); if (b.dataset.act === 'play'){ playTrackInList(al.tracks,0); openFs(); } else if (b.dataset.act === 'del'){ const ok = await showConfirm(t('confirm_delete_track'), t('confirm_delete_track_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; for (const tr of al.tracks){ try { await remove(ref(db, 'tracks/'+tr.id)); await remove(ref(db, 'audio/'+tr.id)); audioCache.delete(tr.id); } catch(e){} } if (al.tracks.some(t2=>t2.id === currentId)){ closeMiniPlayer(true); closeFs(); } renderStudio(); } });
+      row.style.cursor = 'pointer';
+      const p = t2.plays||0, l = t2.likes||0, ls = t2.listenSec||0;
+      const avg = p ? Math.round(ls/p) : 0;
+      row.innerHTML = `<div class="studio-release-cover">${t2.cover ? `<img src="${t2.cover}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`}</div><div class="studio-release-info"><div class="studio-release-title">${esc(t2.title)}</div><div class="studio-release-meta">${p} plays · ${l} likes · avg ${fmt(avg)}</div></div><div class="studio-release-actions"><button data-act="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><button data-act="del" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>`;
+      row.addEventListener('click', async e=>{
+        const b = e.target.closest('[data-act]');
+        if (b){
+          e.stopPropagation();
+          if (b.dataset.act === 'play'){ playTrackInList(myTracks, myTracks.indexOf(t2)); openFs(); }
+          else if (b.dataset.act === 'del'){
+            const ok = await showConfirm(t('confirm_delete_track'), t('confirm_delete_track_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return;
+            try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){}
+            if (currentId === t2.id){ closeMiniPlayer(true); closeFs(); }
+            renderStudio();
+          }
+          return;
+        }
+        openTrackStats(t2);
+      });
       pane.appendChild(row);
     });
   } else if (studioTab === 'profile'){
@@ -1629,20 +1666,8 @@ async function bumpTrackField(tid, field, delta){
 }
 let _listenStartAt = 0;
 let _listenTrackId = null;
-function startListenTracking(tid){
-  _listenStartAt = audio.currentTime || 0;
-  _listenTrackId = tid;
-}
-function flushListenTracking(){
-  if (!_listenTrackId) return;
-  const delta = Math.round((audio.currentTime || 0) - _listenStartAt);
-  if (delta > 1){
-    bumpTrackField(_listenTrackId, 'listenSec', delta);
-    _listenStartAt = audio.currentTime || 0;
-  } else {
-    _listenStartAt = audio.currentTime || 0;
-  }
-}
+function startListenTracking(tid){ _listenStartAt = audio.currentTime || 0; _listenTrackId = tid; }
+function flushListenTracking(){ if (!_listenTrackId) return; const delta = Math.round((audio.currentTime || 0) - _listenStartAt); if (delta > 1){ bumpTrackField(_listenTrackId, 'listenSec', delta); _listenStartAt = audio.currentTime || 0; } else { _listenStartAt = audio.currentTime || 0; } }
 async function loadAndPlay(t2){
   currentId = t2.id; let src = audioCache.get(t2.id);
   if (!src){ try { const snap = await get(ref(db, 'audio/'+t2.id)); const ad = snap.val(); if (!ad || !ad.data){ toast('—','err'); return; } src = `data:${ad.mime||'audio/mpeg'};base64,${ad.data}`; audioCache.set(t2.id, src); } catch(e){ return; } }
@@ -1666,13 +1691,7 @@ function updateFsCover(){ const t2 = currentTrack(); const c = $('fsCover'); c.q
 function updateFsNeighbors(){ const p = queue.length > 1 ? queue[(qi-1+queue.length)%queue.length] : null; const n = queue.length > 1 ? queue[(qi+1)%queue.length] : null; $('fsPrev').innerHTML = p && p.cover ? `<img src="${p.cover}" alt="">` : ''; $('fsNext').innerHTML = n && n.cover ? `<img src="${n.cover}" alt="">` : ''; }
 function updatePlayUI(){ const playing = !audio.paused && !!audio.src; $('miniIcoPlay').style.display = playing?'none':'block'; $('miniIcoPause').style.display = playing?'block':'none'; $('fsIcoPlay').style.display = playing?'none':'block'; $('fsIcoPause').style.display = playing?'block':'none'; const t2 = currentTrack(); const isFav = t2 && favIds.includes(t2.id); $('miniFav').classList.toggle('on', !!isFav); $('fsFav').classList.toggle('on', !!isFav); $('fsShuffle').classList.toggle('active', shuffle); $('fsRepeat').classList.toggle('active', repeatMode!=='off'); $('fsRepeatBadge').style.display = repeatMode==='one'?'block':'none'; const has = !!(t2 && t2.lyrics); $('fsLyrics').classList.toggle('active', has); $('fsLyrics').style.opacity = has?'1':'0.35'; }
 function closeMiniPlayer(stop){ if (stop !== false){ try { audio.pause(); } catch(e){} currentId = null; } $('mini').classList.remove('show'); document.body.classList.remove('mini-visible'); }
-function toggleFav(id){
-  const i = favIds.indexOf(id);
-  const adding = i < 0;
-  if (adding) favIds.push(id); else favIds.splice(i,1);
-  saveFavoritesToFB(); renderAll(); updatePlayUI();
-  if (firebaseUid) bumpTrackField(id, 'likes', adding ? 1 : -1);
-}
+function toggleFav(id){ const i = favIds.indexOf(id); const adding = i < 0; if (adding) favIds.push(id); else favIds.splice(i,1); saveFavoritesToFB(); renderAll(); updatePlayUI(); if (firebaseUid) bumpTrackField(id, 'likes', adding ? 1 : -1); }
 function shareTrack(t2){ const url = location.origin + location.pathname + '?t=' + encodeURIComponent(t2.id); if (navigator.share) navigator.share({ title: t2.artist+' — '+t2.title, url }).catch(()=>{}); else if (navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast('✓','ok')).catch(()=>{}); }
 
 function openFs(){ $('fs').classList.add('show'); document.body.style.overflow = 'hidden'; }
@@ -1747,9 +1766,6 @@ $('apSave').addEventListener('click', ()=>{ const name = $('apName').value.trim(
 $('musicianCancel').addEventListener('click', ()=>$('musicianModal').classList.remove('show'));
 $('musicianModal').addEventListener('click', e=>{ if (e.target === $('musicianModal')) e.target.classList.remove('show'); });
 $('musicianSave').addEventListener('click', ()=>{ const name = $('musicianName').value.trim(); if (!name){ profile.musicianName=''; profile.musicianGenre=''; profile.musicianBio=''; } else { profile.musicianName = name; profile.musicianGenre = $('musicianGenre').value.trim(); profile.musicianBio = $('musicianBio').value.trim(); } $('musicianModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); });
-$('setId3').addEventListener('change', ()=>{ settings.id3 = $('setId3').checked; savePrefs(); });
-$('setCover').addEventListener('change', ()=>{ settings.cover = $('setCover').checked; savePrefs(); });
-$('setFallback').addEventListener('change', ()=>{ settings.fallback = $('setFallback').checked; savePrefs(); });
 $('themeSwitch').addEventListener('click', e=>{ const b = e.target.closest('button'); if (!b) return; theme = b.dataset.t; applyTheme(); savePrefs(); });
 $('profReset').addEventListener('click', async ()=>{ const ok = await showConfirm(t('confirm_delete_all'), t('confirm_delete_all_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid && firebaseUid); for (const t2 of myTracks){ try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} } if (myTracks.some(t2=>t2.id === currentId)){ closeMiniPlayer(true); closeFs(); } });
 
@@ -1813,6 +1829,7 @@ function openTrackMenu(t2){
   notIn.forEach(pl=>{ html += `<button class="tm-item" data-a="addToPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="tm-lbl">→ ${esc(pl.name)}</span></button>`; });
   if (notIn.length || !playlists.length) html += `<button class="tm-item" data-a="newPl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span class="tm-lbl">${t('new_playlist')}</span></button>`;
   inPls.forEach(pl=>{ html += `<button class="tm-item" data-a="rmFromPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="tm-lbl">× ${esc(pl.name)}</span></button>`; });
+  if (isMine) html += `<button class="tm-item" data-a="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="tm-lbl">Statistics</span></button>`;
   if (isMine) html += `<button class="tm-item" data-a="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span class="tm-lbl">${t('edit')}</span></button>`;
   html += `<button class="tm-item" data-a="share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg><span class="tm-lbl">Share</span></button>`;
   if (isMine) html += `<button class="tm-item danger" data-a="del"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span class="tm-lbl">${t('delete')}</span></button>`;
@@ -1829,6 +1846,7 @@ $('tmModal').addEventListener('click', async e=>{
   if (a === 'lyrics'){ closeTrackMenu(); openFs(); openLyricsModal(); }
   else if (a === 'fav'){ toggleFav(t2.id); closeTrackMenu(); }
   else if (a === 'artist'){ closeTrackMenu(); openArtist(t2.artist); }
+  else if (a === 'stats'){ closeTrackMenu(); openTrackStats(t2); }
   else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t2.id)) pl.trackIds.push(t2.id); await savePlaylistsToFB(); closeTrackMenu(); renderAll(); }
   else if (a === 'rmFromPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; pl.trackIds = pl.trackIds.filter(id=>id !== t2.id); await savePlaylistsToFB(); closeTrackMenu(); renderAll(); }
   else if (a === 'newPl'){ closeTrackMenu(); openPlModal(); }
@@ -1920,7 +1938,6 @@ async function boot(){
   lang = detectLang();
   applyTheme();
   startHourTimer();
-  $('setId3').checked = settings.id3; $('setCover').checked = settings.cover; $('setFallback').checked = settings.fallback;
   tracks = []; playlists = []; favIds = []; favArtists = [];
   applyLang();
   showLoading('...');
