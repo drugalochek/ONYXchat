@@ -1121,14 +1121,14 @@ function generateGenreOfHour(){
   if (!pool.length) return null;
   const genres = new Set();
   pool.forEach(t2 => normalizeGenres(t2.genre).forEach(g => genres.add(g)));
-  const arr = [...genres];
+  const arr = [...genres].sort();
   if (!arr.length) return null;
-  const hourSeed = 'hour_' + Math.floor(Date.now() / 3600000);
-  const rnd = seededRandom(hourSeed);
-  const pick = arr[Math.floor(rnd() * arr.length)];
+  const hourNumber = Math.floor(Date.now() / 3600000);
+  const idx = hourNumber % arr.length;
+  const pick = arr[idx];
   const list = tracks.filter(t2 => normalizeGenres(t2.genre).includes(pick));
   if (list.length < 3) return null;
-  return { id: '__hour_genre__', name: genreName(pick), tag: t('tag_hour'), sub: tn(list.length), tracks: shuffleWithSeed(list, hourSeed), icon: 'clock', cls: 'mix-cover-hour' };
+  return { id: '__hour_genre__', name: genreName(pick), tag: t('tag_hour'), sub: tn(list.length), tracks: shuffleWithSeed(list, 'hour_' + hourNumber), icon: 'clock', cls: 'mix-cover-hour' };
 }
 
 function generateDailyMixes(){
