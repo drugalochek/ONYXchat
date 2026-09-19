@@ -4,13 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sonic</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0a12">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Sonic">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="preload" href="Widock TRIAL Bold.otf" as="font" type="font/otf" crossorigin>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.7/jsmediatags.min.js"></script>
 <style>
@@ -108,13 +101,11 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
 .badge-artist,.badge-lyrics,.artist-badge,.verified-pill{display:inline-flex!important;align-items:center!important;gap:3px!important;line-height:1!important;height:auto!important;padding:2px 7px!important;border-radius:9px!important;font-size:9.5px!important;letter-spacing:.02em!important;text-transform:uppercase!important;vertical-align:middle!important;flex-shrink:0!important;width:auto!important;max-width:fit-content!important}
 .badge-artist{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff!important}
 .badge-lyrics{background:rgba(6,182,212,.2);color:var(--accent3)!important}
-.badge-offline{background:rgba(16,185,129,.2);color:#10b981!important}
 .artist-badge{padding:3px 10px!important;border-radius:12px!important;font-size:10px!important;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff!important}
 .verified-pill{background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff!important}
 .verified-pill.big{padding:4px 12px!important;border-radius:14px!important;font-size:10.5px!important}
-.badge-artist svg,.badge-lyrics svg,.badge-offline svg,.artist-badge svg,.verified-pill svg{width:9px!important;height:9px!important;fill:#fff!important}
+.badge-artist svg,.badge-lyrics svg,.artist-badge svg,.verified-pill svg{width:9px!important;height:9px!important;fill:#fff!important}
 .badge-lyrics svg{fill:currentColor!important}
-.badge-offline svg{fill:#10b981!important}
 .lrow{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;padding:9px 4px;border-radius:12px;cursor:pointer;transition:.15s}
 .lrow:hover,.lrow:active{background:var(--card)}
 .lrow-c{width:50px;height:50px;border-radius:10px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff}
@@ -546,11 +537,6 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
       <div><div class="lrow-t" data-i18n="liked_artists"></div><div class="lrow-m" id="liked-artists-cnt"></div></div>
       <div class="lrow-ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
     </div>
-    <div class="lrow" id="offline-row" style="margin-bottom:4px">
-      <div class="lrow-c" style="background:linear-gradient(135deg,#10b981,#06b6d4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
-      <div><div class="lrow-t">Оффлайн-треки</div><div class="lrow-m" id="offline-cnt">—</div></div>
-      <div class="lrow-ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-    </div>
     <div id="fav-tracks"></div>
     <div class="shead"><h2 data-i18n="playlists"></h2><div class="sub" id="pl-cnt"></div></div>
     <div class="hrow" id="fav-playlists"></div>
@@ -586,12 +572,6 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
     <div id="studioContent"></div>
   </section>
 
-  <section class="view" id="v-offline">
-    <button class="back-btn" id="offlineBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M15 18l-6-6 6-6"/></svg><span data-i18n="back"></span></button>
-    <h1 class="ptitle">Оффлайн-треки</h1>
-    <div id="offline-list"></div>
-  </section>
-
   <section class="view" id="v-profile">
     <h1 class="ptitle" data-i18n="profile"></h1>
     <div class="prof-head" id="profHead"></div>
@@ -603,7 +583,6 @@ main{padding:0 16px calc(60px + env(safe-area-inset-bottom))}
     <div class="prof-settings-title" data-i18n="appearance"></div>
     <button class="set-btn" id="langBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="language"></span><span style="margin-left:auto;color:var(--dim);font-size:12px;padding-left:8px" id="langVal"></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="set-btn" style="cursor:default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span data-i18n="theme"></span><div id="themeSwitch" style="margin-left:auto;display:flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:2px"><button data-t="dark" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)" data-i18n="dark"></button><button data-t="light" style="padding:6px 12px;border-radius:7px;font-size:11.5px;color:var(--dim)" data-i18n="light"></button></div></div>
-    <button class="set-btn" id="profDownloadAll" style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;border:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span>Скачать все лайки для оффлайна</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="prof-settings-title" data-i18n="data"></div>
     <button class="set-btn" id="profReset" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span data-i18n="delete_uploads"></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
   </section>
@@ -806,258 +785,34 @@ function applyLang(){
 
 // ===== ЖАНРЫ — ТОЛЬКО АНГЛИЙСКИЙ =====
 const GENRE_ALIASES = {
-  rock: [
-    'rock', 'rock and roll', 'rock n roll', 'rocknroll', 'classic rock', 'hard rock',
-    'soft rock', 'alternative rock', 'alt rock', 'indie rock', 'prog rock',
-    'progressive rock', 'psychedelic rock', 'garage rock', 'punk rock', 'pop rock',
-    'folk rock', 'blues rock', 'country rock', 'southern rock', 'stoner rock',
-    'desert rock', 'space rock', 'krautrock', 'math rock', 'post-rock',
-    'post rock', 'shoegaze', 'dream pop', 'noise rock', 'grunge', 'britpop',
-    'glam rock', 'arena rock', 'art rock', 'gothic rock', 'goth rock',
-    'industrial rock', 'electronic rock', 'synth rock', 'aor', 'yacht rock'
-  ],
-  pop: [
-    'pop', 'pop music', 'pop rock', 'synthpop', 'synth pop', 'electropop',
-    'electro pop', 'dance pop', 'dance-pop', 'k-pop', 'kpop', 'j-pop', 'jpop',
-    'c-pop', 'latin pop', 'indie pop', 'dream pop', 'power pop', 'baroque pop',
-    'chamber pop', 'art pop', 'bedroom pop', 'hyperpop', 'city pop', 'future pop',
-    'teen pop', 'bubblegum pop', 'sunshine pop', 'sophisti-pop', 'chillwave',
-    'vaporwave', 'chill pop', 'orchestral pop', 'folk pop', 'country pop',
-    'europop', 'eurodance', 'eurobeat', 'disco polo', 'schlager'
-  ],
-  'hip-hop': [
-    'hip-hop', 'hip hop', 'hiphop', 'rap', 'trap', 'drill', 'uk drill',
-    'phonk', 'grime', 'gangsta rap', 'g-funk', 'west coast hip hop',
-    'east coast hip hop', 'southern hip hop', 'dirty south', 'crunk',
-    'snap', 'bounce', 'mumble rap', 'cloud rap', 'emo rap', 'sad rap',
-    'lo-fi hip hop', 'lofi hip hop', 'jazz rap', 'jazz hop', 'boom bap',
-    'conscious hip hop', 'underground hip hop', 'abstract hip hop',
-    'alternative hip hop', 'horrorcore', 'nerdcore', 'chipmunk soul',
-    'instrumental hip hop', 'trip hop', 'triphop', 'hyphy', 'grind',
-    'dub hop', 'psychedelic hip hop', 'experimental hip hop',
-    'k-rap', 'korean rap', 'j-rap', 'uk rap', 'french rap', 'german rap',
-    'latin trap', 'reggaeton', 'dembow', 'dancehall'
-  ],
-  country: [
-    'country', 'country music', 'country rock', 'country pop', 'country folk',
-    'americana', 'bluegrass', 'newgrass', 'progressive bluegrass',
-    'honky tonk', 'western swing', 'western', 'outlaw country',
-    'alternative country', 'alt country', 'texas country', 'nashville sound',
-    'bakersfield sound', 'red dirt', 'cowboy', 'cowpunk', 'countrypolitan',
-    'gothic country', 'dark country', 'neo-traditional country',
-    'contemporary country', 'country blues', 'country gospel', 'country rap',
-    'country soul', 'appalachian folk', 'cajun', 'zydeco'
-  ],
-  jazz: [
-    'jazz', 'jazz music', 'smooth jazz', 'bebop', 'hard bop', 'post-bop',
-    'cool jazz', 'west coast jazz', 'swing', 'big band', 'dixieland',
-    'ragtime', 'django', 'gypsy jazz', 'manouche', 'jazz fusion', 'fusion',
-    'acid jazz', 'nu jazz', 'nu-jazz', 'jazz funk', 'jazz-funk',
-    'jazz rap', 'jazz hop', 'vocal jazz', 'scat', 'free jazz', 'avant-garde jazz',
-    'modal jazz', 'latin jazz', 'afro-cuban jazz', 'bossa nova', 'samba jazz',
-    'ethio-jazz', 'ethio jazz', 'spiritual jazz', 'soul jazz', 'jazz blues',
-    'chamber jazz', 'third stream', 'jazz manouche', 'contemporary jazz'
-  ],
-  electronic: [
-    'electronic', 'electronic music', 'electronica', 'edm', 'electro',
-    'house', 'deep house', 'tech house', 'progressive house', 'prog house',
-    'acid house', 'chicago house', 'garage house', 'tribal house',
-    'tropical house', 'future house', 'bass house', 'electro house',
-    'big room', 'bigroom', 'techno', 'detroit techno', 'minimal techno',
-    'hard techno', 'industrial techno', 'acid techno', 'dub techno',
-    'trance', 'psytrance', 'psy-trance', 'uplifting trance', 'progressive trance',
-    'vocal trance', 'goa', 'hardstyle', 'hardcore techno', 'gabber',
-    'dubstep', 'riddim', 'brostep', 'future bass', 'drum and bass', 'dnb',
-    'drum & bass', 'liquid dnb', 'neurofunk', 'jungle', 'breakbeat',
-    'breaks', 'big beat', 'nu skool breaks', 'glitch', 'glitch hop',
-    'idm', 'ambient', 'ambient techno', 'dark ambient', 'drone',
-    'downtempo', 'chillout', 'chill-out', 'trip hop', 'trip-hop',
-    'synthwave', 'retrowave', 'outrun', 'vaporwave', 'chillwave',
-    'future funk', 'wave', 'hardwave', 'phonk', 'drift phonk',
-    'witch house', 'darkwave', 'coldwave', 'ebm', 'industrial', 'aggrotech',
-    'makina', 'j-core', 'happy hardcore', 'uk garage', '2-step',
-    'speed garage', 'bassline', 'grime', 'footwork', 'juke',
-    'moombahton', 'moombahcore', 'complextro', 'fidget', 'electro swing'
-  ],
-  'r&b': [
-    'r&b', 'rnb', 'r and b', 'rhythm and blues', 'contemporary r&b',
-    'neo soul', 'neo-soul', 'neosoul', 'alternative r&b', 'alt r&b',
-    'quiet storm', 'slow jam', 'new jack swing', 'motown', 'philly soul',
-    'memphis soul', 'northern soul', 'southern soul', 'blue-eyed soul',
-    'psychedelic soul', 'progressive soul', 'future soul', 'pbr&b',
-    'pbrnb', 'trap soul', 'urban', 'sophisti-pop'
-  ],
-  classical: [
-    'classical', 'classical music', 'orchestral', 'orchestra', 'symphony',
-    'symphonic', 'baroque', 'romantic', 'romanticism', 'impressionism',
-    'modern classical', 'contemporary classical', 'neoclassical', 'neo-classical',
-    'minimalism', 'minimalist', 'chamber music', 'string quartet',
-    'piano sonata', 'concerto', 'opera', 'operetta', 'choral', 'choral music',
-    'sacred music', 'liturgical', 'gregorian chant', 'medieval', 'renaissance',
-    'anthem', 'cantata', 'oratorio', 'ballet', 'film score', 'soundtrack',
-    'score', 'cinematic', 'epic orchestral', 'trailer music', 'epic music'
-  ],
-  blues: [
-    'blues', 'blues music', 'delta blues', 'chicago blues', 'electric blues',
-    'acoustic blues', 'country blues', 'piedmont blues', 'texas blues',
-    'jump blues', 'juke joint blues', 'swamp blues', 'memphis blues',
-    'new orleans blues', 'west coast blues', 'modern blues', 'contemporary blues',
-    'blues rock', 'soul blues', 'gospel blues',
-    'boogie woogie', 'boogie-woogie', 'piano blues', 'harmonica blues',
-    'slide guitar blues', 'hill country blues', 'african blues', 'desert blues'
-  ],
-  reggae: [
-    'reggae', 'roots reggae', 'roots', 'dub', 'dub music', 'ska', '2 tone',
-    'two-tone', 'rocksteady', 'rock steady', 'dancehall', 'ragga',
-    'dancehall reggae', 'lovers rock', 'reggae fusion', 'reggaeton',
-    'raggamuffin', 'bashment'
-  ],
-  folk: [
-    'folk', 'folk music', 'traditional folk', 'folk rock', 'indie folk',
-    'contemporary folk', 'americana', 'singer-songwriter', 'singer songwriter',
-    'acoustic', 'acoustic folk', 'protest folk', 'folk revival', 'anti-folk',
-    'psychedelic folk', 'freak folk', 'new weird america', 'chamber folk',
-    'baroque folk', 'progressive folk', 'folk punk', 'folk metal',
-    'folk pop', 'country folk', 'appalachian', 'appalachian folk',
-    'celtic', 'celtic folk', 'irish folk', 'scottish folk', 'nordic folk',
-    'world folk', 'ethnic', 'traditional', 'klezmer', 'fado', 'flamenco'
-  ],
-  indie: [
-    'indie', 'indie rock', 'indie pop', 'indie folk', 'indie electronic',
-    'indie dance', 'indie soul', 'indie r&b', 'lo-fi', 'lofi', 'lo fi',
-    'bedroom pop', 'bedroom', 'diy', 'shoegaze', 'dream pop',
-    'chillwave', 'vaporwave', 'slacker rock', 'jangle pop', 'twee pop',
-    'noise pop', 'post-punk', 'post punk', 'new wave', 'synthpop',
-    'britpop', 'madchester', 'baggy', 'college rock', 'alternative',
-    'alternative rock', 'alt rock'
-  ],
-  metal: [
-    'metal', 'heavy metal', 'thrash metal', 'speed metal', 'power metal',
-    'death metal', 'melodic death metal', 'technical death metal',
-    'black metal', 'symphonic black metal', 'atmospheric black metal',
-    'doom metal', 'death-doom', 'funeral doom', 'sludge metal',
-    'stoner metal', 'stoner doom', 'progressive metal', 'prog metal',
-    'djent', 'math metal', 'industrial metal', 'nu metal', 'nu-metal',
-    'metalcore', 'deathcore', 'mathcore', 'grindcore', 'goregrind',
-    'porngrind', 'groove metal', 'symphonic metal', 'gothic metal',
-    'folk metal', 'viking metal', 'pirate metal', 'celtic metal',
-    'oriental metal', 'electronicore', 'trancecore', 'kawaii metal',
-    'alternative metal', 'rap metal', 'glam metal', 'hair metal'
-  ],
-  punk: [
-    'punk', 'punk rock', 'pop punk', 'pop-punk', 'punk pop', 'hardcore',
-    'hardcore punk', 'post-hardcore', 'post hardcore', 'emo', 'emo punk',
-    'midwest emo', 'screamo', 'skramz', 'crust', 'crust punk', 'd-beat',
-    'anarcho-punk', 'anarcho punk', 'oi', 'oi punk', 'street punk',
-    'garage punk', 'garage rock', 'skate punk', 'surf punk', 'cowpunk',
-    'horror punk', 'psychobilly', 'gothabilly', 'ska punk', 'folk punk',
-    'celtic punk', 'gypsy punk', 'riot grrrl', 'queercore', 'eggy pop',
-    'post-punk', 'post punk', 'no wave', 'new wave'
-  ],
-  soul: [
-    'soul', 'soul music', 'northern soul', 'southern soul', 'memphis soul',
-    'philly soul', 'chicago soul', 'detroit soul', 'motown', 'blue-eyed soul',
-    'neo soul', 'neo-soul', 'psychedelic soul', 'progressive soul',
-    'future soul', 'smooth soul', 'retro soul', 'deep soul', 'classic soul',
-    'quiet storm', 'slow jam', 'new jack swing', 'contemporary r&b'
-  ],
-  funk: [
-    'funk', 'funk music', 'p-funk', 'pfunk', 'parliament funk',
-    'funk rock', 'funk metal', 'funkcore', 'jazz funk', 'jazz-funk',
-    'electro funk', 'electrofunk', 'synth funk', 'boogie', 'boogie funk',
-    'g-funk', 'gfunk', 'acid jazz', 'afrobeat', 'afro funk', 'afro-funk',
-    'afro-cuban', 'latin funk', 'deep funk', 'rare groove', 'nu funk',
-    'future funk', 'minneapolis sound', 'go-go'
-  ],
-  disco: [
-    'disco', 'disco music', 'euro disco', 'eurodisco', 'italo disco',
-    'italo-disco', 'hi-nrg', 'hi nrg', 'space disco', 'cosmic disco',
-    'boogie', 'post-disco', 'post disco', 'nu-disco', 'nu disco',
-    'disco house', 'french house', 'filter house', 'funky house',
-    'dance', 'dance music', 'club', 'club music', 'party'
-  ],
-  latin: [
-    'latin', 'latin music', 'latin pop', 'salsa', 'bachata', 'merengue',
-    'reggaeton', 'dembow', 'cumbia', 'cumbia villera',
-    'chicha', 'mambo', 'cha-cha-cha', 'cha cha cha', 'rumba', 'guaracha',
-    'bolero', 'tango', 'milonga', 'nuevo tango', 'bossa nova', 'samba',
-    'pagode', 'mpb', 'musica popular brasileira', 'forro',
-    'axe', 'axe music', 'lambada', 'sertanejo', 'tejano', 'norteno',
-    'banda', 'corrido', 'narcocorrido', 'mariachi', 'ranchera',
-    'flamenco', 'rumba flamenca', 'sevillanas', 'son cubano', 'son jarocho',
-    'huayno', 'chamame', 'vallenato', 'porro', 'currulao'
-  ],
-  soundtrack: [
-    'soundtrack', 'soundtracks', 'ost', 'original soundtrack',
-    'original motion picture soundtrack', 'film score', 'movie score',
-    'score', 'film music', 'movie music', 'cinematic', 'cinematic music',
-    'trailer music', 'epic music', 'epic orchestral', 'trailer',
-    'video game music', 'game soundtrack', 'game music', 'vgm',
-    'anime soundtrack', 'anime ost', 'tv soundtrack', 'series soundtrack',
-    'musical', 'musical theatre', 'broadway', 'west end'
-  ],
-  instrumental: [
-    'instrumental', 'instrumental music', 'instrumentals', 'no vocals',
-    'karaoke', 'backing track', 'backing tracks', 'playback',
-    'instrumental hip hop', 'instrumental rock', 'instrumental jazz',
-    'post-rock', 'math rock', 'ambient', 'drone', 'minimal'
-  ],
-  chiptune: [
-    'chiptune', 'chip music', '8-bit', '8bit', '8 bit', '16-bit', '16bit',
-    '16 bit', 'bitpop', 'bit pop', 'nintendocore', 'nes', 'game boy',
-    'gameboy', 'gb', 'commodore 64', 'c64', 'amiga', 'tracker music',
-    'demoscene', 'fm synth', 'fm synthesis', 'sid', 'ym2612'
-  ],
-  'lo-fi': [
-    'lo-fi', 'lofi', 'lo fi', 'low fidelity', 'lo-fi hip hop',
-    'lofi hip hop', 'lo-fi beats', 'lofi beats', 'chillhop', 'chill hop',
-    'chillhop music', 'study beats', 'study music', 'jazzhop',
-    'jazz hop', 'lo-fi jazz', 'lofi jazz', 'lo-fi house', 'lofi house',
-    'bedroom pop', 'bedroom', 'diy', 'slacker'
-  ],
-  'video game': [
-    'video game', 'video game music', 'game music', 'gaming music',
-    'gamer music', 'vgm', 'game soundtrack', 'game ost', 'ost',
-    'nes music', 'snes music', 'psx music', 'playstation music',
-    'nintendo', 'nintendo music', 'sega', 'sega music', 'arcade',
-    'arcade music', '8-bit', '16-bit', 'chiptune', 'chiptunes'
-  ],
-  anime: [
-    'anime', 'anime music', 'anime ost', 'anime opening', 'anime op',
-    'anime ending', 'anime ed', 'j-pop', 'jpop', 'j-rock', 'jrock',
-    'japanese pop', 'japanese rock', 'vocaloid', 'vocaloid music',
-    'hatsune miku', 'utau', 'denpa', 'denpa song', 'moe', 'moe metal',
-    'anison', 'anisong', 'japanese city pop', 'city pop'
-  ],
-  gospel: [
-    'gospel', 'gospel music', 'christian', 'christian music',
-    'contemporary christian', 'ccm', 'worship', 'praise', 'praise and worship',
-    'southern gospel', 'black gospel', 'traditional gospel',
-    'urban contemporary gospel', 'gospel choir', 'gospel soul',
-    'spiritual', 'negro spiritual', 'sacred', 'sacred music',
-    'hymn', 'hymns', 'religious', 'church music'
-  ],
-  opera: [
-    'opera', 'operetta', 'opera seria', 'opera buffa', 'grand opera',
-    'chamber opera', 'romantic opera', 'verismo', 'bel canto',
-    'baroque opera', 'music drama', 'singspiel',
-    'aria', 'arias', 'recitative', 'classical voice', 'vocal classical'
-  ],
-  trap: [
-    'trap', 'trap music', 'trap beat', 'trap beats', 'trap soul',
-    'trap metal', 'trap edm', 'edm trap',
-    'future trap', 'festival trap', 'dark trap', 'hard trap',
-    'hybrid trap', 'chill trap', 'cloud rap', 'mumble rap', 'drill',
-    'uk drill', 'brooklyn drill', 'chicago drill', 'ny drill',
-    'jersey club', 'phonk', 'drift phonk', 'latin trap', 'reggaeton'
-  ],
-  'k-pop': [
-    'k-pop', 'kpop', 'k pop', 'korean pop', 'korean music',
-    'k-rap', 'k-hip hop', 'k-hip-hop', 'k-rock',
-    'k-indie', 'korean indie', 'k-ballad', 'korean ballad',
-    'k-r&b', 'korean r&b', 'k-drama ost', 'kdrama ost',
-    'k-ost', 'korean ost', 'idol', 'idol music', 'k-idol'
-  ]
+  rock:['rock','rock and roll','rock n roll','rocknroll','classic rock','hard rock','soft rock','alternative rock','alt rock','indie rock','prog rock','progressive rock','psychedelic rock','garage rock','punk rock','pop rock','folk rock','blues rock','country rock','southern rock','stoner rock','desert rock','space rock','krautrock','math rock','post-rock','post rock','shoegaze','dream pop','noise rock','grunge','britpop','glam rock','arena rock','art rock','gothic rock','goth rock','industrial rock','electronic rock','synth rock','aor','yacht rock'],
+  pop:['pop','pop music','pop rock','synthpop','synth pop','electropop','electro pop','dance pop','dance-pop','k-pop','kpop','j-pop','jpop','c-pop','latin pop','indie pop','dream pop','power pop','baroque pop','chamber pop','art pop','bedroom pop','hyperpop','city pop','future pop','teen pop','bubblegum pop','sunshine pop','sophisti-pop','chillwave','vaporwave','chill pop','orchestral pop','folk pop','country pop','europop','eurodance','eurobeat','disco polo','schlager'],
+  'hip-hop':['hip-hop','hip hop','hiphop','rap','trap','drill','uk drill','phonk','grime','gangsta rap','g-funk','west coast hip hop','east coast hip hop','southern hip hop','dirty south','crunk','snap','bounce','mumble rap','cloud rap','emo rap','sad rap','lo-fi hip hop','lofi hip hop','jazz rap','jazz hop','boom bap','conscious hip hop','underground hip hop','abstract hip hop','alternative hip hop','horrorcore','nerdcore','chipmunk soul','instrumental hip hop','trip hop','triphop','hyphy','grind','dub hop','psychedelic hip hop','experimental hip hop','k-rap','korean rap','j-rap','uk rap','french rap','german rap','latin trap','reggaeton','dembow','dancehall'],
+  country:['country','country music','country rock','country pop','country folk','americana','bluegrass','newgrass','progressive bluegrass','honky tonk','western swing','western','outlaw country','alternative country','alt country','texas country','nashville sound','bakersfield sound','red dirt','cowboy','cowpunk','countrypolitan','gothic country','dark country','neo-traditional country','contemporary country','country blues','country gospel','country rap','country soul','appalachian folk','cajun','zydeco'],
+  jazz:['jazz','jazz music','smooth jazz','bebop','hard bop','post-bop','cool jazz','west coast jazz','swing','big band','dixieland','ragtime','django','gypsy jazz','manouche','jazz fusion','fusion','acid jazz','nu jazz','nu-jazz','jazz funk','jazz-funk','jazz rap','jazz hop','vocal jazz','scat','free jazz','avant-garde jazz','modal jazz','latin jazz','afro-cuban jazz','bossa nova','samba jazz','ethio-jazz','ethio jazz','spiritual jazz','soul jazz','jazz blues','chamber jazz','third stream','jazz manouche','contemporary jazz'],
+  electronic:['electronic','electronic music','electronica','edm','electro','house','deep house','tech house','progressive house','prog house','acid house','chicago house','garage house','tribal house','tropical house','future house','bass house','electro house','big room','bigroom','techno','detroit techno','minimal techno','hard techno','industrial techno','acid techno','dub techno','trance','psytrance','psy-trance','uplifting trance','progressive trance','vocal trance','goa','hardstyle','hardcore techno','gabber','dubstep','riddim','brostep','future bass','drum and bass','dnb','drum & bass','liquid dnb','neurofunk','jungle','breakbeat','breaks','big beat','nu skool breaks','glitch','glitch hop','idm','ambient','ambient techno','dark ambient','drone','downtempo','chillout','chill-out','trip hop','trip-hop','synthwave','retrowave','outrun','vaporwave','chillwave','future funk','wave','hardwave','phonk','drift phonk','witch house','darkwave','coldwave','ebm','industrial','aggrotech','makina','j-core','happy hardcore','uk garage','2-step','speed garage','bassline','grime','footwork','juke','moombahton','moombahcore','complextro','fidget','electro swing'],
+  'r&b':['r&b','rnb','r and b','rhythm and blues','contemporary r&b','neo soul','neo-soul','neosoul','alternative r&b','alt r&b','quiet storm','slow jam','new jack swing','motown','philly soul','memphis soul','northern soul','southern soul','blue-eyed soul','psychedelic soul','progressive soul','future soul','pbr&b','pbrnb','trap soul','urban','sophisti-pop'],
+  classical:['classical','classical music','orchestral','orchestra','symphony','symphonic','baroque','romantic','romanticism','impressionism','modern classical','contemporary classical','neoclassical','neo-classical','minimalism','minimalist','chamber music','string quartet','piano sonata','concerto','opera','operetta','choral','choral music','sacred music','liturgical','gregorian chant','medieval','renaissance','anthem','cantata','oratorio','ballet','film score','soundtrack','score','cinematic','epic orchestral','trailer music','epic music'],
+  blues:['blues','blues music','delta blues','chicago blues','electric blues','acoustic blues','country blues','piedmont blues','texas blues','jump blues','juke joint blues','swamp blues','memphis blues','new orleans blues','west coast blues','modern blues','contemporary blues','blues rock','soul blues','gospel blues','boogie woogie','boogie-woogie','piano blues','harmonica blues','slide guitar blues','hill country blues','african blues','desert blues'],
+  reggae:['reggae','roots reggae','roots','dub','dub music','ska','2 tone','two-tone','rocksteady','rock steady','dancehall','ragga','dancehall reggae','lovers rock','reggae fusion','reggaeton','raggamuffin','bashment'],
+  folk:['folk','folk music','traditional folk','folk rock','indie folk','contemporary folk','americana','singer-songwriter','singer songwriter','acoustic','acoustic folk','protest folk','folk revival','anti-folk','psychedelic folk','freak folk','new weird america','chamber folk','baroque folk','progressive folk','folk punk','folk metal','folk pop','country folk','appalachian','appalachian folk','celtic','celtic folk','irish folk','scottish folk','nordic folk','world folk','ethnic','traditional','klezmer','fado','flamenco'],
+  indie:['indie','indie rock','indie pop','indie folk','indie electronic','indie dance','indie soul','indie r&b','lo-fi','lofi','lo fi','bedroom pop','bedroom','diy','shoegaze','dream pop','chillwave','vaporwave','slacker rock','jangle pop','twee pop','noise pop','post-punk','post punk','new wave','synthpop','britpop','madchester','baggy','college rock','alternative','alternative rock','alt rock'],
+  metal:['metal','heavy metal','thrash metal','speed metal','power metal','death metal','melodic death metal','technical death metal','black metal','symphonic black metal','atmospheric black metal','doom metal','death-doom','funeral doom','sludge metal','stoner metal','stoner doom','progressive metal','prog metal','djent','math metal','industrial metal','nu metal','nu-metal','metalcore','deathcore','mathcore','grindcore','goregrind','porngrind','groove metal','symphonic metal','gothic metal','folk metal','viking metal','pirate metal','celtic metal','oriental metal','electronicore','trancecore','kawaii metal','alternative metal','rap metal','glam metal','hair metal'],
+  punk:['punk','punk rock','pop punk','pop-punk','punk pop','hardcore','hardcore punk','post-hardcore','post hardcore','emo','emo punk','midwest emo','screamo','skramz','crust','crust punk','d-beat','anarcho-punk','anarcho punk','oi','oi punk','street punk','garage punk','garage rock','skate punk','surf punk','cowpunk','horror punk','psychobilly','gothabilly','ska punk','folk punk','celtic punk','gypsy punk','riot grrrl','queercore','eggy pop','post-punk','post punk','no wave','new wave'],
+  soul:['soul','soul music','northern soul','southern soul','memphis soul','philly soul','chicago soul','detroit soul','motown','blue-eyed soul','neo soul','neo-soul','psychedelic soul','progressive soul','future soul','smooth soul','retro soul','deep soul','classic soul','quiet storm','slow jam','new jack swing','contemporary r&b'],
+  funk:['funk','funk music','p-funk','pfunk','parliament funk','funk rock','funk metal','funkcore','jazz funk','jazz-funk','electro funk','electrofunk','synth funk','boogie','boogie funk','g-funk','gfunk','acid jazz','afrobeat','afro funk','afro-funk','afro-cuban','latin funk','deep funk','rare groove','nu funk','future funk','minneapolis sound','go-go'],
+  disco:['disco','disco music','euro disco','eurodisco','italo disco','italo-disco','hi-nrg','hi nrg','space disco','cosmic disco','boogie','post-disco','post disco','nu-disco','nu disco','disco house','french house','filter house','funky house','dance','dance music','club','club music','party'],
+  latin:['latin','latin music','latin pop','salsa','bachata','merengue','reggaeton','dembow','cumbia','cumbia villera','chicha','mambo','cha-cha-cha','cha cha cha','rumba','guaracha','bolero','tango','milonga','nuevo tango','bossa nova','samba','pagode','mpb','musica popular brasileira','forro','axe','axe music','lambada','sertanejo','tejano','norteno','banda','corrido','narcocorrido','mariachi','ranchera','flamenco','rumba flamenca','sevillanas','son cubano','son jarocho','huayno','chamame','vallenato','porro','currulao'],
+  soundtrack:['soundtrack','soundtracks','ost','original soundtrack','original motion picture soundtrack','film score','movie score','score','film music','movie music','cinematic','cinematic music','trailer music','epic music','epic orchestral','trailer','video game music','game soundtrack','game music','vgm','anime soundtrack','anime ost','tv soundtrack','series soundtrack','musical','musical theatre','broadway','west end'],
+  instrumental:['instrumental','instrumental music','instrumentals','no vocals','karaoke','backing track','backing tracks','playback','instrumental hip hop','instrumental rock','instrumental jazz','post-rock','math rock','ambient','drone','minimal'],
+  chiptune:['chiptune','chip music','8-bit','8bit','8 bit','16-bit','16bit','16 bit','bitpop','bit pop','nintendocore','nes','game boy','gameboy','gb','commodore 64','c64','amiga','tracker music','demoscene','fm synth','fm synthesis','sid','ym2612'],
+  'lo-fi':['lo-fi','lofi','lo fi','low fidelity','lo-fi hip hop','lofi hip hop','lo-fi beats','lofi beats','chillhop','chill hop','chillhop music','study beats','study music','jazzhop','jazz hop','lo-fi jazz','lofi jazz','lo-fi house','lofi house','bedroom pop','bedroom','diy','slacker'],
+  'video game':['video game','video game music','game music','gaming music','gamer music','vgm','game soundtrack','game ost','ost','nes music','snes music','psx music','playstation music','nintendo','nintendo music','sega','sega music','arcade','arcade music','8-bit','16-bit','chiptune','chiptunes'],
+  anime:['anime','anime music','anime ost','anime opening','anime op','anime ending','anime ed','j-pop','jpop','j-rock','jrock','japanese pop','japanese rock','vocaloid','vocaloid music','hatsune miku','utau','denpa','denpa song','moe','moe metal','anison','anisong','japanese city pop','city pop'],
+  gospel:['gospel','gospel music','christian','christian music','contemporary christian','ccm','worship','praise','praise and worship','southern gospel','black gospel','traditional gospel','urban contemporary gospel','gospel choir','gospel soul','spiritual','negro spiritual','sacred','sacred music','hymn','hymns','religious','church music'],
+  opera:['opera','operetta','opera seria','opera buffa','grand opera','chamber opera','romantic opera','verismo','bel canto','baroque opera','music drama','singspiel','aria','arias','recitative','classical voice','vocal classical'],
+  trap:['trap','trap music','trap beat','trap beats','trap soul','trap metal','trap edm','edm trap','future trap','festival trap','dark trap','hard trap','hybrid trap','chill trap','cloud rap','mumble rap','drill','uk drill','brooklyn drill','chicago drill','ny drill','jersey club','phonk','drift phonk','latin trap','reggaeton'],
+  'k-pop':['k-pop','kpop','k pop','korean pop','korean music','k-rap','k-hip hop','k-hip-hop','k-rock','k-indie','korean indie','k-ballad','korean ballad','k-r&b','korean r&b','k-drama ost','kdrama ost','k-ost','korean ost','idol','idol music','k-idol']
 };
 
 const GENRE_INDEX = (() => {
@@ -1098,7 +853,6 @@ const GENRE_COLORS = {rock:'#ef4444',pop:'#ec4899','hip-hop':'#8b5cf6',country:'
 
 const LIKED_ID = '__liked_tracks__';
 const LIKED_ARTISTS_ID = '__liked_artists__';
-const OFFLINE_ID = '__offline_tracks__';
 const PALETTE = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#ef4444','#14b8a6','#6366f1'];
 const LS_PREF = 'sonic_pref_v16';
 const LS_NOTIF = 'sonic_notifs_v2';
@@ -1128,7 +882,6 @@ let captchaTarget = '', captchaSolved = false;
 let confirmResolve = null;
 let notifications = [];
 let hourTimerId = null;
-let offlineIds = [];
 
 try { const p = JSON.parse(localStorage.getItem(LS_PREF)||'{}'); if (p.theme) theme = p.theme; if (p.settings) settings = {...settings, ...p.settings}; if (p.guestMode !== undefined) guestMode = p.guestMode; } catch(e){}
 try { const n = JSON.parse(localStorage.getItem(LS_NOTIF)||'[]'); notifications = Array.isArray(n) ? n : []; } catch(e){}
@@ -1159,63 +912,6 @@ function toast(text, type){ const el = document.createElement('div'); el.classNa
 function applyTheme(){ document.documentElement.setAttribute('data-theme', theme); document.querySelectorAll('#themeSwitch button').forEach(b=>{ const on = b.dataset.t === theme; b.style.background = on?'linear-gradient(135deg,var(--accent),var(--accent2))':'transparent'; b.style.color = on?'#fff':'var(--dim)'; }); }
 function showLoading(text){ $('loadingText').textContent = text||'...'; $('loadingScreen').classList.remove('hide'); }
 function hideLoading(){ $('loadingScreen').classList.add('hide'); }
-
-// ===== ОФФЛАЙН КЕШ =====
-async function downloadTrackForOffline(trackId){
-  if (!('caches' in window)) return false;
-  try {
-    const url = `https://sonic-563fa-default-rtdb.firebaseio.com/audio/${trackId}.json`;
-    const cache = await caches.open('sonic-audio-v1');
-    const cached = await cache.match(url);
-    if (cached) return true;
-    const res = await fetch(url);
-    if (!res.ok) return false;
-    await cache.put(url, res.clone());
-    return true;
-  } catch(e){ return false; }
-}
-async function removeTrackFromOffline(trackId){
-  if (!('caches' in window)) return;
-  const url = `https://sonic-563fa-default-rtdb.firebaseio.com/audio/${trackId}.json`;
-  const cache = await caches.open('sonic-audio-v1');
-  await cache.delete(url);
-}
-async function isTrackCached(trackId){
-  if (!('caches' in window)) return false;
-  try {
-    const url = `https://sonic-563fa-default-rtdb.firebaseio.com/audio/${trackId}.json`;
-    const cache = await caches.open('sonic-audio-v1');
-    return !!(await cache.match(url));
-  } catch(e){ return false; }
-}
-async function refreshOfflineList(){
-  if (!('caches' in window)) { offlineIds = []; return; }
-  try {
-    const cache = await caches.open('sonic-audio-v1');
-    const keys = await cache.keys();
-    const ids = [];
-    keys.forEach(req => {
-      const m = req.url.match(/\/audio\/([^.]+)\.json/);
-      if (m) ids.push(m[1]);
-    });
-    offlineIds = ids;
-    const cnt = $('offline-cnt');
-    if (cnt) cnt.textContent = tn(ids.length);
-  } catch(e){ offlineIds = []; }
-}
-async function downloadAllLiked(){
-  if (!favIds.length){ toast('Нет лайкнутых треков', 'err'); return; }
-  if (!('caches' in window)){ toast('Кеш недоступен', 'err'); return; }
-  toast(`Скачивание ${favIds.length} треков…`, 'ok');
-  let done = 0;
-  for (const id of favIds){
-    const ok = await downloadTrackForOffline(id);
-    if (ok) done++;
-  }
-  await refreshOfflineList();
-  toast(`Готово: ${done} из ${favIds.length}`, 'ok');
-  renderAll();
-}
 
 function fileToBase64AndMime(file){ return new Promise((res, rej)=>{ if (file.size > 6*1024*1024){ rej(new Error('> 6 MB')); return; } const r = new FileReader(); r.onload = () => { const d = r.result; const c = d.indexOf(','); if (c<0){ rej(new Error('err')); return; } const meta = d.substring(5,c); const s = meta.indexOf(';'); const mime = s>=0?meta.substring(0,s):'audio/mpeg'; const b64 = d.substring(c+1); res({ base64: b64, mime }); }; r.onerror = () => rej(new Error('fail')); r.readAsDataURL(file); }); }
 function readTags(file){ return new Promise(res=>{ if (!settings.id3 || typeof window.jsmediatags === 'undefined'){ res({}); return; } let done=false; const tt = setTimeout(()=>{ if (!done){ done=true; res({}); } }, 5000); try { window.jsmediatags.read(file, { onSuccess(tag){ if (done) return; done=true; clearTimeout(tt); const tg = tag.tags||{}; const o = { title: tg.title||null, artist: tg.artist||null, album: tg.album||null }; if (settings.cover && tg.picture && tg.picture.data){ try { o.picBlob = new Blob([new Uint8Array(tg.picture.data)], { type: tg.picture.format||'image/jpeg' }); } catch(e){} } try { let lyr = ''; if (tg.lyrics){ if (typeof tg.lyrics === 'string') lyr = tg.lyrics; else if (typeof tg.lyrics === 'object'){ lyr = tg.lyrics.lyrics||tg.lyrics.text||''; if (typeof lyr !== 'string') lyr = ''; } } if (lyr) o.lyrics = lyr; } catch(e){} res(o); }, onError(){ if (done) return; done=true; clearTimeout(tt); res({}); } }); } catch(e){ if (!done){ done=true; clearTimeout(tt); res({}); } } }); }
@@ -1304,8 +1000,7 @@ const MIX_ICONS = {
   music:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
   star:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>',
   person:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
-  clock:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
-  offline:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>'
+  clock:'<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
 };
 
 function generateMixes(){
@@ -1325,7 +1020,6 @@ function generateMixes(){
   pool.forEach(t2=>{ if (!seen.has(t2.id)){ seen.add(t2.id); byArtist.push(t2); } });
   getFavoriteArtists().forEach(name=>{ tracks.filter(t2=>t2.artist===name).forEach(t2=>{ if (!seen.has(t2.id)){ seen.add(t2.id); byArtist.push(t2); } }); });
 
-  // Жанровый микс для тебя — берём ВСЕ треки из базы с твоими жанрами
   const myGenres = new Set();
   pool.forEach(t2 => normalizeGenres(t2.genre).forEach(g => myGenres.add(g)));
   if (myGenres.size){
@@ -1352,7 +1046,6 @@ function generateGenreOfHour(){
   if (!arr.length) return null;
   const slot = Math.floor(Date.now() / HALF_HOUR_MS);
   const pick = arr[slot % arr.length];
-  // Берём ВСЕ треки из базы с этим жанром — и лайкнутые и НЕ лайкнутые
   const list = tracks.filter(t2 => normalizeGenres(t2.genre).includes(pick));
   if (!list.length) return null;
   return { id: '__hour_genre__', name: genreName(pick), tag: t('tag_hour'), sub: tn(list.length), tracks: shuffleWithSeed(list, 'hour_' + slot), icon: 'clock', cls: 'mix-cover-hour' };
@@ -1369,16 +1062,7 @@ function generatePct(){
 function openMix(mixId){ currentPlaylistId = mixId; renderPlaylistPage(); switchView('playlist'); }
 function openLikedPage(){ currentPlaylistId = LIKED_ID; renderPlaylistPage(); switchView('playlist'); }
 function openLikedArtistsPage(){ currentPlaylistId = LIKED_ARTISTS_ID; renderPlaylistPage(); switchView('playlist'); }
-function openOfflinePage(){ currentPlaylistId = OFFLINE_ID; renderPlaylistPage(); switchView('offline'); }
 function openArtist(name){ currentArtist = name; artistTab = 'tracks'; document.querySelectorAll('#artist-tabs .filter').forEach(f=>f.classList.toggle('active', f.dataset.t === 'tracks')); renderArtist(); switchView('artist'); }
-
-function renderOfflinePage(){
-  const list = tracks.filter(t2 => offlineIds.includes(t2.id));
-  const box = $('offline-list');
-  box.innerHTML = '';
-  if (!list.length){ box.innerHTML = emptyState('—', 'Скачай треки из меню трека или из профиля'); return; }
-  list.forEach((t2,i)=>box.appendChild(trackRow(t2, list, i)));
-}
 
 function renderMixPage(mixId){
   let mix = null;
@@ -1432,7 +1116,6 @@ function openPlaylistPage(plId){ currentPlaylistId = plId; renderPlaylistPage();
 function renderPlaylistPage(){
   if (currentPlaylistId === LIKED_ID){ renderLikedPageContent(); return; }
   if (currentPlaylistId === LIKED_ARTISTS_ID){ renderLikedArtistsPage(); return; }
-  if (currentPlaylistId === OFFLINE_ID){ renderOfflinePage(); return; }
   if (currentPlaylistId && (currentPlaylistId === '__hour_genre__' || currentPlaylistId.startsWith('__mix_') || currentPlaylistId.startsWith('__pct_') || currentPlaylistId.startsWith('__genre_') || currentPlaylistId.startsWith('__artist_'))){ renderMixPage(currentPlaylistId); return; }
   const pl = playlists.find(p=>p.id === currentPlaylistId); if (!pl){ switchView('fav'); return; }
   const list = pl.trackIds.map(getTrack).filter(Boolean);
@@ -1600,7 +1283,6 @@ function renderFav(){
   if (!favs.length) fe.innerHTML = `<div style="padding:10px 0;color:var(--dim);font-size:12.5px">${t('no_liked')}</div>`;
   else favs.slice(0,5).forEach((t2,i)=>fe.appendChild(trackRow(t2, favs, i)));
   const lac = $('liked-artists-cnt'); if (lac) lac.textContent = String(favArtists.length);
-  refreshOfflineList();
   $('pl-cnt').textContent = String(playlists.length);
   const plEl = $('fav-playlists'); plEl.innerHTML = '';
   playlists.forEach(pl=>{
@@ -1892,7 +1574,7 @@ function renderAll(){
 function switchView(v){ document.querySelectorAll('.view').forEach(el=>el.classList.remove('active')); const tgt = document.getElementById('v-'+v); if (tgt) tgt.classList.add('active'); document.querySelectorAll('.nbtn').forEach(b=>b.classList.toggle('active', b.dataset.v === v)); window.scrollTo({ top:0, behavior:'smooth' }); }
 
 function renderArtistsRow(el, artists){ el.innerHTML = ''; artists.forEach(a=>{ const e = document.createElement('div'); e.className = 'artist'; const img = getArtistAvatar(a.name); const isFav = favArtists.includes(a.name); e.innerHTML = `<div class="artist-img">${img ? `<img src="${img}" alt="">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}</div>${isFav ? `<div class="artist-fav"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>`:''}<div class="artist-name">${esc(a.name)}</div>`; e.addEventListener('click', ()=>openArtist(a.name)); el.appendChild(e); }); }
-function trackRow(t2, list, idx){ const playing = currentId === t2.id; const isFav = favIds.includes(t2.id); const isOff = offlineIds.includes(t2.id); const r = document.createElement('div'); r.className = 'track' + (playing?' playing':''); r.innerHTML = `<div class="track-c">${coverHtml(t2)}</div><div class="track-info"><div class="track-t">${esc(t2.title)}</div><div class="track-a">${esc(t2.artist)}${t2.album ? ' · '+esc(t2.album) : ''}${artistBadgeHtml(t2.artist)}${verifiedBadgeHtml(t2.artist)}${lyricsBadgeHtml(t2)}${isOff ? `<span class="badge-offline"><svg width="8" height="8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" fill="none" stroke="currentColor" stroke-width="2"/></svg>OFF</span>` : ''}</div></div><div class="track-acts"><button class="tfav ${isFav?'on':''}" data-act="fav"><svg viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><button class="tmenu" data-act="menu"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg></button></div>`; r.addEventListener('click', e=>{ const a = e.target.closest('[data-act]'); if (a){ e.stopPropagation(); if (a.dataset.act === 'fav') toggleFav(t2.id); else if (a.dataset.act === 'menu') openTrackMenu(t2); return; } playTrackInList(list, idx); openFs(); }); return r; }
+function trackRow(t2, list, idx){ const playing = currentId === t2.id; const isFav = favIds.includes(t2.id); const r = document.createElement('div'); r.className = 'track' + (playing?' playing':''); r.innerHTML = `<div class="track-c">${coverHtml(t2)}</div><div class="track-info"><div class="track-t">${esc(t2.title)}</div><div class="track-a">${esc(t2.artist)}${t2.album ? ' · '+esc(t2.album) : ''}${artistBadgeHtml(t2.artist)}${verifiedBadgeHtml(t2.artist)}${lyricsBadgeHtml(t2)}</div></div><div class="track-acts"><button class="tfav ${isFav?'on':''}" data-act="fav"><svg viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><button class="tmenu" data-act="menu"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg></button></div>`; r.addEventListener('click', e=>{ const a = e.target.closest('[data-act]'); if (a){ e.stopPropagation(); if (a.dataset.act === 'fav') toggleFav(t2.id); else if (a.dataset.act === 'menu') openTrackMenu(t2); return; } playTrackInList(list, idx); openFs(); }); return r; }
 function listRow(o){ const r = document.createElement('div'); r.className = 'lrow'; const cs = o.coverStyle ? `style="background:${o.coverStyle}"` : ''; const cls = 'lrow-c' + (o.round?' round':''); const inner = o.coverImg ? `<img src="${o.coverImg}" alt="">` : (o.icon||''); r.innerHTML = `<div class="${cls}" ${cs}>${inner}</div><div><div class="lrow-t">${esc(o.title)}</div><div class="lrow-m">${esc(o.meta||'')}</div></div><div class="lrow-ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></div>`; if (o.onClick) r.addEventListener('click', o.onClick); return r; }
 function emptyState(title, text){ return `<div class="empty"><div class="empty-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><b>${esc(title)}</b>${esc(text)}</div>`; }
 function getArtistMap(src){ const m = {}; src.forEach(t2=>{ if (!t2.artist) return; m[t2.artist] = m[t2.artist] || { name: t2.artist, cover: t2.cover||null, count: 0 }; m[t2.artist].count++; if (!m[t2.artist].cover && t2.cover) m[t2.artist].cover = t2.cover; }); return Object.values(m).sort((a,b)=>b.count-a.count); }
@@ -2019,7 +1701,6 @@ $('profEditModal').addEventListener('click', e=>{ if (e.target === $('profEditMo
 $('profEditSave').addEventListener('click', ()=>{ profile.name = $('profName').value.trim() || 'Гость'; if (editProfAvatarNew !== undefined) profile.avatar = editProfAvatarNew; $('profEditModal').classList.remove('show'); renderProfile(); renderAll(); saveUserProfile(); });
 $('profStudioBtn').addEventListener('click', ()=>{ renderStudio(); switchView('studio'); });
 $('studioBack').addEventListener('click', ()=>{ switchView('profile'); renderProfile(); });
-$('offlineBack').addEventListener('click', ()=>{ currentPlaylistId = null; switchView('fav'); });
 $('apCancel').addEventListener('click', ()=>$('artistProfileModal').classList.remove('show'));
 $('artistProfileModal').addEventListener('click', e=>{ if (e.target === $('artistProfileModal')) e.target.classList.remove('show'); });
 $('apSave').addEventListener('click', ()=>{ const name = $('apName').value.trim(); if (!name){ toast('—','err'); return; } profile.musicianName = name; profile.musicianGenre = $('apGenre').value.trim(); profile.country = $('apCountry').value.trim(); profile.musicianBio = $('apBio').value.trim(); profile.link = $('apLink').value.trim(); $('artistProfileModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); });
@@ -2028,8 +1709,6 @@ $('musicianModal').addEventListener('click', e=>{ if (e.target === $('musicianMo
 $('musicianSave').addEventListener('click', ()=>{ const name = $('musicianName').value.trim(); if (!name){ profile.musicianName=''; profile.musicianGenre=''; profile.musicianBio=''; } else { profile.musicianName = name; profile.musicianGenre = $('musicianGenre').value.trim(); profile.musicianBio = $('musicianBio').value.trim(); } $('musicianModal').classList.remove('show'); renderProfile(); renderAll(); if ($('v-studio').classList.contains('active')) renderStudio(); saveUserProfile(); });
 $('themeSwitch').addEventListener('click', e=>{ const b = e.target.closest('button'); if (!b) return; theme = b.dataset.t; applyTheme(); savePrefs(); });
 $('profReset').addEventListener('click', async ()=>{ const ok = await showConfirm(t('confirm_delete_all'), t('confirm_delete_all_t'), t('confirm_yes'), t('confirm_no')); if (!ok) return; const myTracks = tracks.filter(t2=>t2.ownerId === firebaseUid && firebaseUid); for (const t2 of myTracks){ try { await remove(ref(db, 'tracks/'+t2.id)); await remove(ref(db, 'audio/'+t2.id)); audioCache.delete(t2.id); } catch(e){} } if (myTracks.some(t2=>t2.id === currentId)){ closeMiniPlayer(true); closeFs(); } });
-$('profDownloadAll').addEventListener('click', downloadAllLiked);
-$('offline-row').addEventListener('click', openOfflinePage);
 
 $('miniPlay').addEventListener('click', e=>{ e.stopPropagation(); if (!currentTrack()){ if (!tracks.length) return; playTrackInList(tracks, 0); return; } if (audio.paused) audio.play().catch(()=>{}); else audio.pause(); });
 $('miniFav').addEventListener('click', e=>{ e.stopPropagation(); const t2 = currentTrack(); if (t2) toggleFav(t2.id); });
@@ -2084,11 +1763,9 @@ async function openTrackMenu(t2){
   const inPls = playlists.filter(p=>p.trackIds.includes(t2.id));
   const isMine = !!(firebaseUid && t2.ownerId && t2.ownerId === firebaseUid);
   const has = !!t2.lyrics;
-  const isCached = await isTrackCached(t2.id);
   let html = '';
   if (has) html += `<button class="tm-item" data-a="lyrics"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 3.13-9 7 0 2.13 1.22 4.02 3.13 5.28L5 21l4.06-2.03c.93.2 1.92.31 2.94.31 4.97 0 9-3.13 9-7s-4.03-7-9-7z"/></svg><span class="tm-lbl">${t('lyrics_l')}</span></button>`;
   html += `<button class="tm-item" data-a="fav"><svg viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="tm-lbl">${isFav ? t('unfollow_artist') : t('follow_artist')}</span></button>`;
-  html += `<button class="tm-item" data-a="offline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="tm-lbl">${isCached ? 'Удалить из оффлайна' : 'Скачать для оффлайна'}</span></button>`;
   if (t2.artist && tracks.filter(x=>x.artist === t2.artist).length > 1) html += `<button class="tm-item" data-a="artist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="tm-lbl">${t('all_artists')}</span></button>`;
   notIn.forEach(pl=>{ html += `<button class="tm-item" data-a="addToPl" data-pl="${pl.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="tm-lbl">→ ${esc(pl.name)}</span></button>`; });
   if (notIn.length || !playlists.length) html += `<button class="tm-item" data-a="newPl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span class="tm-lbl">${t('new_playlist')}</span></button>`;
@@ -2109,20 +1786,6 @@ $('tmModal').addEventListener('click', async e=>{
   const a = item.dataset.a;
   if (a === 'lyrics'){ closeTrackMenu(); openFs(); openLyricsModal(); }
   else if (a === 'fav'){ toggleFav(t2.id); closeTrackMenu(); }
-  else if (a === 'offline'){
-    const cached = await isTrackCached(t2.id);
-    if (cached){
-      await removeTrackFromOffline(t2.id);
-      toast('Удалено из оффлайна', 'ok');
-    } else {
-      toast('Скачивание…', 'ok');
-      const ok = await downloadTrackForOffline(t2.id);
-      toast(ok ? 'Готово! Трек доступен оффлайн' : 'Ошибка скачивания', ok ? 'ok' : 'err');
-    }
-    await refreshOfflineList();
-    closeTrackMenu();
-    renderAll();
-  }
   else if (a === 'artist'){ closeTrackMenu(); openArtist(t2.artist); }
   else if (a === 'stats'){ closeTrackMenu(); openTrackStats(t2); }
   else if (a === 'addToPl'){ const pl = playlists.find(p=>p.id === item.dataset.pl); if (!pl) return; if (!pl.trackIds.includes(t2.id)) pl.trackIds.push(t2.id); await savePlaylistsToFB(); closeTrackMenu(); renderAll(); }
@@ -2220,7 +1883,6 @@ async function boot(){
   showLoading('...');
   getRedirectResult(auth).catch(e=>console.error(e));
   if (!notifications.length) pushNotif('n2', t('notif_welcome'), 'Sonic');
-  await refreshOfflineList();
   onAuthStateChanged(auth, user=>{
     if (user){
       firebaseUid = user.uid;
@@ -2250,17 +1912,6 @@ async function boot(){
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
 else boot();
-
-// ===== PWA Service Worker =====
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js', { scope: './' })
-      .then(reg => console.log('[PWA] SW registered'))
-      .catch(err => console.warn('[PWA] SW failed', err));
-  });
-}
-window.addEventListener('online', () => console.log('[net] online'));
-window.addEventListener('offline', () => console.log('[net] offline'));
 </script>
 </body>
 </html>
